@@ -1,83 +1,82 @@
 # Literature Review: CV-Super-Resolution
 
-    **project:** 200472B
-    **Research Area:** CV-Super-Resolution
-    **Date:** 2025-08-31
+**student:** 200472B
+**Research Area:** CV-Super-Resolution
+**Date:** 2025-08-31
 
-    ## Abstract
+## Abstract
 
-    [Provide a brief summary of your literature review - what areas you covered and key findings]
+[Provide a brief summary of your literature review - what areas you covered and key findings]
 
-    ## 1. Introduction
+## 1. Introduction
 
-    [Introduce the research area and scope of your literature review]
+[Introduce the research area and scope of your literature review]
 
-    ## 2. Search Methodology
+## 2. Search Methodology
 
-    ### Search Terms Used
-    - [List key terms and phrases used]
-    - [Include synonyms and variations]
+### Search Terms Used
+- [List key terms and phrases used]
+- [Include synonyms and variations]
 
-    ### Databases Searched
-    - [ ] IEEE Xplore
-    - [ ] ACM Digital Library
-    - [ ] Google Scholar
-    - [ ] ArXiv
-    - [ ] Other: ___________
+### Databases Searched
+- [ ] IEEE Xplore
+- [ ] ACM Digital Library
+- [ ] Google Scholar
+- [ ] ArXiv
+- [ ] Other: ___________
 
-    ### Time Period
-    [e.g., 2018-2024, focusing on recent developments]
+### Time Period
+[e.g., 2018-2024, focusing on recent developments]
 
-    ## 3. Key Areas of Research
+## 3. Key Areas of Research
 
-    ### 3.1 [Topic Area 1]
-    [Discuss the main research directions in this area]
+### 3.1 [Topic Area 1]
+[Discuss the main research directions in this area]
 
-    **Key Papers:**
-    - [Author, Year] - [Brief summary of contribution]
-    - [Author, Year] - [Brief summary of contribution]
+**Key Papers:**
+- [Author, Year] - [Brief summary of contribution]
+- [Author, Year] - [Brief summary of contribution]
 
-    ### 3.2 [Topic Area 2]
-    [Continue with other relevant areas]
+### 3.2 [Topic Area 2]
+[Continue with other relevant areas]
 
-    ## 4. Research Gaps and Opportunities
+## 4. Research Gaps and Opportunities
 
-    [Identify gaps in current research that your project could address]
+[Identify gaps in current research that your project could address]
 
-    ### Gap 1: [Description]
-    **Why it matters:** [Explanation]
-    **How your project addresses it:** [Your approach]
+### Gap 1: [Description]
+**Why it matters:** [Explanation]
+**How your project addresses it:** [Your approach]
 
-    ### Gap 2: [Description]
-    **Why it matters:** [Explanation]
-    **How your project addresses it:** [Your approach]
+### Gap 2: [Description]
+**Why it matters:** [Explanation]
+**How your project addresses it:** [Your approach]
 
-    ## 5. Theoretical Framework
+## 5. Theoretical Framework
 
-    [Describe the theoretical foundation for your research]
+[Describe the theoretical foundation for your research]
 
-    ## 6. Methodology Insights
+## 6. Methodology Insights
 
-    [What methodologies are commonly used? Which seem most promising for your work?]
+[What methodologies are commonly used? Which seem most promising for your work?]
 
-    ## 7. Conclusion
+## 7. Conclusion
 
-    [Summarize key findings and how they inform your research direction]
+[Summarize key findings and how they inform your research direction]
 
-    ## References
+## References
 
-    [Use academic citation format - APA, IEEE, etc.]
+[Use academic citation format - APA, IEEE, etc.]
 
-    1. [Reference 1]
-    2. [Reference 2]
-    3. [Reference 3]
-    ...
+1. [Reference 1]
+2. [Reference 2]
+3. [Reference 3]
+...
 
-    ---
+---
 
-    **Notes:**
-    - Aim for 15-20 high-quality references minimum
-    - Focus on recent work (last 5 years) unless citing seminal papers
-    - Include a mix of conference papers, journal articles, and technical reports
-    - Keep updating this document as you discover new relevant work
-    
+**Notes:**
+- Aim for 15-20 high-quality references minimum
+- Focus on recent work (last 5 years) unless citing seminal papers
+- Include a mix of conference papers, journal articles, and technical reports
+- Keep updating this document as you discover new relevant work
