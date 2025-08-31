@@ -8,6 +8,7 @@
 - **Email:** randikap.20@cse.mrt.ac.lk
 
 ## Project Structure
+```
 200472B-CV-Super-Resolution/
 ├── README.md                    # This file
 ├── docs/
@@ -20,6 +21,7 @@
 ├── experiments/                 # Experiment scripts and configs
 ├── results/                     # Experimental results
 └── requirements.txt             # Project dependencies
+```
 
 ## Getting Started
 
