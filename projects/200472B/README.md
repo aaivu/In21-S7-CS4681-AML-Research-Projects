@@ -6,7 +6,7 @@ Welcome to your research project repository! This guide will help you understand
 
 ### 1. Repository Access
 You should have received an invitation to access your research repository:
-- Repository URL: `https://github.com/aaivu/200472B_CV:: Super-Resolution`
+- Repository URL: `https://github.com/aaivu/200472B_CV||Super-Resolution`
 - Check your email for the GitHub invitation
 - Accept the invitation and set up your local environment
 
@@ -15,8 +15,8 @@ You should have received an invitation to access your research repository:
 #### Clone Your Repository
 ```bash
 # Clone your repository
-git clone https://github.com/aaivu/200472B_CV:: Super-Resolution.git
-cd 200472B_CV:: Super-Resolution
+git clone https://github.com/aaivu/200472B_CV||Super-Resolution.git
+cd 200472B_CV||Super-Resolution
 
 # Set up your development environment
 python -m venv venv
@@ -80,7 +80,7 @@ Each milestone has a corresponding GitHub issue that serves as:
 git pull origin main
 
 # Check for any new issues or feedback
-# Visit: https://github.com/aaivu/200472B_CV:: Super-Resolution/issues
+# Visit: https://github.com/aaivu/200472B_CV||Super-Resolution/issues
 ```
 
 #### 2. Work on Your Tasks
