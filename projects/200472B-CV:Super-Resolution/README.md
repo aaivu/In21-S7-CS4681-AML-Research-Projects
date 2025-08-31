@@ -43,7 +43,7 @@
 Create GitHub Issues with the following labels for tracking:
 - `student-200472B` (automatically added)
 - `literature-review`, `implementation`, `evaluation`, etc.
-- Tag supervisors (@supervisor) for feedback
+- Tag supervisors (@rtuthayaCSE) for feedback
 
 ## Resources
 
