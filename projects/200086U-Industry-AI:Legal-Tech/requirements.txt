@@ -1,0 +1,30 @@
+# Core ML Libraries
+    numpy>=1.21.0
+    pandas>=1.3.0
+    scikit-learn>=1.0.0
+    matplotlib>=3.5.0
+    seaborn>=0.11.0
+
+    # Deep Learning (uncomment as needed)
+    # torch>=1.10.0
+    # torchvision>=0.11.0
+    # tensorflow>=2.8.0
+    # keras>=2.8.0
+
+    # NLP Libraries (uncomment as needed)
+    # nltk>=3.7.0
+    # spacy>=3.4.0
+    # transformers>=4.15.0
+
+    # Computer Vision (uncomment as needed)
+    # opencv-python>=4.5.0
+    # pillow>=8.3.0
+
+    # Utilities
+    jupyter>=1.0.0
+    tqdm>=4.62.0
+    python-dotenv>=0.19.0
+
+    # Add your specific requirements below
+    **Remember:** Regular commits and documentation are essential for project success!
+    
