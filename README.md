@@ -1,90 +1,63 @@
-# {STUDENT_INDEX} - {RESEARCH_AREA}
+# In21-S7-CS4681-AML-Research-Projects
 
-## Student Information
-- **Index Number:** {STUDENT_INDEX}
-- **Research Area:** {RESEARCH_AREA}
-- **Email:** {STUDENT_EMAIL}
-- **GitHub Username:** {GITHUB_USERNAME}
+## Advanced Machine Learning Research Projects
 
-## Project Overview
-This repository contains the research project for {COURSE_NAME} (CS4681) - Academic Year 2024/2025.
+**Course Code:** CS4681
+**Academic Year:** 2025/2026
+**Semester:** S7
 
-### Research Topic
-{RESEARCH_AREA}
+## Repository Structure
 
-## Project Structure
 ```
-├── literature_review/          # Literature review and references
-│   ├── papers/                # Downloaded papers and references
-│   ├── notes.md              # Literature review notes
-│   └── bibliography.bib      # Bibliography file
-├── methodology/               # Research methodology
-│   ├── proposal.md           # Research proposal
-│   ├── methodology.md        # Detailed methodology
-│   └── timeline.md           # Project timeline
-├── implementation/            # Code implementation
-│   ├── src/                  # Source code
-│   ├── experiments/          # Experiment scripts
-│   ├── models/              # Trained models
-│   └── data/                # Dataset (if applicable)
-├── results/                  # Results and analysis
-│   ├── experiments/         # Experimental results
-│   ├── figures/             # Plots and visualizations
-│   └── analysis.md          # Result analysis
-├── documentation/            # Project documentation
-│   ├── progress_reports/    # Weekly progress reports
-│   ├── presentations/       # Presentation slides
-│   └── user_manual.md       # User manual (if applicable)
-├── paper/                   # Research paper
-│   ├── draft/              # Paper drafts
-│   ├── final/              # Final paper
-│   └── supplementary/      # Supplementary materials
-└── README.md               # This file
+├── projects/                    # Individual project project folders
+│   ├── [INDEX]-[RESEARCH-AREA]/
+│   │   ├── README.md           # project project overview
+│   │   ├── docs/               # Documentation and reports
+│   │   ├── src/                # Source code
+│   │   ├── data/               # Datasets
+│   │   ├── experiments/        # Experiment results
+│   │   └── reports/            # Progress reports
+├── docs/                       # Course documentation
+│   ├── project_overview.md     # Project overview and requirements
+│   ├── project_guidelines.md   # Guidelines for projects
+│   └── supervisor_guide.md     # Guide for supervisors
+├── templates/                  # Templates for projects
+└── README.md                   # This file
 ```
 
-## Milestones
-- [ ] **Literature Review** (Week 4) - 15%
-- [ ] **Methodology** (Week 8) - 20%
-- [ ] **Mid Evaluation** (Week 10) - 25%
-- [ ] **Final Evaluation** (Week 16) - 40%
+## projects
 
-## Progress Tracking
-Current Status: **Not Started**
+This repository contains research projects for 8 projects working on various machine learning research topics.
 
-### Weekly Progress
-- Week 1: Project setup and initial planning
-- Week 2: Literature search and preliminary reading
-- Week 3: Detailed literature review
-- Week 4: Literature review completion and methodology planning
+## Project Timeline
 
-## Supervisor Information
-- **Primary Supervisor:** {PRIMARY_SUPERVISOR}
-- **Co-Supervisor:** {CO_SUPERVISOR}
+| Week | Milestone | Description |
+|------|-----------|-------------|
+| 1-3  | Literature Review | Complete literature review and research proposal |
+| 4-6  | Methodology | Develop and validate methodology |
+| 7-10 | Implementation | Implement proposed solution |
+| 11-13| Experimentation | Conduct experiments and analysis |
+| 14-16| Documentation | Final report and presentation |
 
-## Important Links
-- [Course Materials]({COURSE_LINK})
-- [Submission Guidelines]({SUBMISSION_LINK})
-- [Progress Tracking Dashboard]({DASHBOARD_LINK})
+## For projects
 
-## Getting Started
-1. Clone this repository to your local machine
-2. Set up your development environment using `requirements.txt`
-3. Review the project structure and guidelines
-4. Start with literature review in the `literature_review/` folder
-5. Update progress regularly in weekly progress reports
+1. Navigate to your project folder: `projects/[YOUR-INDEX]-[YOUR-RESEARCH-AREA]/`
+2. Read the project guidelines in `docs/project_guidelines.md`
+3. Start with your research proposal in `docs/research_proposal.md`
+4. Use GitHub Issues to track your progress and communicate with supervisors
+5. Regular commits are expected to show continuous progress
 
-## Submission Guidelines
-- All code must be well-documented
-- Include proper citations for all references
-- Follow the project structure guidelines
-- Submit progress reports weekly
-- Final submission deadline: {FINAL_DEADLINE}
+## For Supervisors
 
-## Contact Information
-For any questions or support:
-- Email: {STUDENT_EMAIL}
-- Supervisor: {SUPERVISOR_EMAIL}
-- Course Coordinator: {COORDINATOR_EMAIL}
+- Access the supervisor guide at `docs/supervisor_guide.md`
+- Monitor project progress through Issues and commit history
+- Use GitHub Projects to track overall progress across all projects
+- Weekly check-ins are recommended through issue comments
+
+## Support
+
+For technical issues with this repository, create an issue with the label "support".
+For academic questions, contact your assigned supervisor.
 
 ---
-*This project is part of {COURSE_NAME} (CS4681) at {UNIVERSITY_NAME}*
+*This repository is managed by the Department of Computer Science & Engineering*
