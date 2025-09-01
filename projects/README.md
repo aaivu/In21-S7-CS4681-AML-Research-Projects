@@ -6,7 +6,7 @@ This directory contains individual project folders for all students enrolled in 
 
 Each student has a dedicated folder named: `[INDEX_NUMBER]-[RESEARCH_AREA]`
 
-Example: `CS19001-Natural-Language-Processing`
+Example: `<Index No.><Research Domain><Research Area>`
 
 ## Getting Started
 
