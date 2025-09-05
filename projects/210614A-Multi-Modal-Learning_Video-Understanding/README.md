@@ -4,7 +4,7 @@
 
 - **Index Number:** 210614A
 - **Research Area:** Multi-Modal Learning:Video Understanding
-- **GitHub Username:** @Chirantha01
+- **GitHub Username:** @Anjitha-Siyambalapitiya
 - **Email:** anjitha.21@cse.mrt.ac.lk
 
 ## Project Structure
