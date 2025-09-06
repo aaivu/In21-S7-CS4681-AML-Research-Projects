@@ -8,7 +8,7 @@ class Config:
 
         # Data loader
         self.data = 'custom'
-        self.root_path = './data/'
+        self.root_path = '../data/'
         self.data_path = 'exchange_rate.csv'
         self.features = 'M'
         self.target = 'OT' # This is not used for 'M' feature, but needs to be here.
