@@ -3,7 +3,7 @@ class Config:
         # Basic config
         self.is_training = 1
         self.model_id = 'Exchange_336_96'
-        self.model = 'DLinear_msd_v2'
+        self.model = 'DLinear'
         self.n_ensemble = 5
 
         # Data loader
