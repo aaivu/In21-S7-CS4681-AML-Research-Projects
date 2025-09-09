@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
+from typing import Tuple
 
 class moving_avg(nn.Module):
     """
@@ -34,6 +35,34 @@ class series_decomp(nn.Module):
         moving_mean = self.moving_avg(x)
         res = x - moving_mean
         return res, moving_mean
+    
+class MultiScaleDecomposition(nn.Module):
+    """
+    Multi-scale series decomposition with multiple kernel sizes
+    """
+    def __init__(self, kernel_sizes: list = [9, 25, 49], learnable: bool = False):
+        super(MultiScaleDecomposition, self).__init__()
+        self.kernel_sizes = kernel_sizes
+        self.moving_avgs = nn.ModuleList([
+            moving_avg(k, stride=1) 
+            for k in kernel_sizes
+        ])
+        
+        # Learnable weights for combining different scales
+        self.scale_weights = nn.Parameter(torch.ones(len(kernel_sizes)) / len(kernel_sizes))
+        
+    def forward(self, x: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
+        # Compute trends at different scales
+        trends = []
+        for moving_avg in self.moving_avgs:
+            trend = moving_avg(x)
+            trends.append(trend)
+        
+        # Weighted combination of trends
+        trend = sum(w * t for w, t in zip(F.softmax(self.scale_weights, dim=0), trends))
+        seasonal = x - trend
+        
+        return seasonal, trend
 
 class Model(nn.Module):
     """
@@ -43,10 +72,14 @@ class Model(nn.Module):
         super(Model, self).__init__()
         self.seq_len = configs.seq_len
         self.pred_len = configs.pred_len
+        is_multi_scale = configs.multi_scale
 
         # Decompsition Kernel Size
         kernel_size = 25
-        self.decompsition = series_decomp(kernel_size)
+        if is_multi_scale:
+            self.decompsition = MultiScaleDecomposition(kernel_sizes=[9, 25, 49], learnable=True)
+        else:
+            self.decompsition = series_decomp(kernel_size)
         self.individual = configs.individual
         self.channels = configs.enc_in
 
