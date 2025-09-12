@@ -22,14 +22,64 @@ class moving_avg(nn.Module):
         x = x.permute(0, 2, 1)
         return x
 
+class AdaptiveMovingAvg(nn.Module):
+    """
+    Adaptive Moving Average block with learnable kernel and improved padding strategy
+    """
+    def __init__(self, kernel_size: int, stride: int = 1, learnable: bool = True):
+        super(AdaptiveMovingAvg, self).__init__()
+        self.kernel_size = kernel_size
+        self.stride = stride
+        self.learnable = learnable
+        
+        if learnable:
+            # Learnable weights initialized to uniform average
+            self.weights = nn.Parameter(torch.ones(kernel_size) / kernel_size)
+        else:
+            # Standard average pooling
+            self.avg = nn.AvgPool1d(kernel_size=kernel_size, stride=stride, padding=0)
+    
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        # x: [Batch, Seq_len, Channels]
+        if self.learnable:
+            # Use learnable convolution for moving average
+            batch_size, seq_len, channels = x.shape
+            
+            # Replicate padding (more appropriate for time series)
+            pad_left = (self.kernel_size - 1) // 2
+            pad_right = self.kernel_size - 1 - pad_left
+            
+            # Replicate boundary values
+            front = x[:, :1, :].repeat(1, pad_left, 1)
+            end = x[:, -1:, :].repeat(1, pad_right, 1)
+            x_padded = torch.cat([front, x, end], dim=1)
+            
+            # Apply learnable convolution
+            x_padded = x_padded.permute(0, 2, 1)  # [B, C, L]
+            weights = self.weights.view(1, 1, -1).expand(channels, 1, -1)
+            result = F.conv1d(x_padded, weights, groups=channels, stride=self.stride)
+            return result.permute(0, 2, 1)  # [B, L, C]
+        else:
+            # Standard implementation with improved padding
+            pad_left = (self.kernel_size - 1) // 2
+            pad_right = self.kernel_size - 1 - pad_left
+            
+            front = x[:, :1, :].repeat(1, pad_left, 1)
+            end = x[:, -1:, :].repeat(1, pad_right, 1)
+            x = torch.cat([front, x, end], dim=1)
+            x = self.avg(x.permute(0, 2, 1))
+            return x.permute(0, 2, 1)
 
 class series_decomp(nn.Module):
     """
     Series decomposition block
     """
-    def __init__(self, kernel_size):
+    def __init__(self, kernel_size, is_adaptive: bool = False):
         super(series_decomp, self).__init__()
-        self.moving_avg = moving_avg(kernel_size, stride=1)
+        if is_adaptive:
+            self.moving_avg = AdaptiveMovingAvg(kernel_size, stride=1, learnable=True)
+        else:
+            self.moving_avg = moving_avg(kernel_size, stride=1)
 
     def forward(self, x):
         moving_mean = self.moving_avg(x)
@@ -40,13 +90,19 @@ class MultiScaleDecomposition(nn.Module):
     """
     Multi-scale series decomposition with multiple kernel sizes
     """
-    def __init__(self, kernel_sizes: list = [9, 25, 49], learnable: bool = False):
+    def __init__(self, kernel_sizes: list = [9, 25, 49], learnable: bool = False, is_adaptive: bool = False):
         super(MultiScaleDecomposition, self).__init__()
         self.kernel_sizes = kernel_sizes
-        self.moving_avgs = nn.ModuleList([
-            moving_avg(k, stride=1) 
-            for k in kernel_sizes
-        ])
+        if is_adaptive:
+            self.moving_avgs = nn.ModuleList([
+                AdaptiveMovingAvg(k, stride=1) 
+                for k in kernel_sizes
+            ])
+        else:
+            self.moving_avgs = nn.ModuleList([
+                moving_avg(k, stride=1) 
+                for k in kernel_sizes
+            ])
         
         # Learnable weights for combining different scales
         self.scale_weights = nn.Parameter(torch.ones(len(kernel_sizes)) / len(kernel_sizes))
@@ -73,13 +129,14 @@ class Model(nn.Module):
         self.seq_len = configs.seq_len
         self.pred_len = configs.pred_len
         is_multi_scale = configs.multi_scale
+        is_adaptive = configs.adaptive
 
         # Decompsition Kernel Size
         kernel_size = 25
         if is_multi_scale:
-            self.decompsition = MultiScaleDecomposition(kernel_sizes=[9, 25, 49], learnable=True)
+            self.decompsition = MultiScaleDecomposition(kernel_sizes=[9, 25, 49], learnable=True, is_adaptive=is_adaptive)
         else:
-            self.decompsition = series_decomp(kernel_size)
+            self.decompsition = series_decomp(kernel_size, is_adaptive=is_adaptive)
         self.individual = configs.individual
         self.channels = configs.enc_in
 
