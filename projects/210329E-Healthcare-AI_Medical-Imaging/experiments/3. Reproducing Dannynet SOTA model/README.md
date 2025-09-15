@@ -76,3 +76,7 @@ Notes on the environment used for reproduction:
 - Dataset: NIH Chest X-ray (link above). 
 - Estimated runtime: approximately 10–11 hours on the Kaggle T4*2 setup for the full training/evaluation run.
 
+## Research note
+
+For downstream experiments and comparisons in this project, we will treat DannyNet as the working SOTA baseline. The primary reason is that DannyNet's dataloader creation and preprocessing steps are visible and somewhta closely reproducible from the implementation, which improves comparability and reduces ambiguity when evaluating new methods against a known pipeline.
+
