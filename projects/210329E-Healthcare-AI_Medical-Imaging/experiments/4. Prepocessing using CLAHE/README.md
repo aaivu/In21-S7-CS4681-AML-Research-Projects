@@ -10,9 +10,9 @@ The preprocessed images used in this experiment are published as a Kaggle datase
 
 Sample output
 -------------
-Below is a representative example showing the original image (left) and the CLAHE-processed image (right). If the image does not render (e.g., in plain-text viewers), open `images/output.png`.
+Below is a representative example showing the original image (left) and the CLAHE-processed image (right). If the image does not render (e.g., in plain-text viewers), open `sample clahe output/output.png`.
 
-![Original (left) vs CLAHE (right)](images/output.png)
+![Original (left) vs CLAHE (right)](sample clahe output/output.png)
 
 Re-evaluation using CLAHE-preprocessed images
 ---------------------------------------------
