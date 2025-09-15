@@ -10,17 +10,22 @@ The preprocessed images used in this experiment are published as a Kaggle datase
 
 Sample output
 -------------
-See `images/output.png` for a representative example showing the original image (left) and the CLAHE-processed image (right).
+Below is a representative example showing the original image (left) and the CLAHE-processed image (right). If the image does not render (e.g., in plain-text viewers), open `images/output.png`.
+
+![Original (left) vs CLAHE (right)](images/output.png)
 
 Re-evaluation using CLAHE-preprocessed images
 ---------------------------------------------
 The reproduced DannyNet model was re-evaluated using the CLAHE-preprocessed images for this experiment; the results below are from that run.
 All replication and CLAHE experiments reported here were run using the same random seed (`42`) for reproducibility.
 
-===== TEST RESULTS =====
-Loss      : 0.0415
-Avg AUROC : 0.8514
-Avg F1    : 0.3803
+### Test summary
+
+| Metric     | Value  |
+|------------|:------:|
+| Loss       | 0.0415 |
+| Avg AUROC  | 0.8514 |
+| Avg F1     | 0.3803 |
 
 === Per-Class Metrics ===
 Class                AUROC      F1         Threshold 
