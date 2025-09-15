@@ -41,3 +41,9 @@ Because the original CheXNet test set used in the paper is not publicly availabl
 
 For a stronger comparative study, access to the original test set or a carefully matched external test set would be necessary. Until then, the public NIH dataset provides a useful, consistent benchmark for measuring relative performance and reproducibility.
 
+### Reproducibility / Environment
+
+- This run was performed in the Kaggle environment (import the notebook into a Kaggle kernel). Set the accelerator to GPU (T4) and enable 2x GPUs if available (T4 * 2).
+- Dataset: NIH Chest X-ray (link above).
+- Estimated runtime: approximately 10–11 hours on the Kaggle T4*2 setup for the full training/evaluation run.
+
