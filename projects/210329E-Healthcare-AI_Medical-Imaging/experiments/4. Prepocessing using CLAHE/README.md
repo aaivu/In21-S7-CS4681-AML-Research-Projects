@@ -12,7 +12,7 @@ Sample output
 -------------
 Below is a representative example showing the original image (left) and the CLAHE-processed image (right). If the image does not render (e.g., in plain-text viewers), open `sample clahe output/output.png`.
 
-![Original (left) vs CLAHE (right)](sample clahe output/output.png)
+![Original (left) vs CLAHE (right)](sample%20clahe%20output/output.png)
 
 Re-evaluation using CLAHE-preprocessed images
 ---------------------------------------------
