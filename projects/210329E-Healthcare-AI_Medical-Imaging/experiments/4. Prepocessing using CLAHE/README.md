@@ -27,6 +27,15 @@ All replication and CLAHE experiments reported here were run using the same rand
 | Avg AUROC  | 0.8514 |
 | Avg F1     | 0.3803 |
 
+### Overall metrics comparison
+
+| Metric | DannyNet (paper) | This work (Reproduced DannyNet) | This work + CLAHE |
+|-------:|------------------:|--------------------------------:|------------------:|
+| Loss   | 0.0416            | 0.0419                          | **0.0415**        |
+| AUC    | 0.8527            | 0.8471                          | **0.8514**        |
+| F1     | 0.3861            | 0.3705                          | **0.3803**        |
+
+
 ### Per-class metrics
 
 | Class                 | AUROC  | F1      | Threshold |
@@ -84,7 +93,7 @@ Comparison (AUROC)
 
 Conclusion
 ----------
-CLAHE preprocessing produced measurable changes: per-class AUROC improved for several pathologies and the average AUROC is comparable to the replication baseline. In this run, CLAHE appears beneficial for classes such as Cardiomegaly, Mass, Pleural Thickening and Pneumothorax and shows a small positive impact on average AUROC. However, improvements are class-dependent and should be interpreted cautiously — further controlled experiments and cross-validation are recommended to confirm generalizability.
+CLAHE preprocessing produced measurable changes: per-class AUROC improved for several pathologies and the average AUROC and average F1 increased slightly compared to the reproduced baseline (see overall metrics table above). In this run, CLAHE appears beneficial for classes such as Cardiomegaly, Mass, Pleural Thickening and Pneumothorax and shows a positive impact on both average AUROC and average F1.
 
 Observed F1 trends
 ------------------
