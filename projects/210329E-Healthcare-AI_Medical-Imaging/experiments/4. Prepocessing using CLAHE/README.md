@@ -115,4 +115,8 @@ I intentionally did not crop or segment images to the lung parenchyma (i.e. appl
 
 For these reasons, I kept the whole thoracic image so the model can learn from both intra- and extra-pulmonary cues
 
+Research note
+-------------
+Based on these results (lower loss, higher average AUROC and higher average F1), I will use the CLAHE-enhanced DannyNet replication as the default baseline for subsequent experiments and comparisons in this project.
+
 
