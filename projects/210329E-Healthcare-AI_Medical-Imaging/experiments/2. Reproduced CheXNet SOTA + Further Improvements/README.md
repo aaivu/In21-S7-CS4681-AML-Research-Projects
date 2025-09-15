@@ -46,6 +46,12 @@ This table summarizes the per-class AUROC scores comparing the original CheXNet 
 * The test set used is from the [NIH Chest X-ray Dataset on Kaggle](https://www.kaggle.com/datasets/nih-chest-xrays/data) since the original CheXNet test set is not publicly available.
 * The improvements focus on better data augmentation and handling class imbalance with focal loss, leading to slightly improved AUROC for several classes.
 
+### Reproducibility / Environment
+
+- This run was performed in the Kaggle environment (import the notebook into a Kaggle kernel). Set the accelerator to GPU (T4) and enable 2x GPUs if available (T4 * 2).
+- Dataset: NIH Chest X-ray (link above).
+- Estimated runtime: approximately 10–12 hours on the Kaggle T4*2 setup for the full training/evaluation run.
+
 ## Summary
 
 - **Reproduced CheXNet (Original) — Mean AUC (14 classes): 0.8066**
