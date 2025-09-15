@@ -65,9 +65,30 @@ Comparison (AUROC)
 | Pneumonia           | 0.740             | 0.7209                 | 0.7229           |
 | Pneumothorax        | 0.875             | 0.8831                 | 0.8902           |
 
+| Disease              | DannyNet (paper) | Reproduced DannyNet (F1) | Reproduced + CLAHE (F1) |
+|---------------------:|-----------------:|-------------------------:|------------------------:|
+| Atelectasis          | **0.421**        | 0.4119                  | 0.4116                 |
+| Cardiomegaly         | **0.532**        | 0.5149                  | 0.4793                 |
+| Consolidation        | 0.226            | 0.2222                  | **0.2436**             |
+| Edema                | 0.286            | 0.2460                  | **0.3019**             |
+| Effusion             | **0.623**        | 0.5997                  | 0.6048                 |
+| Emphysema            | 0.516            | 0.5082                  | **0.5526**             |
+| Fibrosis             | **0.127**        | 0.1261                  | 0.1250                 |
+| Hernia               | **0.750**        | 0.6667                  | 0.7059                 |
+| Infiltration         | 0.395            | 0.4018                  | **0.4073**             |
+| Mass                 | 0.477            | **0.5000**              | 0.4762                 |
+| Nodule               | **0.352**        | 0.3382                  | 0.3463                 |
+| Pleural Thickening   | 0.258            | 0.2453                  | **0.2583**             |
+| Pneumonia            | **0.082**        | 0.0640                  | 0.0678                 |
+
+
 Conclusion
 ----------
 CLAHE preprocessing produced measurable changes: per-class AUROC improved for several pathologies and the average AUROC is comparable to the replication baseline. In this run, CLAHE appears beneficial for classes such as Cardiomegaly, Mass, Pleural Thickening and Pneumothorax and shows a small positive impact on average AUROC. However, improvements are class-dependent and should be interpreted cautiously — further controlled experiments and cross-validation are recommended to confirm generalizability.
+
+Observed F1 trends
+------------------
+Comparing per-class F1s across columns shows that CLAHE improved F1 relative to the reproduced baseline for 5 out of 13 classes: Consolidation, Edema, Emphysema, Infiltration, and Pleural Thickening. The reproduced baseline alone is better than CLAHE for Mass, while the original paper reports higher F1s for 7 classes (Atelectasis, Cardiomegaly, Effusion, Fibrosis, Hernia, Nodule, Pneumonia). Overall, CLAHE produces class-dependent gains — helpful for several pathologies but not uniformly better.
 
 Reproducibility note
 --------------------
