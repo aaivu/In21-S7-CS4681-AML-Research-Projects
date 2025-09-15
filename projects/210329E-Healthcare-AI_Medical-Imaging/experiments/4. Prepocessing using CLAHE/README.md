@@ -27,23 +27,24 @@ All replication and CLAHE experiments reported here were run using the same rand
 | Avg AUROC  | 0.8514 |
 | Avg F1     | 0.3803 |
 
-=== Per-Class Metrics ===
-Class                AUROC      F1         Threshold 
--------------------------------------------------------
-Atelectasis          0.8146     0.4116     0.3883    
-Cardiomegaly         0.9325     0.4793     0.3564    
-Consolidation        0.7871     0.2436     0.3169    
-Edema                0.8841     0.3019     0.3974    
-Effusion             0.9015     0.6048     0.4216    
-Emphysema            0.9656     0.5526     0.3198    
-Fibrosis             0.8207     0.1250     0.3314    
-Hernia               0.9936     0.7059     0.7221    
-Infiltration         0.7044     0.4073     0.3760    
-Mass                 0.9122     0.4762     0.4317    
-Nodule               0.7780     0.3463     0.3452    
-Pleural_Thickening   0.8124     0.2583     0.2924    
-Pneumonia            0.7229     0.0678     0.2317    
-Pneumothorax         0.8902     0.3439     0.2913    
+### Per-class metrics
+
+| Class                 | AUROC  | F1      | Threshold |
+|-----------------------|:------:|:-------:|:---------:|
+| Atelectasis           | 0.8146 | 0.4116  | 0.3883    |
+| Cardiomegaly          | 0.9325 | 0.4793  | 0.3564    |
+| Consolidation         | 0.7871 | 0.2436  | 0.3169    |
+| Edema                 | 0.8841 | 0.3019  | 0.3974    |
+| Effusion              | 0.9015 | 0.6048  | 0.4216    |
+| Emphysema             | 0.9656 | 0.5526  | 0.3198    |
+| Fibrosis              | 0.8207 | 0.1250  | 0.3314    |
+| Hernia                | 0.9936 | 0.7059  | 0.7221    |
+| Infiltration          | 0.7044 | 0.4073  | 0.3760    |
+| Mass                  | 0.9122 | 0.4762  | 0.4317    |
+| Nodule                | 0.7780 | 0.3463  | 0.3452    |
+| Pleural Thickening    | 0.8124 | 0.2583  | 0.2924    |
+| Pneumonia             | 0.7229 | 0.0678  | 0.2317    |
+| Pneumothorax          | 0.8902 | 0.3439  | 0.2913    |
 
 Comparison (AUROC)
 -------------------
