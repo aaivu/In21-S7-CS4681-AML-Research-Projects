@@ -2,11 +2,11 @@
 
 **Student:** 210523T
 **Research Area:** Multimodal AI:Audio-Visual-Text
-**Date:** 2025-09-01
+**Date:** 2025-09-16
 
 ## Abstract
 
-The exponential growth of multimedia data demands AI systems that can process and reason across modalities such as audio, visual, and text. Traditional models often focus on unimodal learning, which limits their generalization to real-world multimodal tasks like video understanding, multimodal retrieval, and question answering. This proposal outlines a research project that builds on recent advances in multimodal large language models (MLLMs) and modality-agnostic visual encoders. By integrating Omnivore, a unified transformer for vision, with Qwen2.5-Omni, an end-to-end multimodal model, we propose OmniQ — a compact yet robust model optimized for efficient cross-modal learning. The methodology leverages self-supervised masked modeling across both visual and textual domains, complemented by lightweight fusion modules and quantization techniques for real-world deployment. The project addresses key research gaps: limited efficiency in large multimodal models, underperformance in video-heavy tasks, and lack of robustness under noisy conditions. Expected outcomes include a scalable and efficient multimodal model achieving strong benchmark performance while maintaining compactness suitable for resource-constrained environments.
+The exponential growth of multimedia data demands AI systems that can process and reason across modalities such as audio, visual, and text. Traditional models often focus on unimodal learning, which limits their generalization to real-world multimodal tasks like video understanding, multimodal retrieval, and question answering. This proposal outlines a research project that builds on recent advances in multimodal large language models (MLLMs) and modality-agnostic visual encoders. By integrating Omnivore, a unified transformer for vision, with Qwen2.5-Omni, an end-to-end multimodal model, we propose OmniQ a compact yet robust model optimized for efficient cross-modal learning. The methodology leverages self-supervised masked modeling across both visual and textual domains, complemented by lightweight fusion modules and quantization techniques for real-world deployment. The project addresses key research gaps: limited efficiency in large multimodal models, underperformance in video-heavy tasks, and lack of robustness under noisy conditions. Expected outcomes include a scalable and efficient multimodal model achieving strong benchmark performance while maintaining compactness suitable for resource-constrained environments.
 
 ## 1. Introduction
 
