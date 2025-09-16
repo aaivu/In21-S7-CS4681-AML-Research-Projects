@@ -2,7 +2,15 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
-from typing import Tuple
+from typing import Tuple, Dict, List
+
+# Import for Integrated Gradients
+try:
+    from captum.attr import IntegratedGradients
+except ImportError:
+    print("Warning: captum is not installed. Feature attribution will not be available.")
+    print("Please install it using: pip install captum")
+    IntegratedGradients = None
 
 class moving_avg(nn.Module):
     """
@@ -175,3 +183,75 @@ class Model(nn.Module):
 
         x = seasonal_output + trend_output
         return x.permute(0,2,1) # to [Batch, Output length, Channel]
+
+    def feature_attribution(self, x_batch: torch.Tensor, y_batch: torch.Tensor, feature_names: List[str], target_feature_idx: int = 7) -> Dict:
+        """
+        Performs feature attribution analysis using Integrated Gradients and Permutation Importance.
+
+        Args:
+            x_batch (torch.Tensor): Input batch of shape [Batch, Seq_len, Channel].
+            y_batch (torch.Tensor): True values batch of shape [Batch, Pred_len, Channel].
+            feature_names (List[str]): List of feature names.
+            target_feature_idx (int): Index of the target feature to explain ('OT').
+
+        Returns:
+            Dict: A dictionary containing attribution scores for each method.
+        """
+        self.eval()  # Ensure the model is in evaluation mode
+        
+        results = {
+            'integrated_gradients': {},
+            'permutation_importance': {}
+        }
+
+        # --- 1. Integrated Gradients ---
+        # Explains a single prediction instance. We'll analyze the first item in the batch.
+        if IntegratedGradients:
+            try:
+                ig = IntegratedGradients(self)
+                # We want to explain the prediction for the target feature at the first prediction step (t=0)
+                # The target is (batch_index, prediction_step, feature_index)
+                target_tuple = (0, target_feature_idx)
+                
+                # Calculate attributions for the first instance in the batch
+                attributions_ig = ig.attribute(x_batch, target=target_tuple, internal_batch_size=x_batch.size(0))
+                
+                # To get a single score per feature, we sum the attributions over the sequence length
+                # This shows the total contribution of each feature over the entire look-back window
+                feature_importance_ig = attributions_ig.sum(dim=1).mean(dim=0).cpu().numpy()
+                
+                results['integrated_gradients'] = {name: score for name, score in zip(feature_names, feature_importance_ig)}
+            except Exception as e:
+                print(f"Warning: Integrated Gradients calculation failed. {e}")
+                results['integrated_gradients'] = {name: 0.0 for name in feature_names}
+        
+        # --- 2. Permutation Importance ---
+        # Measures the drop in performance when a feature is shuffled.
+        try:
+            criterion = nn.MSELoss()
+            baseline_preds = self(x_batch)
+            baseline_loss = criterion(baseline_preds, y_batch)
+            
+            perm_importance_scores = {}
+            for i, name in enumerate(feature_names):
+                original_col = x_batch[:, :, i].clone()
+                
+                # Permute (shuffle) the current feature column
+                perm_indices = torch.randperm(x_batch.size(0))
+                x_batch_perm = x_batch.clone()
+                x_batch_perm[:, :, i] = x_batch_perm[perm_indices, :, i]
+                
+                # Get prediction with the permuted feature and calculate loss
+                perm_preds = self(x_batch_perm)
+                perm_loss = criterion(perm_preds, y_batch)
+                
+                # The importance is the increase in loss
+                importance = (perm_loss - baseline_loss).item()
+                perm_importance_scores[name] = importance
+            
+            results['permutation_importance'] = perm_importance_scores
+        except Exception as e:
+            print(f"Warning: Permutation Importance calculation failed. {e}")
+            results['permutation_importance'] = {name: 0.0 for name in feature_names}
+            
+        return results
