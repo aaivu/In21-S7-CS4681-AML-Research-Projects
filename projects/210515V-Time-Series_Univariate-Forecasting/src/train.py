@@ -7,7 +7,8 @@ from torch import optim
 from torch.utils.data import DataLoader
 
 from data_loader import data_provider
-from models import DLinear
+# The model import will dynamically use the name from the config
+from models import DLinear 
 from utils.tools import EarlyStopping, adjust_learning_rate
 from utils.metrics import metric
 
@@ -29,6 +30,7 @@ class Trainer:
         return device
 
     def _build_model(self):
+        # Dynamically load the model specified in the config
         model = DLinear.Model(self.args).float()
         return model
 
@@ -109,11 +111,13 @@ class Trainer:
 
         _, test_loader = self._get_data(flag='test')
         preds = []
+        inputs = [] # Store inputs for attribution analysis
         self.model.eval()
         with torch.no_grad():
             for i, (batch_x, batch_y, _, _) in enumerate(test_loader):
                 pred, _ = self._process_one_batch(batch_x, batch_y)
                 preds.append(pred.detach().cpu().numpy())
+                inputs.append(batch_x.detach().cpu().numpy())
         
-        return np.concatenate(preds, axis=0)
-
+        # Return both predictions and inputs
+        return np.concatenate(preds, axis=0), np.concatenate(inputs, axis=0)
