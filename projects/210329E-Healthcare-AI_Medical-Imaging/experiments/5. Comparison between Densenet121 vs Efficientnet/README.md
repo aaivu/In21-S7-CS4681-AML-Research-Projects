@@ -48,5 +48,6 @@ Conclusions
 Notes
 -----
 - I kept the random seed fixed at `42` across all experiments to ensure deterministic splits and comparable results.
+- Image-size / preprocessing note: the DenseNet-121 runs used an input image size of `224` (standard for DenseNet), while the EfficientNet-B2 run used `260` for better compatibility with EfficientNet scaling and to match common EfficientNet preprocessing choices. 
 - I attempted an EfficientNet-B3 run as well; training exceeded 12 hours on the Kaggle environment and resulted in a runtime failure before completion. The B3 run is therefore incomplete and not included in the comparison tables above.
 - See `Danneynet_with_efficientnetb2.ipynb` in this folder for the exact code used to train and evaluate EfficientNet-B2.
