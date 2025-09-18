@@ -28,28 +28,25 @@ Reproducibility
 ---------------
 - Same random seed `42` and `25` epochs were used for this run (matching other experiments in this series).
 
-===== TEST RESULTS =====
-Loss      : 0.0419
-Avg AUROC : 0.8480
-Avg F1    : 0.3787
-
 === Per-Class Metrics ===
-Class                AUROC      F1         Threshold 
--------------------------------------------------------
-Atelectasis          0.8138     0.3972     0.3822    
-Cardiomegaly         0.9364     0.4912     0.3991    
-Consolidation        0.7774     0.2374     0.3048    
-Edema                0.8950     0.2706     0.3552    
-Effusion             0.8991     0.6050     0.4112    
-Emphysema            0.9606     0.5325     0.3138    
-Fibrosis             0.8379     0.1491     0.2836    
-Hernia               0.9973     0.7500     0.4902    
-Infiltration         0.7058     0.4007     0.3614    
-Mass                 0.9077     0.4833     0.4356    
-Nodule               0.7648     0.3276     0.4054    
-Pleural_Thickening   0.7932     0.2411     0.3204    
-Pneumonia            0.7054     0.0621     0.2181    
-Pneumothorax         0.8781     0.3539     0.4121   
+
+| Class                | AUROC  | F1     | Threshold |
+|----------------------|:------:|:------:|:---------:|
+| Atelectasis          | 0.8138 | 0.3972 | 0.3822    |
+| Cardiomegaly         | 0.9364 | 0.4912 | 0.3991    |
+| Consolidation        | 0.7774 | 0.2374 | 0.3048    |
+| Edema                | 0.8950 | 0.2706 | 0.3552    |
+| Effusion             | 0.8991 | 0.6050 | 0.4112    |
+| Emphysema            | 0.9606 | 0.5325 | 0.3138    |
+| Fibrosis             | 0.8379 | 0.1491 | 0.2836    |
+| Hernia               | 0.9973 | 0.7500 | 0.4902    |
+| Infiltration         | 0.7058 | 0.4007 | 0.3614    |
+| Mass                 | 0.9077 | 0.4833 | 0.4356    |
+| Nodule               | 0.7648 | 0.3276 | 0.4054    |
+| Pleural_Thickening   | 0.7932 | 0.2411 | 0.3204    |
+| Pneumonia            | 0.7054 | 0.0621 | 0.2181    |
+| Pneumothorax         | 0.8781 | 0.3539 | 0.4121    |
+
 
 Overall comparison
 
