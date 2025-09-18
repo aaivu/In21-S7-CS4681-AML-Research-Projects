@@ -18,29 +18,25 @@ Experiment setup
 - Training budget: `25` epochs, batch size `8`, optimizer `AdamW` (wd=1e-5), image size `224`.
 - Note: the focal-loss integrated baseline referenced here corresponds to the CLAHE DenseNet-121 replication used earlier (labeled "baseline" in experiment-6 README) which used `FocalLoss(alpha=1,gamma=2)`.
 
-===== TEST RESULTS: ZLPR run =====
-Loss      : 1.6268
-Avg AUROC : 0.8462
-Avg F1    : 0.3621
 
 === Per-Class Metrics ===
-Class                AUROC      F1         Threshold 
--------------------------------------------------------
-Atelectasis          0.8030     0.3868     0.2088    
-Cardiomegaly         0.9249     0.4803     0.2823    
-Consolidation        0.7764     0.2227     0.1428    
-Edema                0.8957     0.2734     0.2450    
-Effusion             0.8990     0.6060     0.3433    
-Emphysema            0.9655     0.5301     0.1033    
-Fibrosis             0.8564     0.1455     0.1017    
-Hernia               0.9830     0.6087     0.2337    
-Infiltration         0.6983     0.4155     0.2878    
-Mass                 0.9068     0.4631     0.4138    
-Nodule               0.7671     0.3122     0.2540    
-Pleural_Thickening   0.8015     0.2400     0.0897    
-Pneumonia            0.6817     0.0385     0.1669    
-Pneumothorax         0.8873     0.3463     0.2852    
 
+| Class                | AUROC  | F1     | Threshold |
+|----------------------|:------:|:------:|:---------:|
+| Atelectasis          | 0.8030 | 0.3868 | 0.2088    |
+| Cardiomegaly         | 0.9249 | 0.4803 | 0.2823    |
+| Consolidation        | 0.7764 | 0.2227 | 0.1428    |
+| Edema                | 0.8957 | 0.2734 | 0.2450    |
+| Effusion             | 0.8990 | 0.6060 | 0.3433    |
+| Emphysema            | 0.9655 | 0.5301 | 0.1033    |
+| Fibrosis             | 0.8564 | 0.1455 | 0.1017    |
+| Hernia               | 0.9830 | 0.6087 | 0.2337    |
+| Infiltration         | 0.6983 | 0.4155 | 0.2878    |
+| Mass                 | 0.9068 | 0.4631 | 0.4138    |
+| Nodule               | 0.7671 | 0.3122 | 0.2540    |
+| Pleural_Thickening   | 0.8015 | 0.2400 | 0.0897    |
+| Pneumonia            | 0.6817 | 0.0385 | 0.1669    |
+| Pneumothorax         | 0.8873 | 0.3463 | 0.2852    |
 
 Comparison tables (FocalLoss-integrated baseline vs ZLPR)
 ------------------------------------------------------
