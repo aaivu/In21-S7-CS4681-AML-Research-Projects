@@ -24,23 +24,6 @@ Overall metrics comparison
 | Avg F1    | **0.3803**                       | 0.3676          | 0.3774          |
 
 
-| Class                | DenseNet AUROC | EffNet AUROC |
-|----------------------|:--------------:|:------------:|
-| Atelectasis          | 0.8146         | 0.8168       |
-| Cardiomegaly         | 0.9325         | 0.9259       |
-| Consolidation        | 0.7871         | 0.7799       |
-| Edema                | 0.8841         | 0.9064       |
-| Effusion             | 0.9015         | 0.9032       |
-| Emphysema            | 0.9656         | 0.9612       |
-| Fibrosis             | 0.8207         | 0.8177       |
-| Hernia               | 0.9936         | 0.9733       |
-| Infiltration         | 0.7044         | 0.7093       |
-| Mass                 | 0.9122         | 0.8974       |
-| Nodule               | 0.7780         | 0.7848       |
-| Pleural_Thickening   | 0.8124         | 0.7845       |
-| Pneumonia            | 0.7229         | 0.7338       |
-| Pneumothorax         | 0.8902         | 0.8808       |
-
 Per-class comparison (DenseNet-121 CLAHE replication vs EfficientNet-B2 vs EfficientNet-B3)
 ------------------------------------------------------------------------------------------
 | Class                | DenseNet AUROC | EffNet-B2 AUROC | EffNet-B3 AUROC |
