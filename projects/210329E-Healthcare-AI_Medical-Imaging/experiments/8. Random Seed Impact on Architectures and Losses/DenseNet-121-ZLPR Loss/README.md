@@ -56,7 +56,3 @@ This experiment evaluates the effect of different random seeds on the performanc
 
 **Summary:**
 Seed 12 achieves the highest AUROC for Fibrosis, Hernia, Nodule, and Pneumonia. Seed 22 performs best for Cardiomegaly, Emphysema, Pleural Thickening, and Pneumothorax. Seed 32 yields the top AUROC for Atelectasis, Consolidation, Effusion, and Infiltration. Seed 42 is best for Edema and Mass. This highlights that while all seeds perform robustly, certain seeds may offer advantages for specific disease classes.
-
-- The CLAHE-enhanced DenseNet-121 with ZLPR Loss achieves high and stable AUROC across all random seeds, with only minor variation in per-class and overall metrics.
-- Seed 12 achieves the highest overall AUROC, but all seeds perform strongly, demonstrating the robustness of this configuration.
-- This model serves as a strong baseline for further experiments and comparisons with other loss functions or architectures.
