@@ -3,3 +3,7 @@ en-it
 en-si 
 en-zh 
 en-es
+en-ru 
+en-ko
+en-ja 
+en-pt
