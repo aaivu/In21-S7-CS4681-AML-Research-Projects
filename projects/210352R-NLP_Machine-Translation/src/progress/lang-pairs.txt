@@ -7,3 +7,5 @@ en-ru
 en-ko
 en-ja 
 en-pt
+en-tr 
+en-sv 
