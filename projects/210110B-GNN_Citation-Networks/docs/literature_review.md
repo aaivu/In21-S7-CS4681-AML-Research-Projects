@@ -119,5 +119,3 @@ Literature shows a clear progression: GCN/GAT established GNN baselines; R-GCN a
 8. Dong, Y., Chawla, N., & Swami, A. (2017). metapath2vec: Scalable Representation Learning for Heterogeneous Networks. *KDD*.  
 9. Li, G., et al. (2019). DeepGCNs: Can GCNs Go as Deep as CNNs? *ICCV*.  
 10. Vaswani, A., et al. (2017). Attention Is All You Need. *NeurIPS*.  
-
-*(Extend to 15–20 refs by adding works on OGB, heterogeneous GNN benchmarks, label noise in graphs, and uncertainty modeling in GNNs.)*
