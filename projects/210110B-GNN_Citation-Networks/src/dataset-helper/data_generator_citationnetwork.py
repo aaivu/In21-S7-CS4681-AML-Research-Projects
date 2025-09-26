@@ -103,11 +103,6 @@ class CitationNetwork(object):
         if os.path.exists(ap_dst_path):
             ap_graph = Graph.load(ap_dst_path, mmap_mode='r+')
             self.graph.append(ap_graph)
-
-        # If no graphs loaded, create dummy graphs
-        if len(self.graph) == 0:
-            log.warning("No graphs found, creating dummy graphs")
-            self._create_dummy_graphs()
             
         log.info(f"Loaded {len(self.graph)} graphs")
         
@@ -131,8 +126,7 @@ class CitationNetwork(object):
         )
         return extended_graph
         
-    def _create_dummy_graphs(self):
-        """Create dummy graphs for testing"""
+    def _create_graphs(self):
         # Create a simple chain graph
         edges = []
         for i in range(min(1000, self.total_nodes - 1)):
@@ -142,13 +136,13 @@ class CitationNetwork(object):
         edges = np.array(edges, dtype=np.int64)
         edge_types = np.zeros(len(edges), dtype=np.int32)
         
-        dummy_graph = Graph(
+        graph = Graph(
             edges=edges,
             num_nodes=self.total_nodes,
             edge_feat={'edge_type': edge_types}
         )
         
-        self.graph = [dummy_graph]
+        self.graph = [graph]
     
     @property
     def train_examples(self):
@@ -334,7 +328,6 @@ class DataGenerator(BaseDataGenerator):
         sub_label_index = graph_kernel.map_nodes(label_idx, from_reindex)
         sub_label_y = self.dataset.y[label_idx]
         
-        # Create dummy position encoding (since we don't have year info)
         pos = np.random.randint(0, 50, len(neigh_nodes))
         
         return graph_list, neigh_nodes, y, sub_label_y, sub_label_index, pos

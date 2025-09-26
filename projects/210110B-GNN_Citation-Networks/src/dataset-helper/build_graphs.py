@@ -53,12 +53,6 @@ class CitationGraphBuilder:
         for cite_idx, cited_idx in tqdm(self.citation_edges, desc="Processing citations"):
             if cite_idx in paper_to_id and cited_idx in paper_to_id:
                 valid_edges.append([paper_to_id[cite_idx], paper_to_id[cited_idx]])
-                
-        if len(valid_edges) == 0:
-            logger.warning("No valid citation edges found, creating dummy edges")
-            # Create some dummy edges for testing
-            num_papers = len(self.paper_indices)
-            valid_edges = [[i, (i+1) % num_papers] for i in range(min(1000, num_papers-1))]
         
         edges = np.array(valid_edges, dtype=np.int64)
         
