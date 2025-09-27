@@ -1,7 +1,7 @@
 import random
 
 class AgreementReplayBuffer:
-    def _init_(self, capacity:int):
+    def __init__(self, capacity:int):
         self.capacity = int(capacity)
         self.data = [None]*self.capacity
         self.ptr = 0

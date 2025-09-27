@@ -9,8 +9,8 @@ def fanin_init(m):
         nn.init.uniform_(m.bias, -bound, +bound)
 
 class MLP(nn.Module):
-    def _init_(self, in_dim, out_dim, hidden=(256, 256), activation=nn.ReLU):
-        super()._init_()
+    def __init__(self, in_dim, out_dim, hidden=(256, 256), activation=nn.ReLU):
+        super().__init__()
         layers = []
         last = in_dim
         for h in hidden:
@@ -24,8 +24,8 @@ class MLP(nn.Module):
         return self.net(x)
 
 class Actor(nn.Module):
-    def _init_(self, obs_dim, act_dim, act_limit, hidden=(256, 256)):
-        super()._init_()
+    def __init__(self, obs_dim, act_dim, act_limit, hidden=(256, 256)):
+        super().__init__()
         self.mu = MLP(obs_dim, act_dim, hidden)
         self.act_limit = act_limit
 
@@ -33,8 +33,8 @@ class Actor(nn.Module):
         return torch.tanh(self.mu(obs)) * self.act_limit
 
 class Critic(nn.Module):
-    def _init_(self, obs_dim, act_dim, hidden=(256, 256)):
-        super()._init_()
+    def __init__(self, obs_dim, act_dim, hidden=(256, 256)):
+        super().__init__()
         self.q = MLP(obs_dim + act_dim, 1, hidden)
 
     def forward(self, obs, act):

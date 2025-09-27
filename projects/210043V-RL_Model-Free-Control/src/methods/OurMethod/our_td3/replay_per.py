@@ -2,7 +2,7 @@ import numpy as np
 import random
 
 class SumTree:
-    def _init_(self, capacity):
+    def __init__(self, capacity):
         self.capacity = int(capacity)
         self.tree = np.zeros(2 * self.capacity, dtype=np.float32)
         self.data = np.empty(self.capacity, dtype=object)
@@ -47,7 +47,7 @@ class SumTree:
         return (idx, self.tree[idx], self.data[data_idx], data_idx)
 
 class PrioritizedReplayBuffer:
-    def _init_(self, capacity, alpha=0.6, beta_start=0.4, beta_frames=1000000, eps=1e-6):
+    def __init__(self, capacity, alpha=0.6, beta_start=0.4, beta_frames=1000000, eps=1e-6):
         self.tree = SumTree(capacity)
         self.alpha = alpha
         self.beta_start = beta_start

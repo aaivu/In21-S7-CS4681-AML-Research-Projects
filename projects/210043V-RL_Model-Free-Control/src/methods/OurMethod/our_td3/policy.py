@@ -25,7 +25,7 @@ class OurTD3Config:
     grad_clip: float = 10.0
 
 class OurTD3:
-    def _init_(self, cfg: OurTD3Config, device="cpu"):
+    def __init__(self, cfg: OurTD3Config, device="cpu"):
         self.cfg = cfg
         self.device = torch.device(device)
 
