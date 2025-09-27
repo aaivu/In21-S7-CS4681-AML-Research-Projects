@@ -20,5 +20,8 @@ TEMPERATURE = 0.7
 MAX_TOKENS = 1024
 CODE_EXEC_ENABLED = True
 
+SEED_VALUES = [42, 123, 999]
+TEMPERATURE_VALUES = [0.5, 0.7, 0.9]
+
 if not GROQ_API_KEY:
     raise ValueError("Missing GROQ_API_KEY in .env file")
