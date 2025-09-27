@@ -3,13 +3,14 @@
 ## Student Information
 
 - **Index Number:** 210574A
-- **Research Area:** AI Evaluation:Reasoning Evaluation
+- **Research Area:** Financial AI:Algorithmic Trading
 - **GitHub Username:** @Pasindu599
 - **Email:** pasindus.21@cse.mrt.ac.lk
 
 ## Project Structure
+
 ```
-210574A-AI-Evaluation:Reasoning-Evaluation/
+210574A-Financial-AI:Algorithmic-Trading/
 ├── README.md                    # This file
 ├── docs/
 │   ├── research_proposal.md     # Your research proposal (Required)
@@ -34,13 +35,14 @@
 ## Milestones
 
 - [ ] **Week 4:** Research Proposal Submission
-- [ ] **Week 5:** Literature Review Completion  
+- [ ] **Week 5:** Literature Review Completion
 - [ ] **Week 8:** Methodology Implementation
 - [ ] **Week 12:** Final Evaluation
 
 ## Progress Tracking
 
 Create GitHub Issues with the following labels for tracking:
+
 - `student-210574A` (automatically added)
 - `literature-review`, `implementation`, `evaluation`, etc.
 - Tag supervisors (@supervisor) for feedback
