@@ -2,12 +2,12 @@
 
 **Purpose.** This document describes how to add and prepare the two fMoW-derived datasets used by this project:
 
-- **Temporal** (`fMoW-rgb` / `fMoW-full`) — multi-temporal imagery (large).
-- **Sentinel** (`fmow-sentinel`) — Sentinel-series multi-band tiles prepared for fMoW use.
+- **Temporal** (`fMoW-rgb` / `fMoW-full`) - multi-temporal imagery (large).
+- **Sentinel** (`fmow-sentinel`) - Sentinel-series multi-band tiles prepared for fMoW use.
 
 This README gives precise commands, recommended workflows, and the expected final directory layout so you can register these datasets in the training/inference pipeline immediately.
 
-> **Opinion:** If you do **not** require multispectral bands for your experiments, use **`fmow-rgb`**. It is ~200 GB vs ~3.5 TB for the full multispectral collection — the time and cost saved are substantial for most development and prototyping workflows.
+> For Temporal data, if you do **not** require multispectral bands for your experiments, use **`fmow-rgb`**. It is ~200 GB vs ~3.5 TB for the full multispectral collection — the time and cost saved are substantial for most development and prototyping workflows.
 
 ---
 
@@ -37,8 +37,8 @@ This README gives precise commands, recommended workflows, and the expected fina
 
 Two fMoW variants are commonly used:
 
-- **fMoW-full** — TIFFs, multi-band (4-band and 8-band multispectral). Very large (~**3.5 TB**). Use only when you need multispectral information for model design or ablation.
-- **fMoW-rgb** — JPEGs where multispectral imagery has been converted to RGB. Much smaller (~**200 GB**), perfect for fast iteration.
+- **fMoW-full** - TIFFs, multi-band (4-band and 8-band multispectral). Very large (~**3.5 TB**). Use only when you need multispectral information for model design or ablation.
+- **fMoW-rgb** - JPEGs where multispectral imagery has been converted to RGB. Much smaller (~**200 GB**), perfect for fast iteration.
 
 Both are compatible with the pipeline as delivered. Choose `fmow-rgb` for most work; choose `fmow-full` when multispectral fidelity is required.
 
@@ -46,9 +46,9 @@ Both are compatible with the pipeline as delivered. Choose `fmow-rgb` for most w
 
 # Temporal Dataset (`fMoW`)
 
-## Where to get it
+## Where to Get
 
-Public S3 listing (two flavors):
+Public S3 listing:
 ```bash
 s3://spacenet-dataset/Hosted-Datasets/fmow/
 ```
@@ -57,7 +57,7 @@ Inside that prefix you will find:
 - `fmow-rgb/`  (≈ 200 GB, JPEG)
 - `fmow-full/` (≈ 3.5 TB, TIFF multispectral)
 
-## Download commands (examples)
+## Download Commands
 
 Download **fmow-rgb** (recommended for most users):
 ```bash
@@ -74,7 +74,7 @@ aws s3 sync s3://spacenet-dataset/Hosted-Datasets/fmow/fmow-full ./fmow-full
 
 Strong recommendation: use `aws s3 sync` instead of `cp --recursive` for large datasets. `sync` is resumable and will not repeatedly re-download files if interrupted.
 
-## Extract ground truth
+## Extract Ground Truth
 
 In the dataset root there is a `groundtruth.tar.bz2`. This file contains ground-truth metadata and will be merged with the image metadata.
 ```bash
@@ -88,7 +88,7 @@ tar -xvjf groundtruth.tar.bz2
 
 After extraction the ground-truth files will be present and can be merged with the image metadata (the supplied files already perform that merge in this repo's helper scripts).
 
-## Rename dataset folder
+## Rename Dataset Folder
 
 Standardize the dataset directory name so the pipeline expects the same path:
 ```bash
@@ -96,7 +96,7 @@ cd ..
 mv fmow-rgb temporal     # or: mv fmow-full temporal
 ```
 
-## Metadata files & placement
+## Metadata Files & Placement
 
 Download the CSV metadata files (provided on the Google Drive link you were given) and place them under the `temporal` directory:
 - `train_62classes.csv`
@@ -104,10 +104,10 @@ Download the CSV metadata files (provided on the Google Drive link you were give
 
 Options to obtain them:
 1. Manual (recommended for most users)
-   - Open the Drive folder: `https://drive.google.com/drive/folders/1-xSXNpq0xJ4z3F7BPzEcZ04eZ7LqPbYD`
+   - Open the Drive folder: [https://drive.google.com/drive/folders/1-xSXNpq0xJ4z3F7BPzEcZ04eZ7LqPbYD](https://drive.google.com/drive/folders/1-xSXNpq0xJ4z3F7BPzEcZ04eZ7LqPbYD)
    - Download `train_62classes.csv` and `val_62classes.csv` via browser, then copy them to `temporal/`.
 
-2. Automated (if you have file IDs) — using `gdown`:
+2. Automated (if you have file IDs) using `gdown`:
 ```bash
 # Example (replace FILE_ID with actual file id from Drive)
 gdown --id <FILE_ID> -O temporal/train_62classes.csv
@@ -130,7 +130,7 @@ python subsample.py \
 - `--remove_ratio` = fraction of examples to remove (0.8 removes 80% of samples); set to desired reduction.
 - Repeat for validation CSV similarly.
 
-## Expected directory layout (Temporal)
+## Expected Directory Layout (Temporal)
 
 After following the above steps your `/data` directory should look like:
 ```bash
@@ -154,14 +154,15 @@ Once this structure is in place you can register `temporal` as the dataset in th
 
 # Sentinel Dataset (`fMoW-sentinel`)
 
-## Where to get it
+## Where to Get
 
 Public persistent URL:
 ```bash
 https://purl.stanford.edu/vg497cb6002
 ```
+- This is a multispectral image dataset containing `.TIF` files worth ~78 GB.
 
-## Download & extract (example)
+## Download & Extract
 
 Create the directory and download the archive. Next, download the files using `wget` and then extract:
 ```bash
@@ -178,7 +179,7 @@ wget https://stacks.stanford.edu/file/vg497cb6002/val.csv
 tar -xzvf fmow-sentinel.tar.gz
 ```
 
-## Preprocess metadata
+## Preprocess Metadata
 
 The Sentinel metadata CSVs in the archive do **not** contain individual per-image file paths. Use the provided `preprocess.py` to add the `image_path` column (the script concatenates `category`, `folder`, and `image id` to create a full relative path).
 ```bash
@@ -203,7 +204,7 @@ python subsample.py \
 - `--remove_ratio` = fraction of examples to remove (0.8 removes 80% of samples); set to desired reduction.
 - Repeat for validation CSV similarly.
 
-## Expected directory layout (Sentinel)
+## Expected Directory Layout (Sentinel)
 
 ```bash
 /data

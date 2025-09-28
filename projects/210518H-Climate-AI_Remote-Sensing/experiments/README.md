@@ -1,12 +1,12 @@
 # Experiments Initialization
 
 This document describes how to organize, prepare, and use the `experiments` folder.  
-All model runs — including **training from scratch** and **finetuning runs** — will be stored here in a hierarchical manner.  
+All model runs including **training from scratch** and **finetuning runs** will be stored here in a hierarchical manner.  
 Results, logs, and checkpoints will be kept under model-specific directories for reproducibility and clarity.
 
 ---
 
-## Folder setup
+## Folder Setup
 
 Create two subdirectories under `experiments` to separate runs for the two datasets:
 
@@ -29,7 +29,7 @@ mkdir -p sentinel
 
 ---
 
-## Temporal - pretrained weights
+## Temporal - Pretrained Weights
 
 Model weights are hosted on Zenodo: [https://zenodo.org/records/7369797](https://zenodo.org/records/7369797)
 
@@ -52,7 +52,7 @@ wget https://zenodo.org/records/7369797/files/finetune_fmow_temporal.pth
 
 ---
 
-## Sentinel - pretrained weights
+## Sentinel - Pretrained Weights
 
 Model weights are hosted on Zenodo: [https://zenodo.org/records/7338613](https://zenodo.org/records/7338613)
 
@@ -78,7 +78,7 @@ If you have access to **larger compute**, you may download the **ViT-Large** wei
 
 ---
 
-## Final expected structure
+## Final Expected Structure
 
 After downloading the model weights, the `experiments` directory should look like:
 ```bash

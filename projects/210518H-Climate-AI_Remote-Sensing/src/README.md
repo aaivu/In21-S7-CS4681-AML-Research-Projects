@@ -2,7 +2,7 @@
 
 This document explains how to prepare the environment and run training / finetuning / evaluation for the models. It is intentionally concise and practical, follow the steps exactly and adjust the runtime flags to match your hardware.
 
-**Key points (short):**
+**Key points:**
 - Create and activate the conda environment `sat_env` (instructions below).  
 - Configure `/data` and `/experiments` according to their README files before running anything.  
 - Two model families are supported: `temporal` (time sequences) and `sentinel` (multi-spectral).  
@@ -35,7 +35,7 @@ Before running any model:
 
 ---
 
-## 3. Models overview
+## 3. Models Overview
 
 - `temporal` - integrates time sequences for the same geolocations (improves temporal dependency learning).
 - `sentinel` - uses multi-spectral bands (beyond RGB) to improve spatial/ spectral representations.
@@ -53,7 +53,7 @@ Available **finetune** backbone models:
 
 ---
 
-## 4. How to run
+## 4. How to Run
 
 ### 4.1 Temporal Pretraining
 
@@ -101,7 +101,7 @@ python -m torch.distributed.launch \
 
 **Recommendation:** The provided example is tuned for a single RTX 4070 Ti Super (16GB). Adjust `batch_size`, `accum_iter`, `num_workers`, and `epochs` to match your memory and time budget.
 
-**W&B:** To use Weights & Biases, `wandb login` after activating `sat_env` and append `--wandb <YOUR_PROJECT_NAME>` to the CLI.
+**W&B:** To use Weights & Biases, run `wandb login` after activating `sat_env` and configure **W&B** into the project. Then append `--wandb <YOUR_PROJECT_NAME>` to the CLI.
 
 ---
 
@@ -250,13 +250,13 @@ python -m torch.distributed.launch \
 
 ---
 
-## 5. Practical advice & common configuration points
+## 5. Additional Notes
 
 - **Compute tradeoffs:** Increase `accum_iter` to simulate a larger batch size when GPU memory is limited. Increase `num_workers` to accelerate loading (but watch for system RAM pressure).
 - **Multi-GPU / cluster:** Set `--nproc_per_node` to GPUs-per-node and `--nnodes` to number of nodes, and ensure `MASTER_ADDR` / `MASTER_PORT` are available or controlled by the cluster launcher.
 - **W&B integration:** `wandb login` after activating `sat_env`, then add `--wandb <PROJECT>` to the run command.
 - **Logging & checkpoints:** Always set `--output_dir` and `--log_dir` to subfolders under `experiments/<dataset>/<run_name>`.
-- **Use pretrained SatMAE weights** for finetuning when compute or time is limited — this yields much faster convergence and strong baselines.
+- **Use pretrained SatMAE weights** for finetuning when compute or time is limited, this yields much faster convergence and strong baselines.
 - **Pretrain and Finetune models:** You must use the same model configurations used for pretraining during finetune (Pretrain: `mae_vit_large_patch16` → Finetune: `vit_large_patch16`).
 - **`vanilla` runs:** To run the baseline (no temporal grouping or multi-spectral grouping), set `--model_type vanilla`.
 
