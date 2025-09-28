@@ -59,8 +59,6 @@ Inside that prefix you will find:
 
 ## Download commands (examples)
 
-> **Prerequisite:** AWS CLI configured. If the bucket is public and you prefer anonymous access, append `--no-sign-request` (AWS CLI v2) or configure a profile.
-
 Download **fmow-rgb** (recommended for most users):
 ```bash
 # preferred: sync (resumable, safe)
@@ -202,6 +200,7 @@ python subsample.py \
   --remove_ratio 0.80 \
   --seed 42
 ```
+- `--remove_ratio` = fraction of examples to remove (0.8 removes 80% of samples); set to desired reduction.
 - Repeat for validation CSV similarly.
 
 ## Expected directory layout (Sentinel)
@@ -235,9 +234,9 @@ python subsample.py \
 # Acknowledgements & References
 
 - Code & ideas inspired by: **SatMAE** - [https://github.com/sustainlab-group/SatMAE](https://github.com/sustainlab-group/SatMAE)
-- Datasets: Functional Map of the World (fMoW) — [https://github.com/fMoW/dataset](https://github.com/fMoW/dataset)
+- Datasets: Functional Map of the World (fMoW) - [https://github.com/fMoW/dataset](https://github.com/fMoW/dataset)
 - fMoW hosted S3: `s3://spacenet-dataset/Hosted-Datasets/fmow/`
 - Sentinel PURL: [https://purl.stanford.edu/vg497cb6002](https://purl.stanford.edu/vg497cb6002)
-- Metadata Google Drive:[https://drive.google.com/drive/folders/1-xSXNpq0xJ4z3F7BPzEcZ04eZ7LqPbYD](https://drive.google.com/drive/folders/1-xSXNpq0xJ4z3F7BPzEcZ04eZ7LqPbYD)
+- Metadata Google Drive: [https://drive.google.com/drive/folders/1-xSXNpq0xJ4z3F7BPzEcZ04eZ7LqPbYD](https://drive.google.com/drive/folders/1-xSXNpq0xJ4z3F7BPzEcZ04eZ7LqPbYD)
 
 
