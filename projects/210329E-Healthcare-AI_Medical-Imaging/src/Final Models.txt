@@ -1,0 +1,8 @@
+
+**Note on Final Model Weights:**
+Due to the large size of the final model files, please download the folder from the link below and place the entire folder named `Final Models` in this directory:
+
+Download link: https://dms.uom.lk/s/n8bGtHpjtMdRbAw
+
+After downloading, ensure the folder is named `Final Models` and located in:
+`projects/210329E-Healthcare-AI_Medical-Imaging/src/Final Models/`
