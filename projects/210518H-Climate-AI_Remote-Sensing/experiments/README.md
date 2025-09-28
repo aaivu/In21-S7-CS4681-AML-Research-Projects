@@ -35,7 +35,7 @@ Model weights are hosted on Zenodo: [https://zenodo.org/records/7369797](https:/
 
 **Available weights:**
 - Pretrain Temporal, ViT-L, 800 epochs
-- Finetune Temporal, ViT-L, 30 epochs
+- Finetune Temporal, ViT-L, 25 epochs
 - Pretrain Non-Temporal, ViT-L, 800 epochs
 - Finetune Non-Temporal, ViT-L, 30 epochs
 
