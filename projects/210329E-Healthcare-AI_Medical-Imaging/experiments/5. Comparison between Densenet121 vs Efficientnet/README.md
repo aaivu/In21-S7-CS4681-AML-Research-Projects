@@ -1,4 +1,4 @@
-# Comparison: DenseNet-121 (CLAHE) vs EfficientNet-B2
+# Experiment 5 - Comparison: DenseNet-121 (CLAHE) vs EfficientNet-B2
 
 Summary
 -------

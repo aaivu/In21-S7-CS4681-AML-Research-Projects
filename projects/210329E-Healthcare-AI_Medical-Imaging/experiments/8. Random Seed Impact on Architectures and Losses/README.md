@@ -1,5 +1,5 @@
 
-## Ensemble Model Selection Based on Random Seed and Architecture Diversity
+## Experiment 8 - Ensemble Model Selection Based on Random Seed and Architecture Diversity
 
 To maximize the diversity and robustness of the proposed ensemble, I analyzed the impact of random seed variation and model architecture on performance. Models were selected based on their average AUROC scores, per-class performance, and architectural diversity.
 
