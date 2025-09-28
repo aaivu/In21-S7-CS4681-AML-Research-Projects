@@ -73,9 +73,9 @@ python -m torch.distributed.launch \
   --model mae_vit_large_patch16 \
   --model_type temporal \
   --dataset_type temporal \
-  --train_path ../Datasets/temporal/train_62classes.csv \
-  --output_dir ../Experiments/temporal/pretrain \
-  --log_dir ../Experiments/temporal/pretrain \
+  --train_path ../data/temporal/train_62classes.csv \
+  --output_dir ../experiments/temporal/pretrain \
+  --log_dir ../experiments/temporal/pretrain \
   --num_workers 4
 ```
 
@@ -125,11 +125,11 @@ python -m torch.distributed.launch \
   --model vit_large_patch16 \
   --model_type temporal \
   --dataset temporal \
-  --finetune ../Experiments/temporal/pretrain_fmow_temporal.pth \
-  --train_path ../Datasets/temporal/train_62classes_subset.csv \
-  --test_path ../Datasets/temporal/val_62classes_subset.csv \
-  --output_dir ../Experiments/temporal/finetune \
-  --log_dir ../Experiments/temporal/finetune \
+  --finetune ../experiments/temporal/pretrain_fmow_temporal.pth \
+  --train_path ../data/temporal/train_62classes_subset.csv \
+  --test_path ../data/temporal/val_62classes_subset.csv \
+  --output_dir ../experiments/temporal/finetune \
+  --log_dir ../experiments/temporal/finetune \
   --dist_eval \
   --num_workers 4
 ```
@@ -162,11 +162,11 @@ python -m torch.distributed.launch \
   --model vit_base_patch16 \
   --model_type temporal \
   --dataset temporal \
-  --resume ../Experiments/temporal/finetune/checkpoint-X.pth \
-  --train_path ../Datasets/temporal/train_62classes.csv \
-  --test_path ../Datasets/temporal/val_62classes.csv \
-  --output_dir ../Experiments/temporal/evaluation \
-  --log_dir ../Experiments/temporal/evaluation \
+  --resume ../experiments/temporal/finetune/checkpoint-X.pth \
+  --train_path ../data/temporal/train_62classes.csv \
+  --test_path ../data/temporal/val_62classes.csv \
+  --output_dir ../experiments/temporal/evaluation \
+  --log_dir ../experiments/temporal/evaluation \
   --dist_eval \
   --eval \
   --num_workers 4
@@ -198,9 +198,9 @@ python -m torch.distributed.launch \
   --grouped_bands 0 1 2 6 \
   --grouped_bands 3 4 5 7 \
   --grouped_bands 8 9 \
-  --train_path ../Datasets/sentinel/train_subset.csv \
-  --output_dir ../Experiments/sentinel/pretrain \
-  --log_dir ../Experiments/sentinel/pretrain \
+  --train_path ../data/sentinel/train_subset.csv \
+  --output_dir ../experiments/sentinel/pretrain \
+  --log_dir ../experiments/sentinel/pretrain \
   --num_workers 4
 ```
 
@@ -236,11 +236,11 @@ python -m torch.distributed.launch \
   --model_type group_c \
   --dataset_type sentinel \
   --dropped_bands 0 9 10 \
-  --train_path ../Datasets/sentinel/train_subset.csv \
-  --test_path ../Datasets/sentinel/val_subset.csv \
-  --output_dir ../Experiments/sentinel/finetune \
-  --log_dir ../Experiments/sentinel/finetune \
-  --finetune ../Experiments/sentinel/pretrain-vit-base-e199.pth \
+  --train_path ../data/sentinel/train_subset.csv \
+  --test_path ../data/sentinel/val_subset.csv \
+  --output_dir ../experiments/sentinel/finetune \
+  --log_dir ../experiments/sentinel/finetune \
+  --finetune ../experiments/sentinel/pretrain-vit-base-e199.pth \
   --num_workers 4
 ```
 
