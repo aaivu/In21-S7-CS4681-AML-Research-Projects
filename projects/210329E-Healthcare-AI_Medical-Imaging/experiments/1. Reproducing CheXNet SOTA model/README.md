@@ -1,4 +1,4 @@
-# Original Paper Version - CheXNet Reproduction
+# Experiment 1 - Original Paper Version - CheXNet Reproduction
 
 In here, I attempted to reproduce CheXNet as described in the original research paper:  
 

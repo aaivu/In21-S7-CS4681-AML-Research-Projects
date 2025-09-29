@@ -1,4 +1,4 @@
-# Reproducing DannyNet (SOTA) — Notes and Results
+# Experiment 3 - Reproducing DannyNet (SOTA) — Notes and Results
 
 This implementation reproduces the DannyNet method described in the paper:
 
