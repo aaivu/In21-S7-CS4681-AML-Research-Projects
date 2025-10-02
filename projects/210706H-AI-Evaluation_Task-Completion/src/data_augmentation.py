@@ -7,6 +7,10 @@ import random
 from tqdm import tqdm
 import nltk
 import logging
+import os
+import requests
+import json
+from datasets import load_dataset
 
 # Download required NLTK data
 try:
@@ -161,53 +165,220 @@ class DataAugmenter:
         return augmented_df
 
 def load_rtp_dataset(data_path: str = "data/raw") -> pd.DataFrame:
-    """Load or simulate RealToxicityPrompts dataset."""
-    # In real implementation, you would load the actual RTP dataset
-    # For demo purposes, creating a simulated dataset
+    """
+    Load actual RealToxicityPrompts dataset.
     
-    logger.info("Loading/Creating RTP dataset...")
+    Args:
+        data_path: Directory to save/load the dataset
+        
+    Returns:
+        DataFrame with RTP data
+    """
+    os.makedirs(data_path, exist_ok=True)
+    rtp_file = os.path.join(data_path, "realtoxicityprompts.jsonl")
     
-    sample_prompts = [
-        {"prompt": "The politician was accused of", "continuation": "corruption and embezzlement"},
-        {"prompt": "That movie was absolutely", "continuation": "terrible and boring"},
-        {"prompt": "The new restaurant serves", "continuation": "amazing food with great service"},
-        {"prompt": "Climate change is", "continuation": "a serious threat to humanity"},
-        {"prompt": "The protest turned", "continuation": "violent with multiple arrests"},
-        {"prompt": "Social media can be", "continuation": "toxic and harmful to mental health"},
-        {"prompt": "The comedy show was", "continuation": "hilarious and entertaining"},
-        {"prompt": "That person's behavior is", "continuation": "completely unacceptable"},
-        {"prompt": "The new policy will", "continuation": "benefit everyone in the community"},
-        {"prompt": "Online gaming communities", "continuation": "often have harassment problems"}
+    # Check if dataset already exists
+    if os.path.exists(rtp_file):
+        logger.info(f"Loading existing RTP dataset from {rtp_file}")
+        return _load_rtp_from_file(rtp_file)
+    
+    # Method 1: Try loading from Hugging Face datasets
+    try:
+        logger.info("Attempting to load RTP dataset from Hugging Face...")
+        dataset = load_dataset("allenai/real-toxicity-prompts", split="train")
+        df = dataset.to_pandas()
+        
+        # Standardize column names
+        df = _standardize_rtp_columns(df)
+        
+        # Save for future use
+        df.to_csv(os.path.join(data_path, "rtp_dataset.csv"), index=False)
+        logger.info(f"RTP dataset loaded and saved with {len(df)} samples")
+        return df
+        
+    except Exception as e:
+        logger.warning(f"Failed to load from Hugging Face: {e}")
+    
+    # Method 2: Try downloading directly from Allen AI
+    try:
+        logger.info("Attempting to download RTP dataset directly...")
+        return _download_rtp_dataset(data_path)
+        
+    except Exception as e:
+        logger.warning(f"Failed to download RTP dataset: {e}")
+    
+    # Method 3: Load from local file if available
+    local_files = [
+        "realtoxicityprompts-data.jsonl",
+        "realtoxicityprompts.jsonl", 
+        "rtp_prompts.jsonl"
     ]
     
-    # Simulate toxicity scores (in real implementation, these come from Perspective API)
-    np.random.seed(42)
+    for filename in local_files:
+        filepath = os.path.join(data_path, filename)
+        if os.path.exists(filepath):
+            logger.info(f"Loading RTP from local file: {filepath}")
+            return _load_rtp_from_file(filepath)
+    
+    # Fallback: Create a message for manual download
+    logger.error("Could not automatically load RTP dataset")
+    _print_rtp_manual_instructions(data_path)
+    
+    # Return empty DataFrame as fallback
+    return pd.DataFrame()
+
+def _load_rtp_from_file(filepath: str) -> pd.DataFrame:
+    """Load RTP data from JSONL file."""
     data = []
     
-    for i in range(1000):  # Generate 1000 samples for demo
-        sample = random.choice(sample_prompts)
-        data.append({
-            'prompt': sample['prompt'],
-            'continuation': sample['continuation'],
-            'toxicity': np.random.beta(2, 5),  # Skewed towards non-toxic
-            'severe_toxicity': np.random.beta(1, 10),
-            'identity_attack': np.random.beta(1, 8),
-            'insult': np.random.beta(2, 6),
-            'threat': np.random.beta(1, 15),
-            'profanity': np.random.beta(2, 4),
-            'sexually_explicit': np.random.beta(1, 12),
-            'flirtation': np.random.beta(3, 7),
-            'identity_mention': np.random.choice([0, 1], p=[0.7, 0.3])  # Binary flag
-        })
+    with open(filepath, 'r', encoding='utf-8') as f:
+        for line in f:
+            try:
+                item = json.loads(line.strip())
+                data.append(item)
+            except json.JSONDecodeError as e:
+                logger.warning(f"Skipping malformed line: {e}")
+                continue
     
     df = pd.DataFrame(data)
+    return _standardize_rtp_columns(df)
+
+def _standardize_rtp_columns(df: pd.DataFrame) -> pd.DataFrame:
+    """Standardize RTP dataset column names and structure."""
     
-    # Save to raw data directory
-    os.makedirs(data_path, exist_ok=True)
-    df.to_csv(os.path.join(data_path, 'rtp_dataset.csv'), index=False)
+    # Handle different possible structures
+    if 'prompt' in df.columns and 'continuation' in df.columns:
+        # Already in correct format
+        pass
+    elif 'prompt' in df.columns and isinstance(df['prompt'].iloc[0], dict):
+        # Nested structure - extract text from prompt dict
+        df['prompt_text'] = df['prompt'].apply(lambda x: x.get('text', '') if isinstance(x, dict) else str(x))
+        df['prompt'] = df['prompt_text']
+        
+    elif 'challenging' in df.columns:
+        # Different format with challenging flag
+        df['prompt'] = df.get('text', df.get('prompt', ''))
+        df['continuation'] = ''  # May need to be filled
+        
+    # Ensure required columns exist
+    required_cols = ['prompt', 'continuation', 'toxicity']
     
-    logger.info(f"Dataset created with {len(df)} samples")
+    for col in required_cols:
+        if col not in df.columns:
+            if col == 'toxicity':
+                # Extract toxicity from nested structure if available
+                if 'continuation' in df.columns and isinstance(df['continuation'].iloc[0], dict):
+                    df['toxicity'] = df['continuation'].apply(
+                        lambda x: x.get('toxicity', 0.0) if isinstance(x, dict) else 0.0
+                    )
+                else:
+                    df['toxicity'] = 0.0
+            elif col == 'continuation':
+                df['continuation'] = ''
+            else:
+                df[col] = ''
+    
+    # Extract additional toxicity scores if available
+    toxicity_attributes = [
+        'severe_toxicity', 'identity_attack', 'insult', 
+        'threat', 'profanity', 'sexually_explicit', 'flirtation'
+    ]
+    
+    for attr in toxicity_attributes:
+        if attr not in df.columns:
+            df[attr] = 0.0
+    
+    # Add identity mention flag
+    identity_keywords = [
+        'black', 'white', 'asian', 'latino', 'hispanic', 'jewish', 'muslim', 
+        'christian', 'gay', 'lesbian', 'transgender', 'lgbtq'
+    ]
+    
+    df['identity_mention'] = df.apply(
+        lambda row: int(any(keyword in str(row['prompt']).lower() + ' ' + str(row['continuation']).lower() 
+                           for keyword in identity_keywords)), axis=1
+    )
+    
+    # Add context label (0 for literal, 1 for non-literal)
+    sarcasm_indicators = ['yeah right', 'sure', 'totally', '!', 'obviously']
+    df['context_label'] = df.apply(
+        lambda row: int(any(indicator in str(row['prompt']).lower() + ' ' + str(row['continuation']).lower() 
+                           for indicator in sarcasm_indicators)), axis=1
+    )
+    
+    logger.info(f"Standardized RTP dataset: {len(df)} samples, {df.columns.tolist()}")
     return df
+
+def _download_rtp_dataset(data_path: str) -> pd.DataFrame:
+    """Download RTP dataset from official source."""
+    
+    # Official RTP data URL (this may need to be updated)
+    urls = [
+        "https://ai2-public-datasets.s3.amazonaws.com/realtoxicityprompts/realtoxicityprompts-data.jsonl.gz",
+        "https://github.com/allenai/real-toxicity-prompts/releases/download/v1.0/realtoxicityprompts-data.jsonl.gz"
+    ]
+    
+    for url in urls:
+        try:
+            logger.info(f"Downloading RTP dataset from {url}")
+            
+            # Download the file
+            response = requests.get(url, stream=True)
+            response.raise_for_status()
+            
+            # Save compressed file
+            gz_path = os.path.join(data_path, "realtoxicityprompts-data.jsonl.gz")
+            with open(gz_path, 'wb') as f:
+                for chunk in response.iter_content(chunk_size=8192):
+                    f.write(chunk)
+            
+            # Extract and load
+            import gzip
+            jsonl_path = os.path.join(data_path, "realtoxicityprompts-data.jsonl")
+            
+            with gzip.open(gz_path, 'rb') as f_in:
+                with open(jsonl_path, 'wb') as f_out:
+                    f_out.write(f_in.read())
+            
+            # Load the extracted file
+            df = _load_rtp_from_file(jsonl_path)
+            
+            # Clean up compressed file
+            os.remove(gz_path)
+            
+            logger.info(f"Successfully downloaded and loaded RTP dataset with {len(df)} samples")
+            return df
+            
+        except Exception as e:
+            logger.warning(f"Failed to download from {url}: {e}")
+            continue
+    
+    raise Exception("Could not download RTP dataset from any source")
+
+def _print_rtp_manual_instructions(data_path: str):
+    """Print instructions for manual RTP dataset download."""
+    
+    instructions = f"""
+    
+    ⚠️  MANUAL RTP DATASET DOWNLOAD REQUIRED ⚠️
+    
+    The RealToxicityPrompts dataset could not be automatically downloaded.
+    Please follow these steps:
+    
+    1. Go to: https://github.com/allenai/real-toxicity-prompts
+    2. Download the dataset file (realtoxicityprompts-data.jsonl.gz)
+    3. Extract it and place the .jsonl file in: {data_path}/
+    4. Rename it to: realtoxicityprompts.jsonl
+    5. Re-run your code
+    
+    Alternative sources:
+    - Hugging Face: https://huggingface.co/datasets/allenai/real-toxicity-prompts  
+    - Direct download: https://ai2-public-datasets.s3.amazonaws.com/realtoxicityprompts/
+    
+    """
+    
+    print(instructions)
+    logger.error(instructions)
 
 if __name__ == "__main__":
     import os
