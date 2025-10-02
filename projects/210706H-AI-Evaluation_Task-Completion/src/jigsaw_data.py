@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import os
 import logging
+from datasets import load_dataset
 
 logger = logging.getLogger(__name__)
 
@@ -10,21 +11,79 @@ class JigsawDataLoader:
     
     def __init__(self, data_dir: str = "data/raw"):
         self.data_dir = data_dir
-        
-    def load_jigsaw_dataset(self, dataset_name: str = "civil_comments") -> pd.DataFrame:
+
+    def load_jigsaw_dataset(dataset_name: str = "civil_comments", data_path: str = "data/raw") -> pd.DataFrame:
         """
-        Load Jigsaw dataset. For demo purposes, creates a representative dataset.
-        In production, replace with actual Jigsaw data loading.
-        """
-        filepath = os.path.join(self.data_dir, f"{dataset_name}.csv")
+        Load actual Jigsaw Unintended Bias in Toxicity Classification dataset.
         
-        if os.path.exists(filepath):
-            logger.info(f"Loading existing {dataset_name} dataset...")
-            return pd.read_csv(filepath)
-        else:
-            logger.info(f"Creating simulated {dataset_name} dataset...")
-            return self._create_simulated_jigsaw_dataset()
-    
+        Args:
+            dataset_name: Name of the Jigsaw dataset to load
+            data_path: Directory to save/load the dataset
+            
+        Returns:
+            DataFrame with Jigsaw data
+        """
+        os.makedirs(data_path, exist_ok=True)
+        
+        # Method 1: Try loading from Hugging Face datasets
+        try:
+            logger.info(f"Loading Jigsaw {dataset_name} dataset from Hugging Face...")
+            
+            if dataset_name == "civil_comments":
+                # Load the civil comments dataset
+                dataset = load_dataset("civil_comments", split="train")
+                df = dataset.to_pandas()
+                
+            elif dataset_name == "jigsaw_toxicity_pred":
+                # Alternative Jigsaw dataset
+                dataset = load_dataset("jigsaw_toxicity_pred", split="train")  
+                df = dataset.to_pandas()
+                
+            else:
+                # Try generic approach
+                dataset = load_dataset(dataset_name, split="train")
+                df = dataset.to_pandas()
+            
+            # Standardize the dataset
+            df = _standardize_jigsaw_columns(df)
+            
+            # Save for future use
+            csv_path = os.path.join(data_path, f"{dataset_name}.csv")
+            df.to_csv(csv_path, index=False)
+            
+            logger.info(f"Jigsaw dataset loaded with {len(df)} samples")
+            return df
+            
+        except Exception as e:
+            logger.warning(f"Failed to load from Hugging Face: {e}")
+        
+        # Method 2: Try downloading from Kaggle (requires kaggle API)
+        try:
+            return _download_jigsaw_from_kaggle(dataset_name, data_path)
+        except Exception as e:
+            logger.warning(f"Failed to download from Kaggle: {e}")
+        
+        # Method 3: Check for local files
+        local_files = [
+            f"{dataset_name}.csv",
+            "train.csv",
+            "civil_comments.csv",
+            "jigsaw-unintended-bias-train.csv"
+        ]
+        
+        for filename in local_files:
+            filepath = os.path.join(data_path, filename)
+            if os.path.exists(filepath):
+                logger.info(f"Loading Jigsaw dataset from local file: {filepath}")
+                df = pd.read_csv(filepath)
+                return _standardize_jigsaw_columns(df)
+        
+        # Fallback: Print manual instructions
+        logger.error("Could not automatically load Jigsaw dataset")
+        _print_jigsaw_manual_instructions(data_path, dataset_name)
+        
+        return pd.DataFrame()
+        
     def _create_simulated_jigsaw_dataset(self) -> pd.DataFrame:
         """
         Create a simulated Jigsaw dataset that represents the key characteristics:
@@ -116,3 +175,156 @@ class JigsawDataLoader:
         
         logger.info(f"Created Jigsaw dataset with {len(df)} samples")
         return df
+    
+def _standardize_jigsaw_columns(df: pd.DataFrame) -> pd.DataFrame:
+    """Standardize Jigsaw dataset columns."""
+
+    # Map common column variations
+    column_mappings = {
+        'comment_text': 'comment_text',
+        'text': 'comment_text', 
+        'comment': 'comment_text',
+        'target': 'toxicity',
+        'toxic': 'toxicity',
+        'toxicity_score': 'toxicity'
+    }
+
+    # Apply mappings
+    for old_col, new_col in column_mappings.items():
+        if old_col in df.columns and new_col not in df.columns:
+            df[new_col] = df[old_col]
+
+    # Ensure required columns exist
+    if 'comment_text' not in df.columns:
+        if 'text' in df.columns:
+            df['comment_text'] = df['text']
+        else:
+            logger.error("No text column found in Jigsaw dataset")
+            df['comment_text'] = ''
+
+    if 'toxicity' not in df.columns:
+        if 'target' in df.columns:
+            df['toxicity'] = df['target']
+        else:
+            logger.warning("No toxicity score found, setting to 0")
+            df['toxicity'] = 0.0
+
+    # Add other toxicity attributes if they exist
+    toxicity_attrs = [
+        'severe_toxicity', 'obscene', 'threat', 'insult', 
+        'identity_attack', 'sexual_explicit'
+    ]
+
+    for attr in toxicity_attrs:
+        if attr not in df.columns:
+            df[attr] = 0.0
+
+    # Identity mentions (look for identity columns or keywords)
+    identity_columns = [col for col in df.columns if any(identity in col.lower() 
+                    for identity in ['male', 'female', 'christian', 'muslim', 'jewish', 'lgbtq', 
+                                    'black', 'white', 'psychiatric', 'disability'])]
+
+    if identity_columns:
+        # If identity columns exist, use them
+        df['identity_mention'] = df[identity_columns].max(axis=1).fillna(0)
+        df['identity_mention'] = (df['identity_mention'] > 0.5).astype(int)
+    else:
+        # Otherwise, search for identity keywords in text
+        identity_keywords = [
+            'black', 'white', 'asian', 'latino', 'hispanic', 'jewish', 'muslim', 
+            'christian', 'gay', 'lesbian', 'transgender', 'lgbtq', 'men', 'women'
+        ]
+        
+        df['identity_mention'] = df['comment_text'].apply(
+            lambda text: int(any(keyword in str(text).lower() for keyword in identity_keywords))
+        )
+
+    # Context labels (sarcasm, non-literal)
+    sarcasm_patterns = [
+        'yeah right', 'sure thing', 'totally', 'obviously', 'clearly',
+        '!!!', '??', 'lol', 'haha', 'smh'
+    ]
+
+    df['context_label'] = df['comment_text'].apply(
+        lambda text: int(any(pattern in str(text).lower() for pattern in sarcasm_patterns))
+    )
+
+    # Sample dataset if too large (for manageable processing)
+    if len(df) > 50000:
+        logger.info(f"Sampling dataset from {len(df)} to 50000 samples")
+        df = df.sample(n=50000, random_state=42).reset_index(drop=True)
+
+    logger.info(f"Standardized Jigsaw dataset: {len(df)} samples")
+    logger.info(f"Columns: {df.columns.tolist()}")
+    logger.info(f"Identity mentions: {df['identity_mention'].sum()}")
+    logger.info(f"Context labels: {df['context_label'].sum()}")
+
+    return df
+
+def _download_jigsaw_from_kaggle(dataset_name: str, data_path: str) -> pd.DataFrame:
+    """Download Jigsaw dataset from Kaggle."""
+
+    try:
+        import kaggle
+        
+        # Kaggle dataset identifiers
+        kaggle_datasets = {
+            "civil_comments": "jigsaw-team/jigsaw-unintended-bias-in-toxicity-classification",
+            "toxic_comments": "c/jigsaw-toxic-comment-classification-challenge"
+        }
+        
+        dataset_id = kaggle_datasets.get(dataset_name, kaggle_datasets["civil_comments"])
+        
+        logger.info(f"Downloading {dataset_name} from Kaggle: {dataset_id}")
+        
+        # Download dataset
+        kaggle.api.dataset_download_files(dataset_id, path=data_path, unzip=True)
+        
+        # Find the downloaded CSV file
+        csv_files = [f for f in os.listdir(data_path) if f.endswith('.csv')]
+        
+        if not csv_files:
+            raise Exception("No CSV files found after Kaggle download")
+        
+        # Load the main training file
+        train_files = [f for f in csv_files if 'train' in f.lower()]
+        csv_file = train_files[0] if train_files else csv_files[0]
+        
+        df = pd.read_csv(os.path.join(data_path, csv_file))
+        df = _standardize_jigsaw_columns(df)
+        
+        logger.info(f"Successfully downloaded Jigsaw dataset with {len(df)} samples")
+        return df
+        
+    except Exception as e:
+        logger.error(f"Kaggle download failed: {e}")
+        raise
+
+def _print_jigsaw_manual_instructions(data_path: str, dataset_name: str):
+    """Print manual download instructions for Jigsaw dataset."""
+
+    instructions = f"""
+
+    ⚠️  MANUAL JIGSAW DATASET DOWNLOAD REQUIRED ⚠️
+
+    The Jigsaw dataset could not be automatically downloaded.
+    Please follow these steps:
+
+    1. Go to Kaggle:
+    - Civil Comments: https://www.kaggle.com/c/jigsaw-unintended-bias-in-toxicity-classification
+    - Toxic Comments: https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge
+
+    2. Download the training dataset (train.csv)
+    3. Place it in: {data_path}/
+    4. Rename to: {dataset_name}.csv
+    5. Re-run your code
+
+    Alternative: Set up Kaggle API
+    - Install: pip install kaggle
+    - Setup API key: https://github.com/Kaggle/kaggle-api
+    - The code will automatically download
+
+    """
+
+    print(instructions)
+    logger.error(instructions)
