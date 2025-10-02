@@ -49,13 +49,13 @@ pip install -e .
 ### 1. Run Full Experiment Pipeline
 
 ```bash
-python experiments/run_experiments.py
+python experiments/run_cafe_vs_perspective.py
 ```
 
 ### 2. Run Quick Experiment (for testing)
 
 ```bash
-python experiments/run_experiments.py --quick
+python experiments/run_cafe_vs_perspective.py --quick
 ```
 
 ### 3. Train Individual Components
@@ -87,6 +87,7 @@ python src/data_augmentation.py
 │   ├── configs/              # YAML configuration files
 │   └── run_experiments.py    # Main experiment runner
 ├── results/                  # Experimental results
+│   ├── cafe_vs_perspective_[timestamp]/   
 │   ├── models/               # Trained model checkpoints
 │   ├── metrics/              # Evaluation metrics
 │   └── plots/                # Visualization plots
