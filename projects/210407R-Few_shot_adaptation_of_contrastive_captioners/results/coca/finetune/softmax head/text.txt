@@ -1,0 +1,11 @@
+learning_rate=1e-4 (cosine decay on),
+weight_decay=0.01,
+num_epochs=200 (with early stopping),
+patience: int = 20
+label_smoothing=0.1,
+optimizer= adamW,
+loss=crossentropy,
+batch_size: int = 32,
+warmup_epochs: int = 10,
+
+
