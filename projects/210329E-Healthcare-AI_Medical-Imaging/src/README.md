@@ -90,6 +90,12 @@ The table below summarizes the per-class results for the ensemble:
 | **Aleatoric Uncertainty** | 0.3073  |
 | **Epistemic Uncertainty** | 0.0240  |
 
+| Metric                | Mean Value |
+|-----------------------|------------|
+| **Brier Score**       | 0.0478     |
+| **ECE**               | 0.0728     |
+| **NLL**               | 0.1916     |
+
 # 4. Ensemble GradCAM Visualization
 
 To interpret and explain the ensemble's predictions, GradCAM visualizations were generated for selected test images. This approach highlights the regions of chest X-ray images that contributed most to the ensemble's decision for each disease class.
