@@ -1,0 +1,5 @@
+{
+  "overall_accuracy": 70.75,
+  "mean_per_class_accuracy": 70.75,
+  "total_samples": 2000,
+  "correct_predictions": 
