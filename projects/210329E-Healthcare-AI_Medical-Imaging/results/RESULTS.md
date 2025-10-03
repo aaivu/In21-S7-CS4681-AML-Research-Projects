@@ -26,7 +26,6 @@
 | CheXNet (Paper)      |  —     | 0.8066    |    0.435     |
 | DannyNet (Paper)     |   0.0416     | 0.8527    | 0.3861  |
 | DannyNet (Reproduced)| 0.0419 | 0.8471    | 0.3705  |
-| Deep Ensemble (Our Work)       | 0.0415 | 0.8559    | 0.3857  |
 | Deep Ensemble (Our Work)       | N/A    | 0.8559    | 0.3857  |
 
 ## 3.Deep Ensemble Model: Comprehensive Per-Class Metrics
