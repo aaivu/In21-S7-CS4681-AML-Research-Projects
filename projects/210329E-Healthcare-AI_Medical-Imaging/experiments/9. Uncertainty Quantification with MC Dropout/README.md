@@ -1,4 +1,4 @@
-# 9. Uncertainty Quantification with Monte Carlo Dropout (DenseNet-121)
+# Experiment 9 - Uncertainty Quantification with Monte Carlo Dropout (DenseNet-121)
 
 ## Implementation Summary
 
