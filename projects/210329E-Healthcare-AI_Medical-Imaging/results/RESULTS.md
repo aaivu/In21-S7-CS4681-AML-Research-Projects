@@ -84,7 +84,20 @@
   ![Per Class Confusion Matrices](images/Per%20Class%20Confusion%20Matrices.png)
 
 - **Enhanced Uncertainty Analysis:**
+
   ![Enhanced Uncertainty Analysis](images/Enhanced%20Uncertainity%20Analysis.png)
+
+## 7. Example GradCAM Visualizations
+
+To provide interpretability and insight into the model's predictions, we include GradCAM visualizations for the Deep Ensemble. These highlight the regions of the chest X-ray that most influenced the model's decision for a given disease class.
+
+- **Original Image:**
+  ![Original Image](images/Gradcam/original_image.png)
+
+- **Ensemble GradCAM for Mass:**
+  ![Ensemble GradCAM for Mass](images/Gradcam/gradcam_image.png)
+
+The GradCAM overlay shows the areas (in red/yellow) that contributed most to the ensemble's prediction for the "Mass" class, providing visual interpretability for clinical review.
 
 ---
 
