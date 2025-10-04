@@ -198,7 +198,7 @@ class FMoWTemporalStacked(SatelliteDataset):
 
 
 class CustomDatasetFromImagesTemporal(SatelliteDataset):
-    def __init__(self, csv_path: str):
+    def __init__(self, csv_path: str, sequence_size: int = 3):
         """
         Creates temporal dataset for fMoW RGB
         :param csv_path: Path to csv file containing paths to images
@@ -241,6 +241,7 @@ class CustomDatasetFromImagesTemporal(SatelliteDataset):
         self.normalization = transforms.Normalize(mean, std)
         self.totensor = transforms.ToTensor()
         self.scale = transforms.Resize(224)
+        self.sequence_size = sequence_size
 
     def __getitem__(self, index):
         # Get image name from the pandas df
@@ -253,86 +254,55 @@ class CustomDatasetFromImagesTemporal(SatelliteDataset):
         single_image_name_1 = os.path.join(self.dataset_root_path, single_image_name_1)
         temporal_files = glob(regexp)
 
-        temporal_files.remove(single_image_name_1)
-        if temporal_files == []:
-            single_image_name_2 = single_image_name_1
-            single_image_name_3 = single_image_name_1
-        elif len(temporal_files) == 1:
-            single_image_name_2 = temporal_files[0]
-            single_image_name_3 = temporal_files[0]
-        else:
-            single_image_name_2 = random.choice(temporal_files)
-            while True:
-                single_image_name_3 = random.choice(temporal_files)
-                if single_image_name_3 != single_image_name_2:
-                    break
-
-        img_as_img_1 = Image.open(single_image_name_1)
-        img_as_img_2 = Image.open(single_image_name_2)
-        img_as_img_3 = Image.open(single_image_name_3)
-        img_as_tensor_1 = self.totensor(img_as_img_1)
-        img_as_tensor_2 = self.totensor(img_as_img_2)
-        img_as_tensor_3 = self.totensor(img_as_img_3)
-        del img_as_img_1
-        del img_as_img_2
-        del img_as_img_3
-        img_as_tensor_1 = self.scale(img_as_tensor_1)
-        img_as_tensor_2 = self.scale(img_as_tensor_2)
-        img_as_tensor_3 = self.scale(img_as_tensor_3)
         try:
-            if img_as_tensor_1.shape[2] > 224 and \
-                    img_as_tensor_2.shape[2] > 224 and \
-                    img_as_tensor_3.shape[2] > 224:
-                min_w = min(img_as_tensor_1.shape[2], min(img_as_tensor_2.shape[2], img_as_tensor_3.shape[2]))
-                img_as_tensor = torch.cat([
-                    img_as_tensor_1[..., :min_w],
-                    img_as_tensor_2[..., :min_w],
-                    img_as_tensor_3[..., :min_w]
-                ], dim=-3)
-            elif img_as_tensor_1.shape[1] > 224 and \
-                    img_as_tensor_2.shape[1] > 224 and \
-                    img_as_tensor_3.shape[1] > 224:
-                min_w = min(img_as_tensor_1.shape[1], min(img_as_tensor_2.shape[1], img_as_tensor_3.shape[1]))
-                img_as_tensor = torch.cat([
-                    img_as_tensor_1[..., :min_w, :],
-                    img_as_tensor_2[..., :min_w, :],
-                    img_as_tensor_3[..., :min_w, :]
-                ], dim=-3)
-            else:
-                img_as_img_1 = Image.open(single_image_name_1)
-                img_as_tensor_1 = self.totensor(img_as_img_1)
-                img_as_tensor_1 = self.scale(img_as_tensor_1)
-                img_as_tensor = torch.cat([img_as_tensor_1, img_as_tensor_1, img_as_tensor_1], dim=-3)
-        except:
-            print(img_as_tensor_1.shape, img_as_tensor_2.shape, img_as_tensor_3.shape)
-            assert False
+            temporal_files.remove(single_image_name_1)
+        except ValueError:
+            print(f"Warning: {single_image_name_1} not found in temporal_files")
+            pass
 
-        del img_as_tensor_1
-        del img_as_tensor_2
-        del img_as_tensor_3
+        selected_names = [single_image_name_1]
+        selected_ts = [self.parse_timestamp(single_image_name_1)]
 
-        img_as_tensor = self.transforms(img_as_tensor)
-        img_as_tensor_1, img_as_tensor_2, img_as_tensor_3 = torch.chunk(img_as_tensor, 3, dim=-3)
-        del img_as_tensor
-        img_as_tensor_1 = self.normalization(img_as_tensor_1)
-        img_as_tensor_2 = self.normalization(img_as_tensor_2)
-        img_as_tensor_3 = self.normalization(img_as_tensor_3)
+        if len(temporal_files) == 0:
+            # Duplicate base if none
+            selected_names.extend([single_image_name_1] * (self.sequence_size - 1))
+            selected_ts.extend([selected_ts[0]] * (self.sequence_size - 1))
+        else:
+            # Shuffle for randomness
+            random.shuffle(temporal_files)
+            additional = temporal_files[:self.sequence_size - 1]
+            if len(additional) < self.sequence_size - 1:
+                # Duplicate randomly from available (including base)
+                all_available = [single_image_name_1] + temporal_files
+                additional.extend(random.choices(all_available, k=(self.sequence_size - 1 - len(additional))))
+            selected_names.extend(additional)
+            selected_ts.extend([self.parse_timestamp(n) for n in additional])
 
-        ts1 = self.parse_timestamp(single_image_name_1)
-        ts2 = self.parse_timestamp(single_image_name_2)
-        ts3 = self.parse_timestamp(single_image_name_3)
+        imgs_list = []
+        for name in selected_names:
+            img = Image.open(name)
+            tensor = self.totensor(img)
+            tensor = self.scale(tensor)
+            imgs_list.append(tensor)
 
-        ts = np.stack([ts1, ts2, ts3], axis=0)
+        # Handle varying sizes
+        min_h = min(t.shape[1] for t in imgs_list)
+        min_w = min(t.shape[2] for t in imgs_list)
+        imgs_list = [t[:, :min_h, :min_w] for t in imgs_list]
 
-        # Get label(class) of the image based on the cropped pandas column
+        img_as_tensor = torch.cat(imgs_list, dim=0)
+        imgs = torch.stack(imgs_list, dim=0)
+
+        # Apply transforms and norm
+        normalized_imgs = []
+        for t in imgs:
+            t = self.transforms(t)
+            t = self.normalization(t)
+            normalized_imgs.append(t)
+        imgs = torch.stack(normalized_imgs, dim=0)  # [seq_length, C, H, W]
+
+        ts = np.stack(selected_ts, axis=0)  # [seq_length, 3]
         single_image_label = self.label_arr[index]
-
-        imgs = torch.stack([img_as_tensor_1, img_as_tensor_2, img_as_tensor_3], dim=0)
-
-        del img_as_tensor_1
-        del img_as_tensor_2
-        del img_as_tensor_3
-
         return (imgs, ts, single_image_label)
 
     def parse_timestamp(self, name):
@@ -573,7 +543,7 @@ def build_fmow_dataset(is_train: bool, args) -> SatelliteDataset:
         transform = CustomDatasetFromImages.build_transform(is_train, args.input_size, mean, std)
         dataset = CustomDatasetFromImages(csv_path, transform)
     elif args.dataset_type == 'temporal':
-        dataset = CustomDatasetFromImagesTemporal(csv_path)
+        dataset = CustomDatasetFromImagesTemporal(csv_path, args.seq_size)
     elif args.dataset_type == 'sentinel':
         mean = SentinelIndividualImageDataset.mean
         std = SentinelIndividualImageDataset.std

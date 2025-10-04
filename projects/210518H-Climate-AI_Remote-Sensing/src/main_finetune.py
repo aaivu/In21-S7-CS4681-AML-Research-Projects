@@ -34,6 +34,8 @@ import models_vit
 import models_vit_temporal
 import models_vit_group_channels
 
+import models_vit_temporal_v2
+
 from engine_finetune import (train_one_epoch, train_one_epoch_temporal,
                              evaluate, evaluate_temporal)
 
@@ -172,6 +174,9 @@ def get_args_parser():
     parser.add_argument('--dist_url', default='env://',
                         help='url used to set up distributed training')
 
+    # finetune V2 parameters
+    parser.add_argument('--seq_size', default=3, type=int, help='Set the size of the temporal sequences')
+
     return parser
 
 
@@ -261,6 +266,12 @@ def main(args):
         model = models_resnet.__dict__[args.model](in_c=dataset_train.in_c, pretrained=pre_trained)
     elif args.model_type == 'temporal':
         model = models_vit_temporal.__dict__[args.model](
+            num_classes=args.nb_classes,
+            drop_path_rate=args.drop_path,
+            global_pool=args.global_pool,
+        )
+    elif args.model_type == 'temporal_v2':
+        model = models_vit_temporal_v2.__dict__[args.model](
             num_classes=args.nb_classes,
             drop_path_rate=args.drop_path,
             global_pool=args.global_pool,
