@@ -188,7 +188,7 @@ class CitationNetwork(object):
 
 def add_self_loop(graph, sub_nodes=None):
     """Add self loop for subgraph"""
-    assert not graph.is_tensor(), "You must call Graph.numpy() first."
+    assert not graph.is_tensor(), "Call Graph.numpy() first."
     
     if sub_nodes is not None:
         self_loop_edges = np.zeros((sub_nodes.shape[0], 2))

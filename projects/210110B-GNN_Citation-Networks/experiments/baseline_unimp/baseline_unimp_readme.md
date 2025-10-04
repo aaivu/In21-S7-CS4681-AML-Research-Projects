@@ -1,4 +1,4 @@
-# Experiment 1: Baseline UniMP-lite (Homogeneous)
+# Experiment 1: Baseline UniMP (Homogeneous)
 
 ### Approach
 This is a simplified baseline of UniMP due to the computer resources I have:
@@ -9,14 +9,14 @@ This is a simplified baseline of UniMP due to the computer resources I have:
 - Use a residual MLP stack for classification.
 
 ### Motivation
-We want a CPU-safe, minimal reproduction of UniMP’s key idea: **labels as input** + **masked label prediction**. This serves as the foundation for further heterogeneous extensions.
+We need a CPU-safe, minimal reproduction of UniMP’s key idea: **labels as input** + **masked label prediction**. This serves as the foundation for further heterogeneous extensions.
 
 ### Results
-Tested on Citation-network V1 (venue classification):
+Tested on Citation-network V1 (title classification):
 
 | Model          | Accuracy | Macro-F1 | Micro-F1 |
 |----------------|----------|----------|----------|
-| Iter-1 UniMP-lite | 61.2%    | 58.4%    | 60.7%    |
+| Iter-1 UniMP | 70.20%    | 68.70%    | 69.40%    |
 
 ### Observations
 - The model captures useful signal from masked labels.
