@@ -16,7 +16,7 @@ from util.pos_embed import get_2d_sincos_pos_embed, get_1d_sincos_pos_embed_from
 
 
 class VisionTransformer(timm.models.vision_transformer.VisionTransformer):
-    """ Vision Transformer with relative temporal encoding and variable sequence length
+    """ Vision Transformer with relative temporal encoding and adaptive temporal sequencing
     """
 
     def __init__(self, global_pool=False, **kwargs):
