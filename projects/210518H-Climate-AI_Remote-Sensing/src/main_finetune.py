@@ -35,6 +35,7 @@ import models_vit_temporal
 import models_vit_group_channels
 
 import models_vit_temporal_v2
+import models_vit_group_channels_v2
 
 from engine_finetune import (train_one_epoch, train_one_epoch_temporal,
                              evaluate, evaluate_temporal)
@@ -49,8 +50,8 @@ def get_args_parser():
                         help='Accumulate gradient iterations (for increasing the effective batch size under memory constraints)')
 
     # Model parameters
-    parser.add_argument('--model_type', default=None, choices=['group_c', 'resnet', 'resnet_pre',
-                                                               'temporal', 'vanilla'],
+    parser.add_argument('--model_type', default=None, choices=['group_c', 'group_c_v2', 'resnet', 'resnet_pre',
+                                                               'temporal', 'temporal_v2', 'vanilla'],
                         help='Use channel model')
     parser.add_argument('--model', default='vit_large_patch16', type=str, metavar='MODEL',
                         help='Name of model to train')
@@ -261,6 +262,16 @@ def main(args):
             channel_groups=args.grouped_bands,
             num_classes=args.nb_classes, drop_path_rate=args.drop_path, global_pool=args.global_pool,
         )
+    elif args.model_type == 'group_c_v2':
+        # Workaround because action append will add to default list
+        if len(args.grouped_bands) == 0:
+            args.grouped_bands = [[0, 1, 2, 6], [3, 4, 5, 7], [8, 9]]
+        print(f"Grouping bands {args.grouped_bands}")
+        model = models_vit_group_channels_v2.__dict__[args.model](
+            patch_size=args.patch_size, img_size=args.input_size, in_chans=dataset_train.in_c,
+            channel_groups=args.grouped_bands,
+            num_classes=args.nb_classes, drop_path_rate=args.drop_path, global_pool=args.global_pool,
+        )
     elif args.model_type == 'resnet' or args.model_type == 'resnet_pre':
         pre_trained = args.model_type == 'resnet_pre'
         model = models_resnet.__dict__[args.model](in_c=dataset_train.in_c, pretrained=pre_trained)
@@ -391,7 +402,7 @@ def main(args):
         if args.distributed:
             data_loader_train.sampler.set_epoch(epoch)
 
-        if args.model_type == 'temporal':
+        if args.model_type in ('temporal', 'temporal_v2'):
             train_stats = train_one_epoch_temporal(
                 model, criterion, data_loader_train,
                 optimizer, device, epoch, loss_scaler,
@@ -413,7 +424,7 @@ def main(args):
                 args=args, model=model, model_without_ddp=model_without_ddp, optimizer=optimizer,
                 loss_scaler=loss_scaler, epoch=epoch)
 
-        if args.model_type == 'temporal':
+        if args.model_type in ('temporal', 'temporal_v2'):
             test_stats = evaluate_temporal(data_loader_val, model, device)
         else:
             test_stats = evaluate(data_loader_val, model, device)
