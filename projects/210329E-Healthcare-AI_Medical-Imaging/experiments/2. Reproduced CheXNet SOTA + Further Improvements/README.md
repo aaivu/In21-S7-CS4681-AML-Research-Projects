@@ -1,4 +1,4 @@
-# CheXNet Reproduction with Additional Improvements (V1)
+# Experiment 2 - CheXNet Reproduction with Additional Improvements (V1)
 
 In this folder, I extended the original CheXNet reproduction by adding advanced data augmentations and a modified loss function.
 
