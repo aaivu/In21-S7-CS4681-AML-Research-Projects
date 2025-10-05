@@ -12,31 +12,75 @@
 210086E-NLP:Text-to-Speech/
 ├── README.md                    # This file
 ├── docs/
-│   ├── research_proposal.md     # Your research proposal (Required)
+│   ├── research_proposal.md     # Research proposal overview
 │   ├── literature_review.md     # Literature review and references
 │   ├── methodology.md           # Detailed methodology
+│   ├── istft_vocoder_design.md  # Vocoder architecture documentation
+│   ├── training_guide.md        # Training instructions and configurations
 │   └── progress_reports/        # Weekly progress reports
-├── src/                         # Your source code
-├── data/                        # Datasets and data files
-├── experiments/                 # Experiment scripts and configs
-├── results/                     # Experimental results
+├── src/                         # Source code
+│   ├── data/                    # Dataset loaders
+│   └── models/                  # Model implementations
+├── data/                        # Datasets (VCTK-Corpus)
+├── experiments/                 # Jupyter notebooks for experiments
+├── scripts/                     # Training and utility scripts
+├── results/                     # Experimental results and outputs
+├── logs/                        # Training logs
 └── requirements.txt             # Project dependencies
 ```
 
 ## Getting Started
 
-1. **Complete Research Proposal:** Fill out `docs/research_proposal.md`
-2. **Literature Review:** Document your literature review in `docs/literature_review.md`
-3. **Set Up Environment:** Add your dependencies to `requirements.txt`
-4. **Start Coding:** Begin implementation in the `src/` folder
-5. **Track Progress:** Use GitHub Issues to report weekly progress
+1. **Review Documentation:** Check `docs/research_proposal.md` for project overview
+2. **Literature Review:** See `docs/literature_review.md` for background research
+3. **Set Up Environment:** Install dependencies from `requirements.txt`
+4. **Start Development:** Implement code in the `src/` folder
+5. **Run Experiments:** Use notebooks in `experiments/` for testing and analysis
+6. **Track Progress:** Use GitHub Issues to report weekly progress
 
 ## Milestones
 
-- [ ] **Week 4:** Research Proposal Submission
-- [ ] **Week 5:** Literature Review Completion  
-- [ ] **Week 8:** Methodology Implementation
+- [x] **Week 1-2:** VITS Baseline Setup & Analysis
+- [x] **Week 3-4:** Phase 3 - Vocoder Optimization (iSTFT Implementation)
+- [ ] **Week 5:** Vocoder Training & Evaluation
+- [ ] **Week 6:** Integration & Benchmarking
 - [ ] **Week 12:** Final Evaluation
+
+## Current Status: Phase 3 Complete ✅
+
+### Completed (Phase 3: Vocoder Optimization)
+- ✅ HiFi-GAN bottleneck analysis
+- ✅ iSTFT vocoder architecture design
+- ✅ Single-band iSTFT vocoder implementation (~2.5M params)
+- ✅ Multi-band extension (3-band parallel processing)
+- ✅ VCTK dataset loader with train/val/test split
+- ✅ Complete training pipeline with TensorBoard logging
+- ✅ Testing framework and benchmarking tools
+- ✅ Comprehensive documentation
+
+### Next Steps
+1. **Train iSTFT Vocoder** - Run for ~100 epochs (~500k steps)
+2. **Evaluate Quality** - Target MCD < 6 dB
+3. **Integrate with VITS** - Replace HiFi-GAN baseline
+4. **Benchmark Performance** - Compare RTF, quality metrics
+
+## Quick Start Training
+
+```bash
+# Navigate to project
+cd projects/210086E-NLP_Text-to-Speech
+
+# Activate environment
+source .venv/bin/activate
+
+# Start training
+python scripts/train_vocoder.py
+
+# Monitor progress
+tensorboard --logdir logs/istft_vocoder
+```
+
+See `docs/training_guide.md` for detailed instructions.
 
 ## Progress Tracking
 
