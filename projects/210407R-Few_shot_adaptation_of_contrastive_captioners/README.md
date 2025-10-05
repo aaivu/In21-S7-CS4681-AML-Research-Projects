@@ -3,9 +3,9 @@
 ## Student Information
 
 - **Index Number:** 210407R
-- **Research Area:** NHuman-AI Collab:Interactive Problem Solving
+- **Research Area:** Few_shot_adaptation_of_contrastive_captioners
 - **GitHub Username:** @luckylukezzz
-- **Email:** subavarshanaa.21@cse.mrt.ac.lk
+- **Email:** patalee.21@cse.mrt.ac.lk
 
 ## Project Structure
 ```
