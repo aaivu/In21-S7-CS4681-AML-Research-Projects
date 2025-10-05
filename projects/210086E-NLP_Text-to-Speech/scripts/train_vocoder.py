@@ -28,6 +28,8 @@ from src.models.istft_vocoder import iSTFTVocoder
 from src.models.vocoder_utils import VocoderLoss, compute_mcd, count_parameters, mel_spectrogram
 from src.data.vctk_dataset import get_vocoder_dataloaders
 
+import warnings
+warnings.filterwarnings('ignore', category=UserWarning, module='torchaudio')
 
 class VocoderTrainer:
     """
