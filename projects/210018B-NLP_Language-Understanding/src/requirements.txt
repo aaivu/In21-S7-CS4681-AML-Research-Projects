@@ -1,0 +1,6 @@
+datasets
+openai
+re
+random
+dotenv
+sentence-transformers
