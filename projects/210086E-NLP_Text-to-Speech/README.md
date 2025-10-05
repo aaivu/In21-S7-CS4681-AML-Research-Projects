@@ -26,6 +26,7 @@
 ├── scripts/                     # Training and utility scripts
 ├── results/                     # Experimental results and outputs
 ├── logs/                        # Training logs
+├── checkpoints/                 # Model checkpoints
 └── requirements.txt             # Project dependencies
 ```
 
@@ -42,11 +43,12 @@
 
 - [x] **Week 1-2:** VITS Baseline Setup & Analysis
 - [x] **Week 3-4:** Phase 3 - Vocoder Optimization (iSTFT Implementation)
+- [x] **Mid-Evaluation:** 4-5 page report submitted (IEEE format)
 - [ ] **Week 5:** Vocoder Training & Evaluation
 - [ ] **Week 6:** Integration & Benchmarking
 - [ ] **Week 12:** Final Evaluation
 
-## Current Status: Phase 3 Complete ✅
+## Current Status: Mid-Evaluation Submitted ✅
 
 ### Completed (Phase 3: Vocoder Optimization)
 - ✅ HiFi-GAN bottleneck analysis
@@ -59,10 +61,12 @@
 - ✅ Comprehensive documentation
 
 ### Next Steps
-1. **Train iSTFT Vocoder** - Run for ~100 epochs (~500k steps)
-2. **Evaluate Quality** - Target MCD < 6 dB
-3. **Integrate with VITS** - Replace HiFi-GAN baseline
-4. **Benchmark Performance** - Compare RTF, quality metrics
+1. **Complete Training** - Continue for 6 more epochs to reach target MCD <6 dB
+2. **Multi-band Implementation** - Implement and test multi-band iSTFT vocoder
+3. **Comprehensive Benchmarking** - RTF measurements on CPU/GPU
+4. **VITS Integration** - Replace HiFi-GAN in full VITS pipeline
+5. **Comparative Evaluation** - Benchmark against baseline systems
+6. **Subjective Testing** - Conduct listening tests for quality assessment
 
 ## Quick Start Training
 
