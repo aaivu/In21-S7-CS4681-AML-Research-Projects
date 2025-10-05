@@ -1,4 +1,4 @@
-learning_rate=1e-4 (cosine decay on),
+learning_rate=5e-5 (cosine decay on),
 weight_decay=0.01,
 num_epochs=100 (with early stopping),
 label_smoothing=0.1,
@@ -6,7 +6,7 @@ optimizer= adamW,
 loss=crossentropy,
 batch_size: int = 32,
 warmup_epochs: int = 10,
-
+patience = 20
 shots=2,10,else
 r=4,4,16
 lora_alpha=16,16,32
@@ -29,3 +29,19 @@ Epoch [40/100] Loss: 0.9171 | Val Acc: 100.00% | LR: 0.000033
 Epoch [50/100] Loss: 0.9076 | Val Acc: 100.00% | LR: 0.000026
 
 Early stopping at epoch 54
+
+10shot_contrastive_augTrue          91.50        
+
+#hyperparam tuningg--------------------------------------------------
+
+lora_dropout=0.2,
+patience = 5
+10shot_cross_entropy_augFalse       92.40 
+Config: LR=5e-05, WD=0.05, Label Smoothing=0.15
+Epoch [1/100] Loss: 4.3631 | Val Acc: 68.40% | LR: 0.000050
+Epoch [10/100] Loss: 1.3967 | Val Acc: 99.10% | LR: 0.000049
+Epoch [20/100] Loss: 1.2283 | Val Acc: 99.90% | LR: 0.000046
+
+batch_size = 16
+10shot_cross_entropy_augFalse       92.15
+10shot_contrastive_augFalse         92.10 
