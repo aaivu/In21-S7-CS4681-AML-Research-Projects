@@ -26,3 +26,9 @@ tqdm>=4.62.0
 python-dotenv>=0.19.0
 
 # Add your specific requirements below
+TTS==0.22.0
+soundfile
+librosa
+jiwer
+torch-tb-profiler
+gputil
