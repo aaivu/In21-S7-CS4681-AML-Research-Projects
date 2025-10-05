@@ -6,7 +6,7 @@ echo "iSTFT Vocoder Training - Quick Start"
 echo "=========================================="
 
 # Activate Python environment (modify as needed)
-# source venv/bin/activate
+source .venv/bin/activate
 
 cd "$(dirname "$0")/.."
 
@@ -39,8 +39,8 @@ echo ""
 
 python scripts/train_vocoder.py \
     --data_dir data/VCTK-Corpus-0.92 \
-    --batch_size 16 \
-    --num_epochs 100 \
+    --batch_size 32 \
+    --num_epochs 10 \
     --learning_rate 2e-4 \
     --checkpoint_dir checkpoints/istft_vocoder \
     --log_dir logs/istft_vocoder \
