@@ -1,2 +1,5 @@
 # This file keeps the directory in git
 # You can delete this file once you add other files to this directory
+
+# Datasets
+**/dataset/
