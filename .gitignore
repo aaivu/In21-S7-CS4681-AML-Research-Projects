@@ -198,3 +198,10 @@ logs/
 # Model files (uncomment if models are too large)
 # *.model
 # *.bin
+
+projects/210523T-Multimodal-AI_Audio-Visual-Text/experiments/omniq_mamba_ucf101_t/best.pt
+projects/210523T-Multimodal-AI_Audio-Visual-Text/experiments/omniq_transformer_ucf101_t_lora/best.pt
+projects/210523T-Multimodal-AI_Audio-Visual-Text/experiments/omniq_mamba_ucf101_t_lora/best.pt
+projects/210523T-Multimodal-AI_Audio-Visual-Text/experiments/omnivore_ucf101_t/best.pt
+projects/210523T-Multimodal-AI_Audio-Visual-Text/experiments/omnivore_ucf101_t_smoke/best.pt
+
