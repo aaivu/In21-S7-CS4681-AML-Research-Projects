@@ -16,7 +16,7 @@ data/UCF101/videos/
 ####  CC12M Dataset
 
 The **CC12M** (Conceptual Captions 12 Million) dataset is a collection of around 12 million image–text pairs gathered from the web. It is often used for large-scale multimodal training tasks that involve visual–language understanding.
-
+🔗[CC12M](https://labelbox.com/datasets/conceptual-12m-cc12m/)
 You can download the dataset from its official release page or a mirrored academic repository and place it in:
 
 ```
