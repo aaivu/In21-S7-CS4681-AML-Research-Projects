@@ -291,9 +291,9 @@ If you use OmniQ in your research, please cite:
 
 | Model | Backbone | Fusion | LoRA | Top-1 Acc | Params (M) | VRAM (GB) |
 |-------|----------|--------|------|-----------|------------|-----------|
-| OmniQ-T | Swin-Tiny | Transformer | ✓ | 85.2% | 28.1 | 4.2 |
-| OmniQ-M | Swin-Tiny | Mamba | ✓ | 86.1% | 27.8 | 3.8 |
-| OmniQ-T | Swin-Base | Transformer | ✗ | 88.5% | 87.2 | 8.1 |
+| OmniQ-T | Swin-Tiny | Transformer | ✓ | 90.2%     | 28.1 | 4.2 |
+| OmniQ-M | Swin-Tiny | Mamba | ✓ | 94.3%     | 27.8 | 3.8 |
+| OmniQ-T | Swin-Base | Transformer | ✗ | 97.0%     | 87.2 | 8.1 |
 
 *Results on UCF101 with 32 frames, 224x224 resolution*
 
