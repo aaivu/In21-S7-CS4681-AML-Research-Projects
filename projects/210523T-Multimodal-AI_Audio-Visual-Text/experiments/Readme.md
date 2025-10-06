@@ -6,11 +6,6 @@ Each subfolder corresponds to one training run with a specific fusion method / f
 ## Pre-flight checklist
 
 1) **Activate environment**
-- Windows (PowerShell):
-  ```powershell
-  cd "C:\Users\Hashini\Desktop\Sem 7\Adavanced Machine Learning\Research Assignment\OmniQ"
-  .\.venv\Scripts\activate
-  ```
 
 2) **Dataset in place**  
    `data/UCF101/videos/…` and `data/UCF101/splits/…` (or `ucfTrainTestlist/…`) must exist and match the official split-1 lists.
@@ -80,7 +75,7 @@ Each subfolder corresponds to one training run with a specific fusion method / f
 **Goal:** Replace temporal average with a **2-layer Transformer** fusion (8 heads), adapt only LoRA + classifier.  
  
 **Backbone:** Frozen Swin-T  
-**LoRA:** ✅ on fusion + classifier
+**LoRA:**  on fusion + classifier
 
 - Windows:
   ```powershell
@@ -99,7 +94,7 @@ Each subfolder corresponds to one training run with a specific fusion method / f
 **Goal:** Swap temporal fusion to **bidirectional Mamba** (depth=2) and train without LoRA (full fusion params).  
  
 **Backbone:** Frozen Swin-T  
-**LoRA:** ❌
+**LoRA:** No
 
 - Windows:
   ```powershell
@@ -118,7 +113,7 @@ Each subfolder corresponds to one training run with a specific fusion method / f
 **Goal:** Same as above but with **LoRA adapters** only on the fusion (and classifier).  
 
 **Backbone:** Frozen Swin-T  
-**LoRA:** ✅ (`rank=8`, `alpha=16` by default)
+**LoRA:**  (`rank=8`, `alpha=16` by default)
 
 - Windows:
   ```powershell
