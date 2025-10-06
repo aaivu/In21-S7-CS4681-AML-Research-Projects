@@ -1,0 +1,46 @@
+================================================================================
+OMNIQ FRAMEWORK - ADVANCED STATISTICAL ANALYSIS REPORT
+================================================================================
+
+DESCRIPTIVE STATISTICS:
+----------------------------------------
+            top1       top5   params_M  peak_vram_GB  avg_latency_ms
+count   3.000000   3.000000   3.000000      3.000000        3.000000
+mean   91.233333  97.033333  37.866667      3.533333      133.333333
+std     1.250333   1.101514   8.971808      0.305505       17.559423
+min    90.000000  96.300000  27.600000      3.200000      115.000000
+25%    90.600000  96.400000  34.700000      3.400000      125.000000
+50%    91.200000  96.500000  41.800000      3.600000      135.000000
+75%    91.850000  97.400000  43.000000      3.700000      142.500000
+max    92.500000  98.300000  44.200000      3.800000      150.000000
+
+CORRELATION ANALYSIS:
+----------------------------------------
+Correlations with Top-1 Accuracy:
+  peak_vram_GB: 0.349
+  params_M: 0.157
+  fusion_depth: 0.023
+  avg_latency_ms: -0.998
+
+MODEL FAMILY ANALYSIS:
+----------------------------------------
+                    top1                 params_M peak_vram_GB avg_latency_ms
+                    mean std   min   max     mean         mean           mean
+model_family                                                                 
+State Space Model   92.5 NaN  92.5  92.5     44.2          3.8          115.0
+Transformer-based   90.0 NaN  90.0  90.0     41.8          3.6          150.0
+Vision Transformer  91.2 NaN  91.2  91.2     27.6          3.2          135.0
+
+LORA IMPACT ANALYSIS:
+----------------------------------------
+LoRA Models Average Accuracy: 91.25%
+Full Models Average Accuracy: 91.20%
+Average Parameter Reduction with LoRA: 54.8%
+
+================================================================================
+RESEARCH RECOMMENDATIONS:
+================================================================================
+• Best performing model: State Space Model (92.50% accuracy)
+• Most resource efficient: Vision Transformer (efficiency score: 1.033)
+• Recommended for production: Balance of accuracy and efficiency
+• Future research directions: Investigate fusion mechanism optimizations

@@ -1,0 +1,21 @@
+=== OmniQ Training Summary Report ===
+
+Configuration:
+  Model: swin_tiny_2d_temporalavg
+  Number of classes: 101
+  Frames: 32
+  Stride: 2
+  Input size: 224
+  Batch size: 2
+  Epochs: 1
+  Learning rate (backbone): 0.0001
+  Learning rate (head): 0.0002
+
+Training Results:
+  Best Top-1 Accuracy: 65.48% (Epoch 1)
+  Best Top-5 Accuracy: 90.96%
+  Final Training Loss: 1.0998
+  Average time per epoch: 13245.8s
+  Total training time: 13245.8s
+
+Report generated at: ./plots

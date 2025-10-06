@@ -1,0 +1,1 @@
+projects/210523T-Multimodal-AI_Audio-Visual-Text/experiments/omniq_mamba_ucf101_t/best.pt filter=lfs diff=lfs merge=lfs -text
