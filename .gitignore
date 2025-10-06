@@ -165,7 +165,6 @@ $RECYCLE.BIN/
 *~
 
 # Research specific
-*.pdf
 *.docx
 *.pptx
 large_datasets/
