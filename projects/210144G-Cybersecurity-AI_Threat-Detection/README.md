@@ -65,7 +65,16 @@ This project implements a novel ensemble-based network intrusion detection syste
 - Minimum 8GB RAM (16GB recommended)
 
 ### Dependencies
-Install required packages using:
+**Recommended:** Use conda for better dependency management and faster installation:
+```bash
+# With conda (recommended)
+conda create -n cybersec-ai python=3.8
+conda activate cybersec-ai
+conda install numpy pandas scikit-learn matplotlib seaborn tensorflow keras -c conda-forge
+pip install -r requirements.txt
+```
+
+**Alternative:** Pure pip installation:
 ```bash
 pip install -r requirements.txt
 ```
@@ -87,14 +96,35 @@ pip install -r requirements.txt
    cd 210144G-Cybersecurity-AI_Threat-Detection
    ```
 
-2. **Create virtual environment (recommended):**
+2. **Create environment (Conda recommended):**
+
+   **Option A: Conda Environment (Recommended)**
+   ```bash
+   # Create conda environment with Python 3.8+
+   conda create -n cybersec-ai python=3.8
+   conda activate cybersec-ai
+   
+   # Install conda-available packages first (faster)
+   conda install numpy pandas scikit-learn matplotlib seaborn jupyter tqdm
+   conda install tensorflow keras scipy -c conda-forge
+   
+   # Install remaining packages with pip
+   pip install -r requirements.txt
+   ```
+
+   **Option B: Virtual Environment**
    ```bash
    python -m venv venv
    source venv/bin/activate  # On Windows: venv\Scripts\activate
+   pip install -r requirements.txt
    ```
 
 3. **Install dependencies:**
    ```bash
+   # If using conda (recommended above)
+   pip install -r requirements.txt
+   
+   # If using venv
    pip install -r requirements.txt
    ```
 
