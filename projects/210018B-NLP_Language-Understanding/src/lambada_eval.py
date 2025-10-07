@@ -179,7 +179,7 @@ def evaluate(
         writer = csv.writer(f)
         writer.writerow(["#","Gold","Prediction","Correct","PromptLength"])
 
-        for idx, ex in enumerate(dataset):
+        for idx, ex in enumerate(dataset.select(range(n_samples))):
             text = ex["text"].strip()
             if " " not in text:
                 continue
