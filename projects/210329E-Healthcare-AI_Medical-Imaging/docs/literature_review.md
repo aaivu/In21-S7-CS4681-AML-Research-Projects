@@ -22,13 +22,15 @@ This literature review focuses on the intersection of deep learning and uncertai
 
 #### Primary Search Terms:
 
-- "Thoracic disease classification" OR "Chest X-ray classification" OR "Multi-label medical imaging"
+Core Terms: "uncertainty quantification", "deep learning", "medical imaging", "chest X-ray classification"
 
-- "Uncertainty quantification" OR "Aleatoric uncertainty" OR "Epistemic uncertainty" OR "Bayesian deep learning"
+Architectural Terms: "deep ensembles", "Monte Carlo dropout", "Bayesian neural networks", "DenseNet", "CheXNet"
 
-- "Deep Ensembles" OR "Monte Carlo Dropout" OR "Variational Inference" OR "Conformal Prediction"
+UQ-Specific: "aleatoric uncertainty", "epistemic uncertainty", "predictive calibration", "Expected Calibration Error"
 
-- "Focal Loss" OR "ZLPR Loss" OR "Multi-label loss functions"
+Multi-label Learning: "multi-label classification", "class imbalance", "focal loss", "ZLPR loss"
+
+Clinical Context: "computer-aided diagnosis", "radiologist-level performance", "clinical decision support"
 
 #### Synonyms and Variations Used:
 
