@@ -158,7 +158,9 @@ The performance of the models will be evaluated using a comprehensive suite of m
 
 ○ Negative Log-Likelihood (NLL): A standard loss function that doubles as an evaluation metric, penalizing incorrect and overconfident predictions. A lower NLL indicates a more trustworthy model [32]. 
 
-Figure 3: Workflow of the Proposed Methodology
+![Workflow of the Proposed Methodology](./Figures/Workflow%20of%20the%20Proposed%20Methodology.png)
+
+Figure 1: Workflow of the Proposed Methodology
 
 ## 6. Expected Outcomes
 
@@ -247,5 +249,3 @@ Computing resources(gpu) for finetuning deep learning models
 <a id="ref31">[31]</a> M. Barandas et al., "Evaluation of uncertainty quantification methods in multi-label classification: A case study with automatic diagnosis of electrocardiogram," Inf. Fusion, vol. 101, p. 101978, Jan. 2024, doi: 10.1016/j.inffus.2023.101978.  
 
 <a id="ref32">[32]</a> L. Nieradzik, "Metrics for uncertainty estimation," lars76.github.io. Accessed: Aug. 24, 2025. [Online]. Available: https://lars76.github.io/2020/08/07/metrics-for-uncertainty-estimation.html  
-
----
