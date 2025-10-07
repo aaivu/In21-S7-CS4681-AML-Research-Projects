@@ -179,10 +179,10 @@ This project aims to bridge a critical gap in clinical AI by enhancing the CheXN
 
 ## 8. Resources Required
 
-NIH ChestX-ray14 Dataset (Primary Benchmark Dataset)
-CheXpert dataset
-MIMIC-CXR dataset
-Computing resources(gpu) for finetuning deep learning models
+- NIH ChestX-ray14 Dataset (Primary Benchmark Dataset)
+- Computing resources(gpu) for finetuning deep learning models
+- CheXpert dataset
+- MIMIC-CXR dataset
 
 ## References
 
