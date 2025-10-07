@@ -111,10 +111,12 @@ def build_prompt(context, k=5, mode="cloze", use_semantic=True):
         "- Output exactly ONE meaningful English word (noun, verb, or name).\n"
         "- No punctuation or explanations.\n\n"
         )
-        for ex in examples:
-            text = ex["text"].strip()
-            ctx, gold = text.rsplit(" ", 1)
-            few_shot_examples += f"{ctx} _____ → {gold}\n\n"
+
+        if k > 0:
+            for ex in examples:
+                text = ex["text"].strip()
+                ctx, gold = text.rsplit(" ", 1)
+                few_shot_examples += f"{ctx} _____ → {gold}\n\n"
 
         prompt = prefix + few_shot_examples+ f"{context} _____ →"
 
@@ -127,10 +129,12 @@ def build_prompt(context, k=5, mode="cloze", use_semantic=True):
         "- Output exactly ONE meaningful English word (noun, verb, or name).\n"
         "- No punctuation or explanations.\n\n"
         )
-        for ex in examples:
-            text = ex["text"].strip()
-            ctx, gold = text.rsplit(" ", 1)
-            few_shot_examples += f"Passage: {ctx}\nAnswer: {gold}\n\n"
+
+        if k > 0:
+            for ex in examples:
+                text = ex["text"].strip()
+                ctx, gold = text.rsplit(" ", 1)
+                few_shot_examples += f"Passage: {ctx}\nAnswer: {gold}\n\n"
         prompt = few_shot_examples + "\nNow solve for the next passage.\n" + f"Passage: {context}\nAnswer:"
 
     return prompt
