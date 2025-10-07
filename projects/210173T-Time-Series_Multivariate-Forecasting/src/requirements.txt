@@ -1,0 +1,7 @@
+numpy
+matplotlib
+pandas
+scikit-learn
+torch
+# torch==1.11.0
+ptflops

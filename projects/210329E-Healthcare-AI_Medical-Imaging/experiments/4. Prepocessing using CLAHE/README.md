@@ -1,0 +1,122 @@
+# Experiment 4 — Preprocessing: CLAHE (Contrast Limited Adaptive Histogram Equalization)
+
+Why CLAHE?
+-----------
+After applying CLAHE, the chest X-ray images showed improved local contrast, making darker regions clearer and subtle disease patterns (e.g., small nodules, infiltrations) more visible. The intent was to help the model focus on medically relevant local details while avoiding global over-enhancement of noise.
+
+Kaggle preprocessed dataset
+---------------------------
+The preprocessed images used in this experiment are published as a Kaggle dataset by me: https://www.kaggle.com/datasets/laksaraky210329e/nih-chest-x-rays-preprocessed-version
+
+Sample output
+-------------
+Below is a representative example showing the original image (left) and the CLAHE-processed image (right). If the image does not render (e.g., in plain-text viewers), open `sample clahe output/output.png`.
+
+![Original (left) vs CLAHE (right)](sample%20clahe%20output/output.png)
+
+Re-evaluation using CLAHE-preprocessed images
+---------------------------------------------
+The reproduced DannyNet model was re-evaluated using the CLAHE-preprocessed images for this experiment; the results below are from that run.
+All replication and CLAHE experiments reported here were run using the same random seed (`42`) for reproducibility.
+
+### Test summary
+
+| Metric     | Value  |
+|------------|:------:|
+| Loss       | 0.0415 |
+| Avg AUROC  | 0.8514 |
+| Avg F1     | 0.3803 |
+
+### Overall metrics comparison
+
+| Metric | DannyNet (paper) | This work (Reproduced DannyNet) | This work + CLAHE |
+|-------:|------------------:|--------------------------------:|------------------:|
+| Loss   | 0.0416            | 0.0419                          | **0.0415**        |
+| AUC    | 0.8527            | 0.8471                          | **0.8514**        |
+| F1     | 0.3861            | 0.3705                          | **0.3803**        |
+
+
+### Per-class metrics
+
+| Class                 | AUROC  | F1      | Threshold |
+|-----------------------|:------:|:-------:|:---------:|
+| Atelectasis           | 0.8146 | 0.4116  | 0.3883    |
+| Cardiomegaly          | 0.9325 | 0.4793  | 0.3564    |
+| Consolidation         | 0.7871 | 0.2436  | 0.3169    |
+| Edema                 | 0.8841 | 0.3019  | 0.3974    |
+| Effusion              | 0.9015 | 0.6048  | 0.4216    |
+| Emphysema             | 0.9656 | 0.5526  | 0.3198    |
+| Fibrosis              | 0.8207 | 0.1250  | 0.3314    |
+| Hernia                | 0.9936 | 0.7059  | 0.7221    |
+| Infiltration          | 0.7044 | 0.4073  | 0.3760    |
+| Mass                  | 0.9122 | 0.4762  | 0.4317    |
+| Nodule                | 0.7780 | 0.3463  | 0.3452    |
+| Pleural Thickening    | 0.8124 | 0.2583  | 0.2924    |
+| Pneumonia             | 0.7229 | 0.0678  | 0.2317    |
+| Pneumothorax          | 0.8902 | 0.3439  | 0.2913    |
+
+Comparison (AUROC)
+-------------------
+| Pathology           | DannyNet (paper) | DannyNet (replication) | DannyNet (replication) + CLAHE |
+|---------------------|------------------:|-----------------------:|-----------------:|
+| Atelectasis         | 0.817             | 0.8181                 | 0.8146           |
+| Cardiomegaly        | 0.932             | 0.9280                 | 0.9325           |
+| Consolidation       | 0.783             | 0.7810                 | 0.7871           |
+| Edema               | 0.896             | 0.8782                 | 0.8841           |
+| Effusion            | 0.905             | 0.8975                 | 0.9015           |
+| Emphysema           | 0.963             | 0.9606                 | 0.9656           |
+| Fibrosis            | 0.814             | 0.8216                 | 0.8207           |
+| Hernia              | 0.997             | 0.9951                 | 0.9936           |
+| Infiltration        | 0.708             | 0.6986                 | 0.7044           |
+| Mass                | 0.919             | 0.9047                 | 0.9122           |
+| Nodule              | 0.789             | 0.7736                 | 0.7780           |
+| Pleural Thickening  | 0.801             | 0.7988                 | 0.8124           |
+| Pneumonia           | 0.740             | 0.7209                 | 0.7229           |
+| Pneumothorax        | 0.875             | 0.8831                 | 0.8902           |
+
+| Disease              | DannyNet (paper) | Reproduced DannyNet (F1) | Reproduced + CLAHE (F1) |
+|---------------------:|-----------------:|-------------------------:|------------------------:|
+| Atelectasis          | **0.421**        | 0.4119                  | 0.4116                 |
+| Cardiomegaly         | **0.532**        | 0.5149                  | 0.4793                 |
+| Consolidation        | 0.226            | 0.2222                  | **0.2436**             |
+| Edema                | 0.286            | 0.2460                  | **0.3019**             |
+| Effusion             | **0.623**        | 0.5997                  | 0.6048                 |
+| Emphysema            | 0.516            | 0.5082                  | **0.5526**             |
+| Fibrosis             | **0.127**        | 0.1261                  | 0.1250                 |
+| Hernia               | **0.750**        | 0.6667                  | 0.7059                 |
+| Infiltration         | 0.395            | 0.4018                  | **0.4073**             |
+| Mass                 | 0.477            | **0.5000**              | 0.4762                 |
+| Nodule               | **0.352**        | 0.3382                  | 0.3463                 |
+| Pleural Thickening   | 0.258            | 0.2453                  | **0.2583**             |
+| Pneumonia            | **0.082**        | 0.0640                  | 0.0678                 |
+
+
+Conclusion
+----------
+CLAHE preprocessing produced measurable changes: per-class AUROC improved for several pathologies and the average AUROC and average F1 increased slightly compared to the reproduced baseline (see overall metrics table above). In this run, CLAHE appears beneficial for classes such as Cardiomegaly, Mass, Pleural Thickening and Pneumothorax and shows a positive impact on both average AUROC and average F1.
+
+Observed F1 trends
+------------------
+Comparing per-class F1s across columns shows that CLAHE improved F1 relative to the reproduced baseline for 5 out of 13 classes: Consolidation, Edema, Emphysema, Infiltration, and Pleural Thickening. The reproduced baseline alone is better than CLAHE for Mass, while the original paper reports higher F1s for 7 classes (Atelectasis, Cardiomegaly, Effusion, Fibrosis, Hernia, Nodule, Pneumonia). Overall, CLAHE produces class-dependent gains — helpful for several pathologies but not uniformly better.
+
+Reproducibility note
+--------------------
+All reported replication and CLAHE evaluation runs were executed with the random seed set to `42` to ensure deterministic data splits and comparable results across experiments.
+
+Why I did NOT crop/segment to lung-only masks
+-----------------------------------------------
+I intentionally did not crop or segment images to the lung parenchyma (i.e. applying a lung mask) before training/evaluation. Cropping to lung-only regions removes important contextual information that the model needs for several labels that appear outside or at the borders of the lung interior. Examples include:
+
+- Cardiomegaly — requires seeing the heart silhouette and mediastinal contours.
+- Pleural Effusion — fluid often accumulates in pleural spaces outside the lung parenchyma and along the costophrenic angles.
+- Pleural Thickening — appears on pleural surfaces and may be missed if only lung interiors are retained.
+- Hernia — may present outside the lung fields and require the whole thoracic/upper abdominal view.
+- Some Masses/Nodules — depending on location, cropping to lungs can remove peripheral or juxta-pleural lesions.
+
+For these reasons, I kept the whole thoracic image so the model can learn from both intra- and extra-pulmonary cues
+
+Research note
+-------------
+Based on these results (lower loss, higher average AUROC and higher average F1), I will use the CLAHE-enhanced DannyNet replication as the default baseline for subsequent experiments and comparisons in this project.
+
+

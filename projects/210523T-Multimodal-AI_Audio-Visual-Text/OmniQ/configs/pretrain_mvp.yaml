@@ -1,0 +1,48 @@
+num_classes: 101
+vision_backbone: swin_tiny_patch4_window7_224
+
+frames: 32
+stride: 2
+size: 224
+
+data:
+  root: data/UCF101
+  trainlist: data/UCF101/splits/trainlist01.txt
+  classind:  data/UCF101/splits/classInd.txt
+
+optim:
+  lr: 1.0e-4
+  weight_decay: 0.05
+
+train:
+  batch_size: 4
+  num_workers: 2
+  epochs: 1
+  amp: true
+  save_dir: runs/pretrain_mvp/
+
+fusion:
+  depth: 2
+  d_state: 128
+  expand: 2
+  dropout: 0.1
+
+text:
+  model_name: Qwen/Qwen2.5-Omni-7B  # Qwen provider triggers QwenTextEmbedder
+  max_len: 16
+  use_pretrained: false
+  trainable: false
+
+mask:
+  video_ratio: 0.4
+  text_ratio: 0.15
+
+lora:
+  enabled: true
+  r: 8
+  alpha: 16
+  dropout: 0.05
+loss:
+  video_mse: 0.5
+  text_ce: 1.0
+

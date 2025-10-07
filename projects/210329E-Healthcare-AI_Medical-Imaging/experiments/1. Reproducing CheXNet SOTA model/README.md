@@ -1,4 +1,4 @@
-# Original Paper Version - CheXNet Reproduction
+# Experiment 1 - Original Paper Version - CheXNet Reproduction
 
 In here, I attempted to reproduce CheXNet as described in the original research paper:  
 
@@ -40,4 +40,10 @@ The reproduced CheXNet model achieves a mean AUC of **0.8066** across the 14 pat
 Because the original CheXNet test set used in the paper is not publicly available, direct one-to-one comparison is limited. Differences in test set composition, labeling, and preprocessing can substantially affect AUROC numbers; therefore these reproduced scores should be interpreted as an approximate baseline rather than a definitive replication of the original results.
 
 For a stronger comparative study, access to the original test set or a carefully matched external test set would be necessary. Until then, the public NIH dataset provides a useful, consistent benchmark for measuring relative performance and reproducibility.
+
+### Reproducibility / Environment
+
+- This run was performed in the Kaggle environment (import the notebook into a Kaggle kernel). Set the accelerator to GPU (T4) and enable 2x GPUs if available (T4 * 2).
+- Dataset: NIH Chest X-ray (link above).
+- Estimated runtime: approximately 10–11 hours on the Kaggle T4*2 setup for the full training/evaluation run.
 

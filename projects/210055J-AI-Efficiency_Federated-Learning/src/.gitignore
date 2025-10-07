@@ -1,0 +1,7 @@
+/.anima
+/env
+/data
+/mlruns
+__pycache__/
+/mlartifacts
+/analysis/comparisons
