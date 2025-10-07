@@ -15,16 +15,23 @@ from datasets import load_dataset
 import random, re, csv, os, torch
 from dotenv import load_dotenv
 from sentence_transformers import SentenceTransformer, util
+import spacy
+import numpy as np
+
 
 # ---------------------------------------------------------------------
 # Setup
 # ---------------------------------------------------------------------
 load_dotenv()
 API_KEY = os.getenv("API_KEY")
+HF_KEY = os.getenv("HF_KEY")
 client = OpenAI(api_key=API_KEY)
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
-embedder = SentenceTransformer("mixedbread-ai/mxbai-embed-large-v1", device=device)
+embedder = SentenceTransformer("all-MiniLM-L6-v2")
+
+# Load spaCy for real POS tagging
+nlp = spacy.load("en_core_web_sm")
 
 # Load dataset
 dataset = load_dataset("lambada", split="test")
@@ -52,6 +59,27 @@ dev_texts = [ex["text"] for ex in clean_dev]
 dev_embs = embedder.encode(dev_texts, convert_to_tensor=True, show_progress_bar=True)
 print("Embeddings ready.")
 
+# POS of last word in each dev example
+dev_pos = [nlp(text)[-1].pos_ if len(nlp(text)) > 0 else "X" for text in dev_texts]
+
+
+# ---------------------------------------------------------------------
+# Hybrid similarity function: semantic + POS
+# ---------------------------------------------------------------------
+def get_hybrid_scores(test_context):
+    """Return hybrid similarity scores for all dev examples."""
+    test_emb = embedder.encode(test_context, convert_to_tensor=True)
+    sem_sim = util.cos_sim(test_emb, dev_embs)[0].cpu().numpy()
+
+    # POS similarity
+    doc = nlp(test_context)
+    test_pos = doc[-1].pos_ if len(doc) > 0 else "X"
+    pos_match = np.array([1.0 if p == test_pos else 0.0 for p in dev_pos])
+
+    # Combine semantic + POS
+    hybrid_score = 0.2 * sem_sim + 0.8 * pos_match
+    return hybrid_score
+
 # ---------------------------------------------------------------------
 # Prompt builder
 # ---------------------------------------------------------------------
@@ -60,48 +88,54 @@ def build_prompt(context, k=5, mode="cloze", use_semantic=True):
     Build a strong, instruction-driven few-shot prompt.
     """
 
-    if mode not in ["cloze", "default"]:
-        mode = "cloze"  # enforce clean structure
-
-    # === Instructional prefix ===
-    prefix = (
-    "Below are examples where you must predict the final missing word.\n"
-    "Each passage ends with a blank (_____), and the correct word follows after '→'.\n"
-    "Your task: predict the final word for the last passage.\n"
-    "Rules:\n"
-    "- Output exactly ONE meaningful English word (noun, verb, or name).\n"
-    "- DO NOT output continuation words like: I,he,the, a, an, and, of, to, in, on, or and any other of that type.\n"
-    "- No punctuation or explanations.\n\n"
-    )
-
     few_shot_examples = ""
 
     # === Few-shot example selection ===
     if k > 0:
         if use_semantic:
-            context_emb = embedder.encode(context, convert_to_tensor=True)
-            similarities = util.pytorch_cos_sim(context_emb, dev_embs)[0]
-            top_indices = similarities.topk(k).indices.tolist()
-            examples = [clean_dev[i] for i in top_indices]
+            scores = get_hybrid_scores(context)
+            top_k_indices = scores.argsort()[-k:][::-1]  # highest scores first
+            examples = [clean_dev[i] for i in top_k_indices]
         else:
             examples = random.sample(clean_dev, k)
-
-        for ex in examples:
-            text = ex["text"].strip()
-            ctx, gold = text.rsplit(" ", 1)
-            few_shot_examples += f"{ctx} _____ → {gold}\n\n"
 
 
     # === Format modes ===
     if mode == "cloze":
-        prompt = (
-        prefix
-        + few_shot_examples
-        + f"{context} _____ →"
-    )
+         # === Instructional prefix ===
+        prefix = (
+        "Below are examples where you must predict the final missing word.\n"
+        "Each passage ends with a blank (_____), and the correct word follows after '→'.\n"
+        "Your task: predict the final word for the last passage.\n"
+        "Rules:\n"
+        "- Output exactly ONE meaningful English word (noun, verb, or name).\n"
+        "- No punctuation or explanations.\n\n"
+        )
+
+        if k > 0:
+            for ex in examples:
+                text = ex["text"].strip()
+                ctx, gold = text.rsplit(" ", 1)
+                few_shot_examples += f"{ctx} _____ → {gold}\n\n"
+
+        prompt = prefix + few_shot_examples+ f"{context} _____ →"
 
     else:
-        prompt = prefix + few_shot_examples + "\nNow solve for the next passage.\n" + f"Passage: {context}\nAnswer:"
+         # === Instructional prefix ===
+        prefix = (
+        "Below are examples where you must predict the final missing word.\n"
+        "Your task: predict the final word for the last passage.\n"
+        "Rules:\n"
+        "- Output exactly ONE meaningful English word (noun, verb, or name).\n"
+        "- No punctuation or explanations.\n\n"
+        )
+
+        if k > 0:
+            for ex in examples:
+                text = ex["text"].strip()
+                ctx, gold = text.rsplit(" ", 1)
+                few_shot_examples += f"Passage: {ctx}\nAnswer: {gold}\n\n"
+        prompt = few_shot_examples + "\nNow solve for the next passage.\n" + f"Passage: {context}\nAnswer:"
 
     return prompt
 
