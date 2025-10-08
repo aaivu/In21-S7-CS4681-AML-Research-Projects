@@ -1,79 +1,84 @@
+# Development Environment:
+Platform: Kaggle
+Accelerator: T4 GPU × 2
+Framework: PyTorch with CUDA support
+
 # Core scientific computing
-numpy>=1.21.0
-pandas>=1.3.0
-scipy>=1.7.0
-scikit-learn>=1.0.0
+# numpy>=1.21.0
+# pandas>=1.3.0
+# scipy>=1.7.0
+# scikit-learn>=1.0.0
 
 # Machine Learning frameworks
-tensorflow>=2.8.0
-torch>=1.11.0
-transformers>=4.15.0
+# tensorflow>=2.8.0
+# torch>=1.11.0
+# transformers>=4.15.0
 
 # Data visualization
-matplotlib>=3.5.0
-seaborn>=0.11.0
-plotly>=5.5.0
-bokeh>=2.4.0
+# matplotlib>=3.5.0
+# seaborn>=0.11.0
+# plotly>=5.5.0
+# bokeh>=2.4.0
 
 # Deep Learning utilities
-keras>=2.8.0
-pytorch-lightning>=1.5.0
+# keras>=2.8.0
+# pytorch-lightning>=1.5.0
 
 # Natural Language Processing
-nltk>=3.7
-spacy>=3.4.0
-gensim>=4.1.0
+# nltk>=3.7
+# spacy>=3.4.0
+# gensim>=4.1.0
 
 # Computer Vision
-opencv-python>=4.5.0
-Pillow>=8.3.0
-imageio>=2.15.0
+# opencv-python>=4.5.0
+# Pillow>=8.3.0
+# imageio>=2.15.0
 
 # Data processing
-beautifulsoup4>=4.10.0
-requests>=2.27.0
-lxml>=4.7.0
+# beautifulsoup4>=4.10.0
+# requests>=2.27.0
+# lxml>=4.7.0
 
 # Jupyter and development
-jupyter>=1.0.0
-ipykernel>=6.6.0
-notebook>=6.4.0
+# jupyter>=1.0.0
+# ipykernel>=6.6.0
+# notebook>=6.4.0
 
 # Utilities
-tqdm>=4.62.0
-python-dotenv>=0.19.0
-pyyaml>=6.0
-joblib>=1.1.0
+# tqdm>=4.62.0
+# python-dotenv>=0.19.0
+# pyyaml>=6.0
+# joblib>=1.1.0
 
 # Statistical analysis
-statsmodels>=0.13.0
-pingouin>=0.5.0
+# statsmodels>=0.13.0
+# pingouin>=0.5.0
 
 # Model evaluation and interpretation
-shap>=0.40.0
-lime>=0.2.0
-eli5>=0.11.0
+# shap>=0.40.0
+# lime>=0.2.0
+# eli5>=0.11.0
 
 # Hyperparameter tuning
-optuna>=2.10.0
-hyperopt>=0.2.7
+# optuna>=2.10.0
+# hyperopt>=0.2.7
 
 # MLOps and experiment tracking
-mlflow>=1.23.0
-wandb>=0.12.0
+# mlflow>=1.23.0
+# wandb>=0.12.0
 
 # Testing
-pytest>=7.0.0
-pytest-cov>=3.0.0
+# pytest>=7.0.0
+# pytest-cov>=3.0.0
 
 # Code quality
-black>=22.0.0
-flake8>=4.0.0
-isort>=5.10.0
+# black>=22.0.0
+# flake8>=4.0.0
+# isort>=5.10.0
 
 # Documentation
-sphinx>=4.4.0
-sphinx-rtd-theme>=1.0.0
+# sphinx>=4.4.0
+# sphinx-rtd-theme>=1.0.0
 
 # Research specific packages (uncomment as needed)
 # torchvision>=0.12.0
