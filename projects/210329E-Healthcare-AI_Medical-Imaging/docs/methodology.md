@@ -276,24 +276,20 @@ All models were trained under identical preprocessing, augmentation, and patient
 
 ### 5.3 Hardware and Software Requirements
 
-Hardware Configuration
-Model training and evaluation were primarily executed using dual NVIDIA T4 GPUs (T4 ×2) to enable parallelized Deep Ensemble inference.
-For local experimentation or replication, a GPU with ≥16 GB VRAM and at least 46 GB of storage is required to host the NIH ChestX-ray14 dataset and derived preprocessed files.
+**Hardware Configuration**
 
-Software Environment
-All experiments were conducted in Python, leveraging the following core libraries and frameworks:
+* Model training and evaluation were primarily executed on **dual NVIDIA T4 GPUs (T4 ×2)** to enable parallelized Deep Ensemble inference.
+* For local experimentation or replication, a **GPU with ≥16 GB VRAM** and at least **46 GB of storage** is recommended to accommodate the NIH ChestX-ray14 dataset and preprocessed files.
 
-Deep Learning: PyTorch (torch, torch.nn, torch.optim)
+**Software Environment**
+All experiments were conducted in **Python**, utilizing the following core libraries and frameworks:
 
-Computer Vision: torchvision (pretrained architectures and transforms), PIL (image handling)
-
-Data Processing: numpy, pandas, os
-
-Evaluation and Metrics: sklearn.metrics (AUROC, F1-score, calibration metrics)
-
-Visualization and Logging: matplotlib, seaborn, wandb (Weights & Biases)
-
-Model Interpretability: torchcam and pytorch-gradcam for Grad-CAM visual explanations of thoracic regions influencing predictions
+* **Deep Learning:** PyTorch (`torch`, `torch.nn`, `torch.optim`)
+* **Computer Vision:** `torchvision` (pretrained architectures and transforms), PIL (image handling)
+* **Data Processing:** `numpy`, `pandas`, `os`
+* **Evaluation and Metrics:** `sklearn.metrics` (AUROC, F1-score, calibration metrics)
+* **Visualization and Logging:** `matplotlib`, `seaborn`, `wandb` (Weights & Biases)
+* **Model Interpretability:** `torchcam` and `pytorch-gradcam` for Grad-CAM visual explanations highlighting thoracic regions influencing predictions
 
 ## 6. Implementation Plan
 
