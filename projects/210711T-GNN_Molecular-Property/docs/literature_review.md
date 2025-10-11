@@ -101,8 +101,6 @@ The literature reveals two major trends: (1) representation learning via large-s
 
 ## References
 
-[Use academic citation format - APA, IEEE, etc.]
-
 1. Z. Wu, B. Ramsundar, E. N. Feinberg, et al., “MoleculeNet: A benchmark for molecular machine learning,” Chemical Science, vol. 9, no. 2, pp. 513–530, 2018.
 
 2. K. Xu, W. Hu, J. Leskovec, and S. Jegelka, “How Powerful Are Graph Neural Networks?,” Proc. ICLR, 2019.
