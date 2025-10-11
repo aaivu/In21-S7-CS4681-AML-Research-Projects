@@ -7,7 +7,7 @@
 ## 1. Overview
 
 This project investigates fine-tuning strategies for molecular property prediction using Graph Neural Networks (GNNs), focusing on the HIV inhibition dataset from MoleculeNet. The objective is to improve model performance under severe class imbalance without pretraining.
-We build upon the GraphMVP framework — which integrates 2D/3D molecular representations — but simplify the pipeline to analyze imbalance-aware fine-tuning using a 2D encoder (GIN). The study evaluates the effect of focal loss, balanced sampling, and learning-rate scheduling on model stability and accuracy.
+We build upon the GraphMVP framework which integrates 2D/3D molecular representations but simplify the pipeline to analyze imbalance-aware fine-tuning using a 2D encoder (GIN). The study evaluates the effect of focal loss, balanced sampling, and learning-rate scheduling on model stability and accuracy.
 
 ## 2. Research Design
 
