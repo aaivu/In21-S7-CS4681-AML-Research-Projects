@@ -7,7 +7,7 @@
 ## Abstract
 
 This research focuses on improving molecular property prediction using Graph Neural Networks (GNNs), specifically targeting HIV inhibition classification from the MoleculeNet benchmark. Molecules are represented as graphs, where atoms and bonds serve as nodes and edges, respectively. While recent works such as GraphMVP have shown that multi-view pretraining across 2D and 3D molecular representations can enhance generalization, many real-world deployments lack sufficient data or computational resources for large-scale pretraining.
-This project explores an alternative — improving fine-tuning stability and accuracy without pretraining by addressing class imbalance and optimization challenges. We extend the GraphMVP framework to incorporate focal loss, class-balanced sampling, automatic mixed precision (AMP), and adaptive learning rate scheduling. Preliminary experiments show consistent improvement in ROC-AUC and PR-AUC scores on the HIV dataset. The outcome of this study will be a lightweight, reproducible fine-tuning protocol adaptable to both 2D and future 3D-aware molecular encoders.
+This project explores an alternative  improving fine-tuning stability and accuracy without pretraining by addressing class imbalance and optimization challenges. We extend the GraphMVP framework to incorporate focal loss, class-balanced sampling, automatic mixed precision (AMP), and adaptive learning rate scheduling. Preliminary experiments show consistent improvement in ROC-AUC and PR-AUC scores on the HIV dataset. The outcome of this study will be a lightweight, reproducible fine-tuning protocol adaptable to both 2D and future 3D-aware molecular encoders.
 
 ## 1. Introduction
 
