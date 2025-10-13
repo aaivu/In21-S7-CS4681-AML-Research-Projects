@@ -12,19 +12,14 @@ $$
 \Big[ w_{p} \, y_i \log(p_i) + w_{n} \, (1 - y_i) \log(1 - p_i) \Big]
 $$
 
-where \( y_i \in \{0, 1\} \) denotes the ground-truth label for sample \( i \), \( p_i \) represents the predicted probability, and \( w_p \) and \( w_n \) correspond to the weights assigned to the positive (COVID-19) and negative (Non-COVID) classes, respectively.
+where `y_i ∈ {0, 1}` denotes the ground-truth label for sample `i`, `p_i` represents the predicted probability, and `w_p` and `w_n` correspond to the weights assigned to the positive (COVID-19) and negative (Non-COVID) classes, respectively.
 
 The **Focal Loss**, on the other hand, dynamically scales the cross-entropy loss by a factor that down-weights well-classified examples and focuses more on hard or misclassified samples. It is mathematically expressed as:
 
-$$
-\mathcal{L}_{\text{Focal}} = 
-- \frac{1}{N} \sum_{i=1}^{N} \Big[
-\alpha (1 - p_i)^{\gamma} y_i \log(p_i)
-+ (1 - \alpha) p_i^{\gamma} (1 - y_i) \log(1 - p_i)
-\Big]
-$$
+$$\mathcal{L}_{\text{Focal}} = - \frac{1}{N} \sum_{i=1}^{N} \Big[ \alpha (1 - p_i)^{\gamma} y_i \log(p_i) + (1 - \alpha) p_i^{\gamma} (1 - y_i) \log(1 - p_i) \Big]$$
 
-where \( \alpha \) is the class-balancing parameter and \( \gamma \) is the focusing parameter that adjusts the rate at which easy examples are down-weighted.
+
+where `α` is the class-balancing parameter and `γ` is the focusing parameter that adjusts the rate at which easy examples are down-weighted.
 
 Both Focal Loss and WBCE achieved identical improvements over the baseline BCE loss, effectively mitigating the impact of class imbalance. This confirms that incorporating class-aware weighting mechanisms significantly enhances classification performance in imbalanced medical imaging datasets, even before applying data augmentation techniques.
 
