@@ -1,8 +1,8 @@
 # Literature Review: Impact of Activation Functions on PEGASUS-X for Abstractive Text Summarization
 
-**Student:** 210314E
-**Research Area:** NLP: Text Generation (Abstractive Summarization)
-**Date:** 2025-09-01
+**Student:** 210314E <br>
+**Research Area:** NLP: Text Generation (Abstractive Summarization) <br>
+**Date:** 2025-09-01 <br>
 
 ## Abstract
 
@@ -18,9 +18,9 @@ Abstractive text summarization aims to condense lengthy documents into concise, 
 - Abstractive summarization
 - Transformer models
 - PEGASUS-X
-- Activation functions (GELU, ReLU, SiLU, Swish)
+- Activation functions
 - Long document summarization
-- Efficient attention mechanisms
+
 - Synonyms: Nonlinear activations, feed-forward networks, encoder-decoder architectures
 
 ### Databases Searched
@@ -84,14 +84,14 @@ While activation functions are explored in general NLP and vision, their impact 
 
 **Why it matters:** Activation functions affect convergence and representational power, potentially optimizing performance on long documents without architectural overhaul.
 
-**How your project addresses it:** Experimentally replace GELU with ReLU and SiLU in PEGASUS-X, evaluating on diverse datasets to quantify trade-offs.
+**How this project addresses it:** Experimentally replace GELU with ReLU and SiLU in PEGASUS-X, evaluating on diverse datasets to quantify trade-offs.
 
 ### Gap 2: Limited Exploration of Alternatives for Long-Document Tasks
 Long-document summarization emphasizes efficiency, but activation smoothness for gradient stability in extended contexts is underexplored.
 
 **Why it matters:** Smoother activations may improve stability and quality for complex inputs like GovReport.
 
-**How your project addresses it:** Fine-tune PEGASUS-X variants on long datasets, measuring ROUGE scores to identify optimal activations.
+**How this project addresses it:** Fine-tune PEGASUS-X variants on long datasets, measuring ROUGE scores to identify optimal activations.
 
 ## 5. Theoretical Framework
 
@@ -99,7 +99,7 @@ Activation functions modulate neuron outputs, influencing gradient flow and repr
 
 ## 6. Methodology Insights
 
-Common methodologies include fine-tuning pretrained models on summarization datasets, evaluating with ROUGE metrics. Experimental setups vary hyperparameters like learning rate and batch size, using libraries like Hugging Face Transformers. Promising approaches for this project: systematic activation replacement during fine-tuning, controlled comparisons across datasets (CNN/DailyMail for short, GovReport for long), and ablation studies on convergence and performance.
+Common methodologies include fine-tuning pretrained models on summarization datasets, evaluating with ROUGE metrics. Experimental setups vary hyperparameters like learning rate and batch size, using libraries like Hugging Face Transformers. Promising approaches for this project include systematic activation replacement during fine-tuning, controlled comparisons across datasets, and ablation studies on convergence and performance.
 
 ## 7. Conclusion
 
@@ -178,11 +178,3 @@ The literature underscores transformers' dominance in summarization, PEGASUS-X's
 [35] G. Klambauer, T. Unterthiner, A. Mayr, and S. Hochreiter, "Self-normalizing neural networks," in Proceedings of the 31st International Conference on Neural Information Processing Systems, ser. NIPS'17, Long Beach, California, USA: Curran Associates Inc., 2017, pp. 972–981.
 
 [36] S. Elfwing, E. Uchibe, and K. Doya, "Sigmoid-weighted linear units for neural network function approximation in reinforcement learning," Neural Networks, vol. 107, pp. 3–11, 2018.
-
----
-
-**Notes:**
-- This review draws from the project's progress report and short paper, incorporating 36 references.
-- Focus on recent work (2018-2024) with seminal papers included.
-- Includes conference papers, journal articles, and preprints.
-- Will be updated as new literature is discovered.
