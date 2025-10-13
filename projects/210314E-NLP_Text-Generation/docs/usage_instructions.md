@@ -1,3 +1,3 @@
 # Student Usage Instructions
 
-[Instructions will be loaded from template]
+To run the notebooks, you will have to upload the notebook to Kaggle and enable GPU P100. The datasets and trained models will have to be propoerly imported.
