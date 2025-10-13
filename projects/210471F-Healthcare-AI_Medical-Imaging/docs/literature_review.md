@@ -195,7 +195,8 @@ The principles of this multi-faceted approach, including advanced preprocessing,
 <small>[14] H. Yang, L. Wang, Y. Xu, and X. Liu, “CovidViT: a novel neural network with self-attention mechanism to detect Covid-19 through X-ray images,” Int. J. Mach. Learn. & Cyber., vol. 14, no. 3, pp. 973–987, Mar. 2023, doi: 10.1007/s13042-022-01676-7.</small>
 
 
-<small>[15] [My paper citation here]</small>
+<small>[15] I. Perera and U. Thayasivam, “A Novel Multi-branch ConvNeXt Architecture for Identifying Subtle Pathological Features in CT Scans,” Oct. 10, 2025, arXiv: arXiv:2510.09107. doi: 10.48550/arXiv.2510.09107.
+</small>
 
 
 <small>[16] M. Jun et al., “COVID-19 CT Lung and Infection Segmentation Dataset.” Zenodo, Apr. 20, 2020. Accessed: Sept. 04, 2025. [Online]. Available: https://zenodo.org/records/3757476</small>
