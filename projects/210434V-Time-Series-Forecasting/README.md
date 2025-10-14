@@ -1,15 +1,15 @@
-# Time Series Classification - 210434V
+# Time Series Forecasting - 210434V
 
 ## Student Information
 
 - **Index Number:** 210434V
-- **Research Area:** Time Series Classification
+- **Research Area:** Time Series Forecasting  
 - **GitHub Username:** @Niroshan2001
 - **Email:** ganeshan.21@cse.mrt.ac.lk
 
 ## Project Structure
 ```
-210434V-Time-Series-Classification/
+210434V-Time-Series-Forecasting/
 ├── README.md                    # This file
 ├── docs/
 │   ├── research_proposal.md     # Your research proposal (Required)
