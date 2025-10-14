@@ -21,8 +21,6 @@ wheels/
 *.egg
 MANIFEST
 
-# Jupyter Notebook
-.ipynb_checkpoints
 
 # Environment
 .env
@@ -49,28 +47,3 @@ venv.bak/
 ehthumbs.db
 Thumbs.db
 
-# Data files (large datasets)
-*.csv
-*.h5
-*.hdf5
-*.pkl
-*.pickle
-
-# Model files
-*.pth
-*.pt
-*.model
-*.ckpt
-
-# Results
-*.png
-*.jpg
-*.jpeg
-*.pdf
-!results/*.png  # Keep result visualizations
-
-# Logs
-*.log
-logs/
-runs/
-wandb/
