@@ -7,14 +7,27 @@ def evaluate_dataset(df):
     for _, row in df.iterrows():
         qid, q, gold = row["id"], row["question"], row["gold_answer"]
 
-        raw_out, log = solve_math_with_retries(q)
-        final_ans = log.get("final_answer", None)
+        # Initialize variables for attempts
+        max_attempts = 3
+        attempts = 0
+        final_ans = None
+        log = {}
 
-        correct = (str(final_ans).strip() == str(gold).strip())
+        while attempts < max_attempts:
+            raw_out, log = solve_math_with_retries(q, max_attempts=3)
+            final_ans = log.get("final_answer", None)
+            if final_ans is not None:
+                break
+            attempts += 1
+
+        if attempts == max_attempts and final_ans is None:
+            print(f"Skipping question {qid} after {max_attempts} attempts.")
+
+        correct = (str(final_ans).strip() == str(gold).strip()) if final_ans else False
 
         # Calculate efficiency metrics
         total_tokens = log.get("total_tokens", 0)
-        llm_calls = log.get("tries", 1)  # Updated to use `tries` from log
+        llm_calls = log.get("tries", attempts)  # Updated to reflect attempts
         walltime_sec = log.get("walltime_sec", 0)
         exec_successes = log.get("exec_successes", 0)
         solved = 1 if correct else 0
@@ -32,7 +45,7 @@ def evaluate_dataset(df):
             "model_output": raw_out,
             "final_answer": final_ans,
             "correct": correct,
-            "api_tries": log.get("tries", 0),
+            "api_tries": log.get("tries", attempts),
             "format_retries_used": log.get("format_retries_used", 0),
             "llm_calls": llm_calls,
             "total_tokens": total_tokens,
