@@ -151,7 +151,47 @@ python -m torch.distributed.launch \
 
 ---
 
-### 4.3 Temporal Evaluation
+### 4.3 Temporal V2 Finetuning
+
+Command:
+```bash
+python -m torch.distributed.launch \
+  --nproc_per_node=1 --nnodes=1 --master_port=1234 \
+  main_finetune.py \
+  --batch_size 4 \
+  --accum_iter 8 \
+  --epochs 5 \
+  --blr 1e-3 \
+  --layer_decay 0.75 \
+  --weight_decay 0.05 \
+  --drop_path 0.2 \
+  --reprob 0.25 \
+  --mixup 0.8 \
+  --cutmix 1.0 \
+  --model vit_large_patch16 \
+  --model_type temporal_v2 \
+  --dataset temporal \
+  --finetune ../experiments/temporal/pretrain_fmow_temporal.pth \
+  --train_path ../data/temporal/train_62classes_subset.csv \
+  --test_path ../data/temporal/val_62classes_subset.csv \
+  --output_dir ../experiments/temporal_v2/finetune \
+  --log_dir ../experiments/temporal_v2/finetune \
+  --dist_eval \
+  --num_workers 4 \
+  --seq_size 3
+```
+
+**Command Line Changes:**
+- To run the V2 model, use `--model_type temporal_v2`.
+- Only change is the `--seq_size` flag which allows you to use a different sequence length.
+- The default sequence length is `3`. When setting higher values, you may have to adjust `--batch_size` and `--accum_iter` to fit in GPU memory.
+- Change `--output_dir` and `--log_dir` to subfolders under `experiments/temporal_v2/finetune`.
+
+**Note:** To run a validation with provided V2 model weights, use `--finetune ../experiments/temporal-finetune-vit-large.pth`.
+
+---
+
+### 4.4 Temporal Evaluation
 
 Command:
 ```bash
@@ -177,7 +217,7 @@ python -m torch.distributed.launch \
 
 ---
 
-### 4.4 Sentinel Pretraining
+### 4.5 Sentinel Pretraining
 
 Command:
 ```bash
@@ -214,7 +254,7 @@ python -m torch.distributed.launch \
 
 ---
 
-### 4.5 Sentinel Finetuning
+### 4.6 Sentinel Finetuning
 
 Command:
 ```bash
@@ -247,6 +287,44 @@ python -m torch.distributed.launch \
 - Change `--model` to a different backbone (e.g., ViT-Large) if you have enough compute.
 - If you use ViT-Large pretraining weights, match the finetune `--model` name to avoid shape mismatches.
 - `--dropped_bands` must match the pretraining setting.
+
+---
+
+### 4.7 Sentinel V2 Finetuning
+
+Command:
+```bash
+python -m torch.distributed.launch \
+  --nproc_per_node=1 --nnodes=1 \
+  main_finetune.py \
+  --batch_size 128 \
+  --accum_iter 8 \
+  --blr 0.0002 \
+  --epochs 30 \
+  --input_size 96 \
+  --patch_size 16 \
+  --weight_decay 0.05 \
+  --drop_path 0.2 \
+  --reprob 0.25 \
+  --mixup 0.8 \
+  --cutmix 1.0 \
+  --model vit_base_patch16 \
+  --model_type group_c_v2 \
+  --dataset_type sentinel \
+  --dropped_bands 0 9 10 \
+  --train_path ../data/sentinel/train_subset.csv \
+  --test_path ../data/sentinel/val_subset.csv \
+  --output_dir ../experiments/sentinel_v2/finetune \
+  --log_dir ../experiments/sentinel_v2/finetune \
+  --finetune ../experiments/sentinel/pretrain-vit-base-e199.pth \
+  --num_workers 4
+```
+
+**Command Line Changes:**
+- To run the V2 model, use `--model_type group_c_v2`.
+- Change `--output_dir` and `--log_dir` to subfolders under `experiments/sentinel_v2/finetune`.
+
+**Note:** To run a validation with provided V2 model weights, use `--finetune ../experiments/sentinel-finetune-vit-base.pth`.
 
 ---
 

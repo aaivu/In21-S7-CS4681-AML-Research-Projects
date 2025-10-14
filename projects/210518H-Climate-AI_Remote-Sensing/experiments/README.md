@@ -13,10 +13,16 @@ Create two subdirectories under `experiments` to separate runs for the two datas
 ```bash
 mkdir -p temporal
 mkdir -p sentinel
+
+# Create directories for the updated configurations
+mkdir -p temporal_v2
+mkdir -p sentinel_v2
 ```
 
 - `temporal/` → runs on the **fMoW Temporal dataset**
 - `sentinel/` → runs on the **fMoW-Sentinel dataset**
+- `temporal_v2/` → runs on the **Temporal V2 model**
+- `sentinel_v2/` → runs on the **Sentinel V2 model**
 
 ---
 
@@ -78,6 +84,40 @@ If you have access to **larger compute**, you may download the **ViT-Large** wei
 
 ---
 
+## Temporal V2 - Pretrained Weights
+
+Model weights are hosted on Zenodo: [https://zenodo.org/records/17277063](https://zenodo.org/records/7369797)
+
+**Available weights:**
+- Finetune Temporal, ViT-L, 5 epochs
+
+**Setup:**
+```bash
+cd temporal_v2
+
+wget https://zenodo.org/records/17277063/files/temporal-finetune-vit-large.pth
+```
+
+---
+
+## Sentinel V2 - Pretrained Weights
+
+Model weights are hosted on Zenodo: [https://zenodo.org/records/17277063](https://zenodo.org/records/7369797)
+
+**Available weights:**
+- Finetune Sentinel, ViT-B, 5 epochs
+
+**Setup:**
+```bash
+cd sentinel_v2
+
+wget https://zenodo.org/records/17277063/files/sentinel-finetune-vit-base.pth
+```
+
+**Note:** You can run evaluations with the V2 models to validate the results. Change the model run commands to use these checkpoint files.
+
+---
+
 ## Final Expected Structure
 
 After downloading the model weights, the `experiments` directory should look like:
@@ -87,9 +127,15 @@ After downloading the model weights, the `experiments` directory should look lik
 │   ├── pretrain_fmow_temporal.pth
 │   └── finetune_fmow_temporal.pth
 │
+└── temporal_v2
+│   └── temporal-finetune-vit-large.pth
+│
 └── sentinel
-    ├── pretrain-vit-base-e199.pth
-    └── finetune-vit-base-e7.pth
+│   ├── pretrain-vit-base-e199.pth
+│   └── finetune-vit-base-e7.pth
+│
+└── sentinel_v2
+    └── sentinel-finetune-vit-base.pth
 ```
 When you run training or finetuning experiments, **results, logs, and checkpoints** will be saved under these directories in subfolders named by the runtime configuration.
 
