@@ -33,7 +33,7 @@ def main():
 
             # Evaluate the dataset
             print(f"Running evaluation with SEED={seed} and TEMPERATURE={temperature}")
-            results = evaluate_dataset(df.iloc[26:36])  # Evaluate rows 27 to 36 (0-based index)
+            results = evaluate_dataset(df.iloc[:5])  # Evaluate the first five rows (0-based index)
             print(results.to_string())  
 
             # Log run details
