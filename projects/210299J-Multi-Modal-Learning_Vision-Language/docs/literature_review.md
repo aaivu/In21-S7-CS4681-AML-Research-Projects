@@ -61,46 +61,83 @@ The diffusion-prior approach reinforces the role of CLIP-based alignment not jus
 
 - Luo et al., 2024 – Unleashing Text-to-Image Diffusion Prior for Zero-Shot Image Captioning [2].
 
+### 3.3 The Nocaps Benchmark for Novel Object Captioning
+
+Nocaps (Agrawal et al., 2019) was introduced to measure models’ ability to caption novel visual concepts absent from training data.
+Built from the Open Images V4 dataset, it contains 15 k images and 166 k human captions with 600+ object categories, including 400 novel ones unseen during training.
+The benchmark defines three test splits—in-domain, near-domain, and out-of-domain—to assess generalization to unseen categories.
+Baseline methods such as Neural Baby Talk (NBT) and Constrained Beam Search (CBS) improved coverage of novel words but produced awkward, weakly grounded captions.
+Nocaps thus exposed the limitation of purely generative captioners and inspired hybrid models integrating object detection and pretrained vision–language encoders.
+For the present study, Nocaps serves as the evaluation benchmark to validate whether CLIP-guided reranking enhances CoCa’s grounding on unseen categories.
+
+**Key Paper:**
+
+- Agrawal et al., 2019 – nocaps: Novel Object Captioning at Scale [3].
+
 ## 4. Research Gaps and Opportunities
 
 [Identify gaps in current research that your project could address]
 
-### Gap 1: [Description]
+### Gap 1: Lack of Alignment Signal during Inference
 
-**Why it matters:** [Explanation]
-**How your project addresses it:** [Your approach]
+**Why it matters:** Although multimodal models such as CoCa are trained with both contrastive and generative losses, only the generative pathway contributes at decoding time. This causes fluent yet weakly grounded captions.
 
-### Gap 2: [Description]
+**How your project addresses it:** Introduce an inference-time hybrid scoring mechanism combining CoCa’s log-probability with CLIPScore (semantic similarity) to better align language output with visual content.
 
-**Why it matters:** [Explanation]
-**How your project addresses it:** [Your approach]
+### Gap 2: Limited Zero-Shot Generalization to Novel Objects
+
+**Why it matters:** Models often fail on the out-of-domain Nocaps split where unseen categories appear.
+
+**How your project addresses it:** By reranking multiple CoCa caption candidates using CLIPScore, captions most semantically aligned with visual input are selected—enhancing zero-shot generalization without retraining.
+
+### Gap 3 – High Training Cost of Diffusion-based Captioners
+
+**Why it matters:**
+Diffusion models such as PCM-Net demand large compute and synthetic data generation.
+
+**How this project addresses it:**
+The proposed reranking approach is training-free, providing a lightweight yet effective alternative leveraging pretrained CLIP embeddings.
 
 ## 5. Theoretical Framework
 
-[Describe the theoretical foundation for your research]
+This research is grounded in multimodal representation learning and contrastive learning theory.
+
+Contrastive Learning: Encourages semantic alignment between heterogeneous modalities by maximizing agreement between matched image–text pairs while minimizing non-matching pairs.
+
+Generative Modeling: Uses likelihood-based objectives to generate text conditioned on visual embeddings.
+
+Hybrid Inference Theory: Combines these principles at inference by scoring both probabilistic fluency (log P) and semantic alignment (CLIPScore), normalized via z-scoring to prevent one modality from dominating.
+The combined score is formalized as:
+
+HybridScore(𝑐) = ℓ(𝑐)- 𝛼\*𝑠(𝑐)
+where ℓ and s are z-normalized log-likelihood and CLIPScore values, and α balances alignment and fluency.
 
 ## 6. Methodology Insights
 
-[What methodologies are commonly used? Which seem most promising for your work?]
+Common methodologies in multimodal captioning research include:
+
+Encoder–Decoder Transformers for text generation (SimVLM, BLIP, CoCa).
+
+Contrastive Pre-training on large-scale image–text datasets (CLIP, ALIGN).
+
+Diffusion Priors for synthetic image–text generation (PCM-Net).
+
+Reranking Mechanisms based on CLIPScore or cross-modal similarity for post-generation calibration.
+
+For this project, the methodology focuses on inference-time reranking: generating N candidate captions per image via CoCa, computing log P and CLIPScore for each, applying z-score normalization, and combining them via the hybrid formula above to select the top-ranked caption.
 
 ## 7. Conclusion
 
-[Summarize key findings and how they inform your research direction]
+The reviewed literature shows a clear trajectory in vision–language modeling—from separate encoders toward unified multimodal transformers that jointly learn contrastive and generative tasks. Despite significant progress, inference alignment remains under-explored.
+Diffusion-based methods and CLIP-weighted training highlight the value of external semantic supervision, but they increase complexity.
+The proposed CLIP-guided reranking thus occupies a promising middle ground: lightweight, training-free, and theoretically consistent with CoCa’s dual objectives.
+Evaluating this approach on Nocaps directly addresses the long-standing challenge of novel object captioning, potentially improving caption grounding while maintaining fluency.
 
 ## References
 
-[Use academic citation format - APA, IEEE, etc.]
-
-1. [Reference 1]
-2. [Reference 2]
-3. [Reference 3]
+1. Yu, J., Wang, Z., Vasudevan, V., Yeung, L., Seyedhosseini, M., & Wu, Y. (2022). CoCa: Contrastive Captioners are Image-Text Foundation Models. arXiv:2205.01917 [cs.CV]. https://arxiv.org/abs/2205.01917
+2. Luo, J., Chen, J., Li, Y., Pan, Y., Feng, J., Chao, H., & Yao, T. (2024). Unleashing Text-to-Image Diffusion Prior for Zero-Shot Image Captioning. arXiv:2501.00437 [cs.CV]. https://arxiv.org/abs/2501.00437
+3. Agrawal, H., Desai, K., Wang, Y., Chen, X., Jain, R., Johnson, M., Batra, D., Parikh, D., Lee, S., & Anderson, P. (2019). nocaps: Novel Object Captioning at Scale. arXiv:1812.08658 [cs.CV]. https://arxiv.org/abs/1812.08658
    ...
 
 ---
-
-**Notes:**
-
-- Aim for 15-20 high-quality references minimum
-- Focus on recent work (last 5 years) unless citing seminal papers
-- Include a mix of conference papers, journal articles, and technical reports
-- Keep updating this document as you discover new relevant work
