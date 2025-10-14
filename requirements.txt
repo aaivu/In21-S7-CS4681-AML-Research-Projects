@@ -5,7 +5,7 @@ scipy>=1.7.0
 scikit-learn>=1.0.0
 
 # Machine Learning frameworks
-tensorflow>=2.8.0
+tensorflow==1.13.1
 torch>=1.11.0
 transformers>=4.15.0
 
