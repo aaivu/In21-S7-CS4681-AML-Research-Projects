@@ -97,15 +97,7 @@ This skips optimization, loads the newest checkpoint, and reports validation met
 
 Make sure the checkpoint you wish to use is present in `output_path`; otherwise the script starts from random weights.
 
-## 7. Monitoring & Result Tracking
-- Launch TensorBoard to follow training curves:
-  ```bash
-  tensorboard --logdir src/output
-  ```
-- Summaries for each experiment iteration live in `experiments/`. Keep that directory updated whenever you change hyperparameters.
-- Archive key metrics and qualitative findings in `results/mid-evaluation-results.md` and `results/final-evaluation-results.md`.
-
-## 8. Troubleshooting & Tips
+## 7. Troubleshooting & Tips
 - **Missing module errors:** Confirm `config.model.name` has a matching module inside `src/models/`. Import errors mean you need to expose the class in `src/models/__init__.py` before training.
 - **Dataset not found:** Double-check the `processed/` folder path and that `metadata.pkl` exists. If the loader prints `Metadata file exists: False`, rebuild the dataset.
 - **Slow or unstable training:** Reduce `batch_size`, shorten neighbor fan-out (`samples`), or lower `epochs`. Keep `num_workers=0` on macOS to avoid multiprocessing hangs.
