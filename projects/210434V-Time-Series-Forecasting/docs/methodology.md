@@ -316,6 +316,28 @@ python -u train.py ETTh2 forecast_multivar --loader forecast_csv --repr-dims 320
 
 ---
 
+## 9. Implementation Details
+
+### 9.1 Technical Environment
+- **Platform:** Kaggle Notebooks with GPU acceleration (Tesla P100/T4)
+- **Programming Language:** Python 3.8+
+- **Key Libraries:** PyTorch, scikit-learn, pandas, numpy, bottleneck
+- **Reproducibility:** Fixed random seed (42) for consistent results
+
+### 9.2 Development Approach
+- **Version Control:** Git repository with organized branch structure
+- **Code Organization:** Modular implementation with clear separation of concerns
+- **Documentation:** Comprehensive inline comments and usage instructions
+- **Testing:** Systematic validation across multiple datasets and horizons
+
+### 9.3 Computational Requirements
+- **Memory:** 13GB RAM (Kaggle standard allocation)
+- **Storage:** 20GB working directory + 5GB temporary files
+- **Runtime:** Approximately 15 hours total across all experiments
+- **Scalability:** Designed for efficient execution in cloud environments
+
+---
+
 ## 10. Experimental Workflow (As Implemented)
 
 ### 10.1 Environment Setup
