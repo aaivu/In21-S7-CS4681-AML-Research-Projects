@@ -28,7 +28,7 @@ Treating edges differently allows the model to capture semantic differences and 
 | Model             | Accuracy | Macro-F1 | Micro-F1 |
 |-------------------|----------|----------|----------|
 | Iter-1 UniMP      | 70.20%   | 68.70%   | 69.40%   |
-| Iter-2 H-UniMP    | 73.71%   | 72.50%   | 70.20%   |
+| Iter-2 R-UniMP    | 73.71%   | 72.50%   | 70.20%   |
 
 ---
 
