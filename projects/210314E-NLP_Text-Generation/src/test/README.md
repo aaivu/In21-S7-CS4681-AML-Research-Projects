@@ -1,0 +1,1 @@
+This folder contains notebooks used to get main understanding about PEGASUS-X and fine tuning.
