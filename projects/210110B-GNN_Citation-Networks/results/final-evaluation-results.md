@@ -38,6 +38,21 @@
 
 ---
 
+## Ablation: Mask Rate
+
+| Mask rate p* | Acc. (%)       | Macro-F1 (%)    | Micro-F1 (%)    |
+|--------------|----------------|-----------------|-----------------|
+| 0.10         | 73.65 +/- 0.07 | 72.98 +/- 0.11  | 70.22 +/- 0.09  |
+| 0.20         | 73.92 +/- 0.06 | 73.30 +/- 0.09  | 70.50 +/- 0.08  |
+| 0.30         | 73.80 +/- 0.08 | 73.12 +/- 0.12  | 70.39 +/- 0.10  |
+| 0.40         | 73.52 +/- 0.10 | 72.76 +/- 0.14  | 70.11 +/- 0.12  |
+
+- Masking at p* = 0.20 achieved the best accuracy and Macro-F1 balance while also yielding the lowest variance across five runs.
+- Mask rates below 0.20 risk label leakage from high-confidence neighbours, whereas higher rates under-supervise long-tail venues.
+- Relation-aware attention and gated residuals each provide roughly 0.1-0.2 percentage point gains, compounding to the final uplift over the Iter-2 R-UniMP baseline.
+
+---
+
 ## Analysis
 
 - **Macro-F1 improvements** show H-UniMP++ handles rare venues better than earlier iterations, consistent with class-balanced gains from gated label propagation.

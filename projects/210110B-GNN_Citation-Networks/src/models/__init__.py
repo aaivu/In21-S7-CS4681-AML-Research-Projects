@@ -1,4 +1,16 @@
-from .iter1_baseline_unimp import GNNModel as Iter1BaselineUniMP
-from .iter2_hetero_unimp import GNNModel as Iter2HUniMP
-from .iter3_h_unimp_plus import GNNModel as Iter3HUniMPPlus
-__all__ = ['GNNModel', 'Iter1BaselineUniMP', 'Iter2HUniMP', 'Iter3HUniMPPlus']
+from . import baseline_unimp
+from . import hetero_unimp
+from . import mask_ablation_unimp
+
+Iter1BaselineUniMP = baseline_unimp.GNNModel
+Iter2HUniMP = hetero_unimp.GNNModel
+Iter3HUniMPPlus = mask_ablation_unimp.GNNModel
+
+__all__ = [
+    "baseline_unimp",
+    "hetero_unimp",
+    "mask_ablation_unimp",
+    "Iter1BaselineUniMP",
+    "Iter2HUniMP",
+    "Iter3HUniMPPlus",
+]
