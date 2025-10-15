@@ -88,7 +88,7 @@ The diffusion-based GenCast model represents the atmospheric state as a conditio
 \mathbf{x}_{t+1} = \mathcal{D}(\mathbf{x}_t + \epsilon_t), \quad \epsilon_t \sim \mathcal{N}(0, \Sigma)
 ```
 
-where ```math\( \mathcal{D} \)``` is the learned diffusion operator, and \( \epsilon_t \) is the perturbation noise. The goal is to design \( \Sigma \) such that it reflects realistic atmospheric variability, informed by geographic and physical constraints.
+where ```math \mathcal{D} ``` is the learned diffusion operator, and \( \epsilon_t \) is the perturbation noise. The goal is to design \( \Sigma \) such that it reflects realistic atmospheric variability, informed by geographic and physical constraints.
 
 ## 6. Methodology Insights
 
