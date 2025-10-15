@@ -24,7 +24,8 @@ def mel_spectrogram(
     power: float = 1.0,
     center: bool = True,
     norm: Optional[str] = "slaney",
-    mel_scale: str = "slaney"
+    mel_scale: str = "slaney",
+    to_db: bool = True
 ) -> torch.Tensor:
     """
     Compute mel-spectrogram from audio waveform.
@@ -42,6 +43,7 @@ def mel_spectrogram(
         center: Whether to center frames
         norm: Mel filterbank normalization
         mel_scale: Mel scale type
+        to_db: Whether to convert to log scale (dB). Set False if input is already in log scale.
     
     Returns:
         mel: (B, n_mels, T) mel-spectrogram
@@ -86,8 +88,10 @@ def mel_spectrogram(
     # Apply mel filterbank
     mel = torch.matmul(mel_fb.T, spec_mag)
     
-    # Convert to log scale
-    mel = torch.log(torch.clamp(mel, min=1e-5))
+    # Convert to log scale only if requested
+    # NOTE: Set to_db=False if comparing with mels that are already in log scale
+    if to_db:
+        mel = torch.log(torch.clamp(mel, min=1e-5))
     
     return mel
 
@@ -211,9 +215,11 @@ class VocoderLoss(nn.Module):
             time_loss = 0.0
         
         # 2. Mel-spectrogram loss
+        # NOTE: Do NOT convert to dB here since the dataset already provides log-scale mels
+        # We want to compare predicted audio's mel (in linear scale) with target audio's mel (in linear scale)
         if self.lambda_mel > 0:
-            mel_pred = mel_spectrogram(audio_pred, **self.mel_config)
-            mel_target = mel_spectrogram(audio_target, **self.mel_config)
+            mel_pred = mel_spectrogram(audio_pred, to_db=False, **self.mel_config)
+            mel_target = mel_spectrogram(audio_target, to_db=False, **self.mel_config)
             mel_loss = nn.functional.l1_loss(mel_pred, mel_target)
             losses['mel'] = mel_loss
         else:

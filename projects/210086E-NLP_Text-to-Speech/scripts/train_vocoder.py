@@ -86,6 +86,11 @@ class VocoderTrainer:
         self.best_val_loss = float('inf')
         self.best_val_mcd = float('inf')
         
+        # Early stopping
+        self.early_stopping_patience = config.get('early_stopping_patience', 20)
+        self.early_stopping_counter = 0
+        self.early_stopping_triggered = False
+        
         # Sample directory for audio logging
         self.sample_dir = self.log_dir / 'samples'
         self.sample_dir.mkdir(exist_ok=True)
@@ -144,20 +149,42 @@ class VocoderTrainer:
                 val_loss, val_mcd = self.validate()
                 self.model.train()
                 
+                # Check for improvement
+                improved = False
+                
                 # Save checkpoint if best
                 if val_mcd < self.best_val_mcd:
                     self.best_val_mcd = val_mcd
                     self.save_checkpoint('best_mcd.pt')
+                    improved = True
                 
                 if val_loss < self.best_val_loss:
                     self.best_val_loss = val_loss
                     self.save_checkpoint('best_loss.pt')
+                    improved = True
+                
+                # Early stopping logic
+                if improved:
+                    self.early_stopping_counter = 0
+                    print(f"✓ Validation improved! Early stopping counter reset.")
+                else:
+                    self.early_stopping_counter += 1
+                    print(f"✗ No improvement. Early stopping counter: {self.early_stopping_counter}/{self.early_stopping_patience}")
+                    
+                    if self.early_stopping_counter >= self.early_stopping_patience:
+                        print(f"\n⚠️  Early stopping triggered after {self.early_stopping_counter} validations without improvement.")
+                        self.early_stopping_triggered = True
+                        return np.mean(epoch_losses)  # Exit early from epoch
             
             # Save periodic checkpoint
             if self.global_step % self.config['checkpoint_interval'] == 0:
                 self.save_checkpoint(f'checkpoint_{self.global_step}.pt')
             
             self.global_step += 1
+            
+            # Check if early stopping was triggered
+            if self.early_stopping_triggered:
+                break
         
         # Learning rate decay per epoch
         self.scheduler.step()
@@ -195,6 +222,7 @@ class VocoderTrainer:
                 'f_min': 0.0,
                 'f_max': 8000.0
             }
+            # Mel spectrogram already returns log scale
             mel_pred = mel_spectrogram(audio_pred.cpu(), **mel_config)
             mel_target = mel_spectrogram(audio.cpu(), **mel_config)
             
@@ -243,6 +271,7 @@ class VocoderTrainer:
             'scheduler_state_dict': self.scheduler.state_dict(),
             'best_val_loss': self.best_val_loss,
             'best_val_mcd': self.best_val_mcd,
+            'early_stopping_counter': self.early_stopping_counter,
             'config': self.config
         }
         
@@ -262,13 +291,18 @@ class VocoderTrainer:
         self.epoch = checkpoint['epoch']
         self.best_val_loss = checkpoint['best_val_loss']
         self.best_val_mcd = checkpoint['best_val_mcd']
+        self.early_stopping_counter = checkpoint.get('early_stopping_counter', 0)
         
         print(f"Loaded checkpoint from step {self.global_step}")
+        print(f"Best validation loss: {self.best_val_loss:.4f}")
+        print(f"Best validation MCD: {self.best_val_mcd:.3f} dB")
+        print(f"Early stopping counter: {self.early_stopping_counter}")
     
     def train(self, num_epochs: int):
         """Train for multiple epochs."""
         print(f"\nStarting training for {num_epochs} epochs...")
         print(f"Total steps: ~{num_epochs * len(self.train_loader)}")
+        print(f"Early stopping patience: {self.early_stopping_patience} validations without improvement")
         
         for epoch in range(num_epochs):
             self.epoch = epoch
@@ -283,12 +317,22 @@ class VocoderTrainer:
             
             # Save epoch checkpoint
             self.save_checkpoint(f'epoch_{epoch + 1}.pt')
+            
+            # Check if early stopping was triggered
+            if self.early_stopping_triggered:
+                print(f"\n{'='*70}")
+                print(f"⚠️  Training stopped early at epoch {epoch + 1}")
+                print(f"Best validation loss: {self.best_val_loss:.4f}")
+                print(f"Best validation MCD: {self.best_val_mcd:.3f} dB")
+                print("="*70)
+                break
         
-        print("\n" + "="*70)
-        print("Training complete!")
-        print(f"Best validation loss: {self.best_val_loss:.4f}")
-        print(f"Best validation MCD: {self.best_val_mcd:.3f} dB")
-        print("="*70)
+        if not self.early_stopping_triggered:
+            print("\n" + "="*70)
+            print("Training complete!")
+            print(f"Best validation loss: {self.best_val_loss:.4f}")
+            print(f"Best validation MCD: {self.best_val_mcd:.3f} dB")
+            print("="*70)
 
 
 def main():
@@ -317,7 +361,8 @@ def main():
     
     # Loss weights
     parser.add_argument('--lambda_time', type=float, default=1.0)
-    parser.add_argument('--lambda_mel', type=float, default=45.0)
+    parser.add_argument('--lambda_mel', type=float, default=10.0,
+                        help='Mel loss weight (reduced from 45.0 due to linear scale comparison)')
     parser.add_argument('--lambda_stft', type=float, default=1.0)
     
     # Logging and checkpointing
@@ -326,6 +371,10 @@ def main():
     parser.add_argument('--log_interval', type=int, default=100)
     parser.add_argument('--val_interval', type=int, default=1000)
     parser.add_argument('--checkpoint_interval', type=int, default=5000)
+    
+    # Early stopping
+    parser.add_argument('--early_stopping_patience', type=int, default=20,
+                        help='Number of validations without improvement before stopping (0 to disable)')
     
     # Other arguments
     parser.add_argument('--num_workers', type=int, default=4)

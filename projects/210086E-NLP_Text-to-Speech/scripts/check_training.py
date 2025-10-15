@@ -40,14 +40,14 @@ def check_training_status(checkpoint_dir='checkpoints/istft_vocoder'):
     
     # Best checkpoints
     if checkpoints['best_mcd'].exists():
-        ckpt = torch.load(checkpoints['best_mcd'], map_location='cpu')
+        ckpt = torch.load(checkpoints['best_mcd'], map_location='cpu', weights_only=False)
         print(f"  ✓ best_mcd.pt")
         print(f"    - Step: {ckpt['global_step']}")
         print(f"    - Epoch: {ckpt['epoch']}")
         print(f"    - Best MCD: {ckpt['best_val_mcd']:.3f} dB")
     
     if checkpoints['best_loss'].exists():
-        ckpt = torch.load(checkpoints['best_loss'], map_location='cpu')
+        ckpt = torch.load(checkpoints['best_loss'], map_location='cpu', weights_only=False)
         print(f"  ✓ best_loss.pt")
         print(f"    - Step: {ckpt['global_step']}")
         print(f"    - Best Loss: {ckpt['best_val_loss']:.4f}")
@@ -56,7 +56,7 @@ def check_training_status(checkpoint_dir='checkpoints/istft_vocoder'):
     if checkpoints['periodic']:
         print(f"\n  Periodic Checkpoints: {len(checkpoints['periodic'])} files")
         latest = checkpoints['periodic'][-1]
-        ckpt = torch.load(latest, map_location='cpu')
+        ckpt = torch.load(latest, map_location='cpu', weights_only=False)
         print(f"  ✓ Latest: {latest.name}")
         print(f"    - Step: {ckpt['global_step']}")
         print(f"    - Epoch: {ckpt['epoch']}")
@@ -84,7 +84,7 @@ def check_training_status(checkpoint_dir='checkpoints/istft_vocoder'):
 
 def load_checkpoint_info(checkpoint_path):
     """Load and display checkpoint information."""
-    ckpt = torch.load(checkpoint_path, map_location='cpu')
+    ckpt = torch.load(checkpoint_path, map_location='cpu', weights_only=False)
     
     print(f"\nCheckpoint: {Path(checkpoint_path).name}")
     print("="*50)
