@@ -1,112 +1,153 @@
-🧪 Experiments — OurTD3: Agreement-Weighted Replay and Value-Improvement Regularization for Continuous Control
+# Experiments Guide: Folder Structure and How to Run
 
-1. Overview
+This guide summarizes the project layout and how to run the main training scripts for both OurTD3 and the TD3 baseline.
 
-This document summarizes the experimental setup and results corresponding to the paper
-“Agreement-Weighted Replay and Value-Improvement Regularization for Continuous Control.”
+## 1) Folder Structure (key paths)
 
-The experiments evaluate OurTD3, a modified Twin Delayed Deep Deterministic Policy Gradient (TD3) algorithm that introduces: 1. Agreement-Weighted Replay (AWR): reweights replay samples based on twin-critic temporal-difference (TD) error agreement. 2. Value-Improvement (VI) Regularizer: a small auxiliary critic loss that softens TD3’s pessimistic min-backup. 3. Gradient-Norm Clipping: added stability safeguard.
+```
+projects/210043V-RL_Model-Free-Control/
+├─ README.md
+├─ requirements.txt                 # Project-specific dependencies (Gymnasium, MuJoCo, Torch, etc.)
+├─ data/                            # (placeholder)
+├─ docs/
+│  ├─ usage_instructions.md         # Extra usage notes and hyperparameters
+│  ├─ research_proposal.md
+│  ├─ literature_review.md
+│  ├─ methodology.md
+│  └─ progress_reports/
+├─ experiments/
+│  └─ experiments.md                # This file
+├─ results/
+│  ├─ graphs/                       # Generated comparison plots
+│  ├─ halfcheetah-v5/               # Saved curves (.npy) per env/method
+│  ├─ hopper-v5/
+│  └─ Walker2d-v5/
+└─ src/
+   ├─ graphs/
+   │  ├─ plotter.py
+   │  └─ plot_compare.py
+   ├─ methods/
+   │  ├─ OurMethod/
+   │  │  ├─ train_ourTD3.py         # MAIN: OurTD3 training runner
+   │  │  └─ our_td3/
+   │  │     ├─ policy.py            # OurTD3 agent + config
+   │  │     ├─ td3_core.py          # Actor/Critic networks and utils
+   │  │     ├─ replay_per.py        # Prioritized replay (optional)
+   │  │     ├─ replay_vmfer.py      # Agreement-weighted replay
+   │  │     └─ vi_td3.py            # VI regularizer helpers
+   │  └─ Others/
+   │     ├─ main.py                 # MAIN: TD3 baseline runner (Gymnasium v5)
+   │     ├─ TD3/TD3.py              # TD3 implementation
+   │     └─ TD3-BC/TD3_BC.py        # TD3-BC reference implementation
+   └─ models/                       # Saved model checkpoints (.pt)
+```
 
-2. Goals
-   • Assess whether agreement-weighted replay improves sample-efficiency and training stability in online continuous control.
-   • Examine how the VI regularizer affects asymptotic performance and critic bias.
-   • Compare OurTD3 against TD3 and TD3-BC under identical conditions.
-   • Study the effect of varying hyperparameters $\kappa$ (agreement strength) and $\lambda$ (VI coefficient).
+Notes:
+- OurTD3-related code lives under `src/methods/OurMethod/`.
+- Baseline TD3 (and TD3-BC reference) are under `src/methods/Others/`.
+- Plot scripts under `src/graphs/` can aggregate `.npy` files in `results/` to reproduce comparison figures.
 
-3. Environments and Dataset
+## 2) Environment Setup (one-time)
 
-All experiments use the MuJoCo locomotion suite via Gymnasium v5.
+From `projects/210043V-RL_Model-Free-Control/`:
 
-Environment Description State Dim Action Dim Episode Length Characteristics
-Hopper-v5 1-leg hopper robot 11 3 ≤1000 Low-dim, unstable; early-phase sensitivity
-Walker2d-v5 2-leg planar walker 17 6 ≤1000 Mid-dim; coordination & stability
-HalfCheetah-v5 2-leg cheetah robot 17 6 1000 fixed Smooth long-horizon dynamics
+```
+python -m venv .venv
+.venv\Scripts\activate       # Windows PowerShell
+pip install --upgrade pip
+pip install -r requirements.txt
+```
 
-All environments use the MuJoCo 2.3 physics engine [@todorov2012mujoco], accessed via Gymnasium [@gymnasium2023].
-Each training run generates its own dataset of transitions $(s_t, a_t, r_t, s_{t+1}, d_t)$ forming a replay buffer of 1M entries.
-This replay buffer serves as a dynamically evolving dataset from which mini-batches are sampled uniformly (or via PER).
+If using GPU, install a CUDA-enabled PyTorch wheel matching your CUDA version.
 
-4. Training Configuration
+## 3) How To Run — OurTD3 (recommended)
 
-Parameter Value Notes
-Actor/Critic networks 2 hidden layers × 256 units, ReLU same across all baselines
-Replay buffer size 1,000,000 uniform FIFO
-Batch size 256 per gradient update
-Discount ($\gamma$) 0.99 standard for MuJoCo
-Target noise ($\sigma$) 0.2 clipped to 0.5
-Polyak averaging ($\tau$) 0.005 target smoothing
-Actor update delay ($d$) 2 update every 2 critic steps
-Optimizer Adam (lr=3e-4) for all networks
-Total steps 1M env interactions per run
-Seeds 10 random seeds mean + std plotted
-Evaluation 10 deterministic episodes every 5k steps average return plotted
+Entry point: `src/methods/OurMethod/train_ourTD3.py`
 
-Agreement-weight parameters:
-• $\kappa = 5$ (annealed from 0 → 5)
-• $w_{\min}=0.5,\ w_{\max}=2.0$
-• Normalized batch weights ($\mathbb{E}[\tilde w]=1$)
+Common flags:
+- `--env` Gymnasium MuJoCo env id (e.g., `Hopper-v5`, `Walker2d-v5`, `HalfCheetah-v5`).
+- `--replay` one of `uniform`, `per`, `vmfer` (agreement-weighted).
+- `--use-vi` enable Value-Improvement regularizer.
+- `--steps` total environment steps (default 1,000,000).
+- `--eval-every` evaluation frequency in steps.
+- `--batch-size`, `--actor-delay`, `--policy-noise`, `--noise-clip`, `--tau`.
+- `--outdir` output directory for curves and checkpoints.
+- `--tag` optional label used in filenames (otherwise auto-inferred).
 
-Value-Improvement regularizer:
-• $\lambda = 0.01$ unless stated otherwise.
-• Optional ablations used $\lambda \in {0, 0.005, 0.01, 0.05}$.
+Examples:
 
-Gradient clipping:
-• $|\nabla|_2 \le 10.0$ for both actor and critics.
+```
+# OurTD3 + VMFER + VI on Hopper-v5
+python src/methods/OurMethod/train_ourTD3.py ^
+  --env Hopper-v5 ^
+  --replay vmfer ^
+  --use-vi ^
+  --steps 1000000 ^
+  --eval-every 5000 ^
+  --seed 0 ^
+  --outdir results/hopper-v5/OurTD3
 
-5. Baselines
+# Vanilla TD3 (uniform replay, no VI)
+python src/methods/OurMethod/train_ourTD3.py ^
+  --env Walker2d-v5 ^
+  --replay uniform ^
+  --steps 1000000 ^
+  --eval-every 5000 ^
+  --seed 0 ^
+  --outdir results/Walker2d-v5/TD3 ^
+  --tag TD3
 
-Method Description
-TD3 Standard Twin Delayed Deep Deterministic Policy Gradient [@fujimoto2018td3].
-TD3-BC TD3 with behavior-cloning regularization for offline RL [@fujimoto2021td3bc]; run in online mode for fair comparison.
-OurTD3 TD3 + Agreement-Weighted Replay + VI regularizer + gradient clipping.
+# Evaluate a saved actor checkpoint
+python src/methods/OurMethod/train_ourTD3.py ^
+  --env HalfCheetah-v5 ^
+  --eval-only ^
+  --checkpoint src/models/TD3HalfCheetah-v50_final.pt
+```
 
-All baselines share the same architecture, optimizer, replay buffer size, and hyperparameters.
+Outputs (per run):
+- Curves: `{outdir}/{tag}{env}{seed}_train_returns.npy`, `{outdir}/{tag}{env}{seed}_train_steps.npy`, `{outdir}/{tag}{env}{seed}.npy`
+- Final model: `{outdir}/{tag}{env}{seed}_final.pt`
 
-6. Metrics
-   • Average Return ($\bar{R}$): Mean episodic return from 10 evaluation rollouts.
-   • Sample-Efficiency: Steps required to reach 90% of final return.
-   • Stability / Variance: Standard deviation across 10 random seeds.
-   • Critic Loss Variance: Variance of TD-error magnitude over time (for internal diagnostic plots).
+## 4) How To Run — TD3 Baseline
 
-7. Results Summary
+Entry point: `src/methods/Others/main.py`
 
-7.1 Average Return Curves
-• Hopper-v5: OurTD3 learns significantly faster within the first 100k steps and maintains a clear performance lead throughout training.
-• Walker2d-v5: Learning is smoother with lower variance across seeds; convergence is both faster and more stable.
-• HalfCheetah-v5: The VI regularizer yields consistent mid- and late-phase improvement, correcting TD3’s pessimistic bias.
+Common flags:
+- `--policy TD3` (default), `--env Hopper-v5`, `--seed 0`
+- `--max_timesteps 1000000`, `--start_timesteps 25000`, `--eval_freq 5000`
+- `--batch_size 256`, `--discount 0.99`, `--tau 0.005`, `--policy_noise 0.2`, `--noise_clip 0.5`, `--policy_freq 2`
+- `--save_model` to write checkpoints under `./models`
 
-7.2 Quantitative Results
+Example:
 
-Environment TD3 TD3-BC OurTD3 (AWR + VI)
-Hopper-v5 3320 ± 290 3385 ± 270 3610 ± 180
-Walker2d-v5 4710 ± 360 4630 ± 330 4890 ± 250
-HalfCheetah-v5 10250 ± 400 10080 ± 420 10690 ± 310
+```
+python src/methods/Others/main.py ^
+  --policy TD3 ^
+  --env Hopper-v5 ^
+  --seed 0 ^
+  --max_timesteps 1000000 ^
+  --eval_freq 5000 ^
+  --save_model
+```
 
-    •	OurTD3 improves sample-efficiency by 15–25% (reaching 90% of final return earlier).
-    •	Inter-seed variance decreased by ≈25%.
-    •	Gradient-clipping prevented observed critic divergence in 3/30 total seeds.
+Outputs:
+- Curves: `./results/TD3_{env}_{seed}.npy`
+- Model (if `--save_model`): `./models/TD3_{env}_{seed}`
 
-8. Ablation and Sensitivity
+Note:
+- The TD3-BC reference implementation is in `src/methods/Others/TD3-BC/TD3_BC.py`. If you need to run TD3-BC, adapt `main.py` to import and instantiate it similarly to `TD3`.
 
-Study Parameters Varied Key Findings
-Agreement Strength ($\kappa$) 0 – 10 Too small ($\kappa{=}0$) → same as TD3. Moderate ($\kappa{=}5$) → best early learning. Too large ($\kappa{=}10$) → slow convergence due to oversuppression.
-VI Coefficient ($\lambda$) 0, 0.005, 0.01, 0.05 Small $\lambda$ improves asymptotic return; high $\lambda$ destabilizes (optimistic bias).
-PER vs Uniform Sampling Enabled/Disabled PER adds marginal benefit when combined with agreement weighting — effects partially overlap.
-Gradient Clipping On/Off Reduces catastrophic critic divergence and smooths updates.
+## 5) Plotting (optional)
 
-11. Reproducibility
-    • Codebase: PyTorch 2.x, Gymnasium v0.29, MuJoCo 2.3.
-    • Seed reproducibility: fixed random seeds across runs (numpy, torch, env.seed()).
-    • Evaluation protocol: deterministic policy rollouts, averaged over 10 episodes.
-    • Logging: Weights & Biases and TensorBoard for metrics and critic loss variance tracking.
+Use the scripts in `src/graphs/` to compare runs and export figures, e.g.:
 
-12. References (Core)
-    • Lillicrap et al. (2016) — DDPG
-    • Silver et al. (2014) — Deterministic Policy Gradients
-    • Fujimoto et al. (2018) — TD3
-    • Fujimoto & Gu (2021) — TD3-BC
-    • Schaul et al. (2016) — PER
-    • Chen et al. (2021) — REDQ
-    • An et al. (2021) — EDAC
-    • Todorov et al. (2012) — MuJoCo Physics Engine
-    • Brockman et al. (2016) / Gymnasium (2023) — RL Environment API
+```
+python src/graphs/plot_compare.py
+```
+
+Point the script(s) at the directories where your `.npy` curves are saved (e.g., `results/hopper-v5/OurTD3`, `results/Walker2d-v5/TD3`).
+
+---
+
+Quick tip: `docs/usage_instructions.md` contains additional notes on hyperparameters, multi-seed experiments, and troubleshooting.
+
