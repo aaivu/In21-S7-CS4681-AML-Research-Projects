@@ -104,7 +104,7 @@ This design ensures that any observed improvement is solely due to the local–g
 **Figure 1:** Convergence curves on CIFAR-10 under non-IID settings.  
 _The proposed method demonstrates slightly faster convergence and higher final accuracy._
 
-![Convergence Curve Placeholder](images/convergence_curve.png)
+![Convergence Curve Placeholder](projects/210055J-AI-Efficiency_Federated-Learning/results/MNIST/mnist_convergence.png)
 
 ---
 
