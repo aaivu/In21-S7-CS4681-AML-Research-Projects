@@ -3,7 +3,6 @@
 **Project Title:** Enhancing Federated Averaging with Local–Global Knowledge Regularization  
 **Research Area:** AI Efficiency – Federated Learning  
 **Author:** 210055J  
-**Date:** 2025-09-01  
 
 ---
 
