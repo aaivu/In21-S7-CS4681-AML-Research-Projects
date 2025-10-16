@@ -1,0 +1,142 @@
+[
+  {
+    "tracker_name": "CSRT_TeamAware_Tracker",
+    "timestamp": "2025-10-14T18:55:17.216852",
+    "total_players": 2,
+    "total_frames": 750,
+    "average_track_fragments": 1.0,
+    "average_max_track_length": 750.0,
+    "bbox_stability": 0.982412228870698,
+    "tracking_success_rate": 100.0
+  },
+  {
+    "tracker_name": "CSRT_TeamAware_Tracker",
+    "timestamp": "2025-10-14T20:28:27.452890",
+    "total_players": 2,
+    "total_frames": 750,
+    "average_track_fragments": 1.0,
+    "average_max_track_length": 750.0,
+    "bbox_stability": 0.9881930586719044,
+    "tracking_success_rate": 100.0
+  },
+  {
+    "tracker_name": "CSRT_TeamAware_Tracker",
+    "timestamp": "2025-10-14T20:44:51.951856",
+    "total_players": 4,
+    "total_frames": 750,
+    "average_track_fragments": 1.0,
+    "average_max_track_length": 750.0,
+    "bbox_stability": 0.9936516692016557,
+    "tracking_success_rate": 100.0
+  },
+  {
+    "tracker_name": "CSRT_TeamAware_Tracker",
+    "timestamp": "2025-10-14T20:47:53.650566",
+    "total_players": 4,
+    "total_frames": 97,
+    "average_track_fragments": 1.0,
+    "average_max_track_length": 97.0,
+    "bbox_stability": 0.9770054274577782,
+    "tracking_success_rate": 100.0
+  },
+  {
+    "tracker_name": "CSRT_TeamAware_Tracker",
+    "timestamp": "2025-10-14T20:48:40.668145",
+    "total_players": 4,
+    "total_frames": 105,
+    "average_track_fragments": 1.0,
+    "average_max_track_length": 105.0,
+    "bbox_stability": 0.9773242473784675,
+    "tracking_success_rate": 100.0
+  },
+  {
+    "tracker_name": "CSRT_TeamAware_Tracker",
+    "timestamp": "2025-10-14T20:49:35.662986",
+    "total_players": 4,
+    "total_frames": 117,
+    "average_track_fragments": 1.0,
+    "average_max_track_length": 117.0,
+    "bbox_stability": 0.9781455003559245,
+    "tracking_success_rate": 100.0
+  },
+  {
+    "tracker_name": "CSRT_TeamAware_Tracker",
+    "timestamp": "2025-10-14T20:51:58.049133",
+    "total_players": 4,
+    "total_frames": 68,
+    "average_track_fragments": 1.0,
+    "average_max_track_length": 68.0,
+    "bbox_stability": 0.9729477899687412,
+    "tracking_success_rate": 100.0
+  },
+  {
+    "tracker_name": "CSRT_TeamAware_Tracker",
+    "timestamp": "2025-10-14T20:54:14.742550",
+    "total_players": 4,
+    "total_frames": 750,
+    "average_track_fragments": 1.0,
+    "average_max_track_length": 750.0,
+    "bbox_stability": 0.9893619749539956,
+    "tracking_success_rate": 100.0
+  },
+  {
+    "tracker_name": "CSRT_TeamAware_Tracker",
+    "timestamp": "2025-10-14T21:07:17.447042",
+    "total_players": 4,
+    "total_frames": 50,
+    "average_track_fragments": 1.0,
+    "average_max_track_length": 50.0,
+    "bbox_stability": 0.9717564553730261,
+    "tracking_success_rate": 100.0
+  },
+  {
+    "tracker_name": "CSRT_TeamAware_Tracker",
+    "timestamp": "2025-10-14T21:09:38.470640",
+    "total_players": 4,
+    "total_frames": 750,
+    "average_track_fragments": 1.0,
+    "average_max_track_length": 750.0,
+    "bbox_stability": 0.9865826580981163,
+    "tracking_success_rate": 100.0
+  },
+  {
+    "tracker_name": "CSRT_TeamAware_Tracker",
+    "timestamp": "2025-10-14T21:13:00.345117",
+    "total_players": 4,
+    "total_frames": 750,
+    "average_track_fragments": 1.0,
+    "average_max_track_length": 750.0,
+    "bbox_stability": 0.9891152877388335,
+    "tracking_success_rate": 100.0
+  },
+  {
+    "tracker_name": "CSRT_TeamAware_Tracker",
+    "timestamp": "2025-10-14T21:33:16.940356",
+    "total_players": 1,
+    "total_frames": 20,
+    "average_track_fragments": 1.0,
+    "average_max_track_length": 20.0,
+    "bbox_stability": 0.9291179061125178,
+    "tracking_success_rate": 100.0
+  },
+  {
+    "tracker_name": "CSRT_TeamAware_Tracker",
+    "timestamp": "2025-10-14T21:35:27.228610",
+    "total_players": 1,
+    "total_frames": 750,
+    "average_track_fragments": 1.0,
+    "average_max_track_length": 209.0,
+    "bbox_stability": 0.9873146316006047,
+    "tracking_success_rate": 27.866666666666667
+  },
+  {
+    "tracker_name": "CSRT_TeamAware_Tracker",
+    "timestamp": "2025-10-14T21:38:03.094014",
+    "total_players": 1,
+    "total_frames": 750,
+    "average_track_fragments": 1.0,
+    "average_max_track_length": 65.0,
+    "bbox_stability": 0.9904960966431606,
+    "tracking_success_rate": 8.666666666666668
+  }
+]

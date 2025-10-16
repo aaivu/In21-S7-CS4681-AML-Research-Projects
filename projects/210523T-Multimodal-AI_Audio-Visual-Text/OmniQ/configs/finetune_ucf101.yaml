@@ -1,0 +1,28 @@
+model: swin_tiny_2d_temporalavg   # 2D Swin + temporal average (fast baseline)
+num_classes: 101
+frames: 32
+stride: 2
+size: 224
+
+data:
+  root: data/UCF101               # put videos under data/UCF101/videos
+  split: 1                        # 1, 2, or 3
+  trainlist: data/UCF101/splits/trainlist01.txt
+  testlist:  data/UCF101/splits/testlist01.txt
+  classind:  data/UCF101/splits/classInd.txt
+
+optim:
+  name: adamw
+  lr_backbone: 1.0e-4
+  lr_head: 2.0e-4
+  weight_decay: 0.05
+
+train:
+  batch_size: 1
+  accum_steps: 4
+  epochs: 40
+  num_workers: 4
+  amp: true
+  save_dir: runs/omnivore_ucf101_t/
+
+

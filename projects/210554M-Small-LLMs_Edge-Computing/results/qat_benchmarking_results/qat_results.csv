@@ -1,0 +1,2 @@
+Model,Size (GB),Latency (ms/token),Perplexity (WikiText-2),BoolQ Acc (%),SQuAD EM (%),SQuAD F1 (%)
+Qwen-QAT (8bit-runtime),0.59,98.46,19.46,20.0,10.0,10.32

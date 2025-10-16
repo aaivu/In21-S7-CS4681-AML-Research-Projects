@@ -15,9 +15,11 @@ import nlpaug.augmenter.word as naw
 from BackTranslation import BackTranslation
 import argparse
 import logging
-import random
 from tqdm import tqdm
 from typing import List, Tuple
+import os
+from dotenv import load_dotenv
+from openai import OpenAI
 
 logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
@@ -26,29 +28,8 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Financial domain-specific synonym dictionary
-FINANCIAL_SYNONYMS = {
-    "profit": ["earnings", "gain", "income", "return", "margin"],
-    "loss": ["deficit", "shortfall", "decline", "negative earnings"],
-    "revenue": ["sales", "income", "turnover", "proceeds", "top line"],
-    "cost": ["expense", "expenditure", "outlay", "charge", "payment"],
-    "debt": ["liability", "obligation", "loan", "borrowing", "financing"],
-    "asset": ["resource", "property", "holding", "possession", "investment"],
-    "growth": ["expansion", "increase", "development", "appreciation", "rise"],
-    "decline": ["decrease", "reduction", "fall", "drop", "contraction"],
-    "dividend": ["payout", "distribution", "return", "disbursement"],
-    "investment": ["expenditure", "funding", "financing", "backing", "stake"],
-    "acquisition": ["takeover", "purchase", "buyout", "merger", "procurement"],
-    "share": ["stock", "security", "equity", "holding", "interest"],
-    "market": ["exchange", "bourse", "trade", "industry", "sector"],
-    "strategy": ["plan", "approach", "policy", "procedure", "method"],
-    "performance": ["result", "outcome", "return", "achievement", "execution"],
-    "forecast": ["projection", "estimate", "prediction", "outlook", "guidance"],
-    "increase": ["rise", "gain", "growth", "appreciation", "rally"],
-    "decrease": ["fall", "drop", "reduction", "decline", "depreciation"],
-    "investor": ["shareholder", "stockholder", "backer", "financier"],
-    "subsidiary": ["affiliate", "division", "unit", "branch", "offshoot"],
-}
+# Load environment variables
+load_dotenv()
 
 
 class FinBertDataAugmenter:
@@ -57,9 +38,6 @@ class FinBertDataAugmenter:
     def __init__(
         self,
         model_name: str = "ProsusAI/finbert",
-        synonym_aug_p: float = 0.3,
-        backtranslate_p: float = 0.3,
-        llm_p: float = 0.4,
         similarity_threshold: float = 0.75,
     ):
         """
@@ -67,93 +45,27 @@ class FinBertDataAugmenter:
 
         Args:
             model_name: The name of the model to use for embeddings
-            synonym_aug_p: Probability of applying synonym augmentation
-            backtranslate_p: Probability of applying back-translation
-            llm_p: Probability of applying LLM-based paraphrasing
             similarity_threshold: Threshold for cosine similarity filtering
         """
-        self.model_name = model_name
-        self.synonym_aug_p = synonym_aug_p
-        self.backtranslate_p = backtranslate_p
-        self.llm_p = llm_p
         self.similarity_threshold = similarity_threshold
+        self.model_name = model_name
 
-        # Load tokenizer and model for embeddings
-        logger.info(f"Loading model and tokenizer: {model_name}")
+        # Initialize tokenizer and model for embeddings
+        logger.info(f"Loading model: {model_name}")
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         self.model = AutoModel.from_pretrained(model_name)
+        self.model.eval()
 
-        # Initialize augmenters
-        self._init_augmenters()
-
-    def _init_augmenters(self):
-        """Initialize the NLP augmenters."""
-        # Synonym replacement augmenter using WordNet
-        try:
-            import nltk
-
-            nltk.download("wordnet", quiet=True)
-            nltk.download("punkt", quiet=True)
-            nltk.download("averaged_perceptron_tagger", quiet=True)
-
-            self.synonym_aug = naw.SynonymAug(
-                aug_src="wordnet",
-                aug_p=0.3,  # 30% of words will be replaced
-                aug_max=None,
+        # Initialize OpenAI client
+        api_key = os.getenv("OPENAI_API_KEY")
+        if not api_key:
+            logger.warning(
+                "OPENAI_API_KEY not found in environment. LLM paraphrasing will not work."
             )
-        except Exception as e:
-            logger.warning(f"Failed to initialize SynonymAug: {e}")
-            # Fallback to a simple random synonym replacement
-            self.synonym_aug = (
-                lambda text: text
-            )  # Just return the original text as fallback
-
-        # Financial synonym replacement (custom)
-        self.financial_synonym_aug = self._create_financial_synonym_augmenter()
-
-        # Back-translation augmenter
-        try:
-            self.back_translate_aug = BackTranslation(
-                url=[
-                    "translate.google.com",
-                    "translate.google.co.kr",
-                ],
-                proxies={
-                    "http": "127.0.0.1:1234",
-                    "http://host.name": "127.0.0.1:4012",
-                },
-            )
-        except Exception as e:
-            logger.warning(f"Failed to load back-translation model: {e}")
-            self.back_translate_aug = None
-
-    def _create_financial_synonym_augmenter(self):
-        """Create a custom augmenter for financial domain-specific synonyms."""
-        # For financial terms, we'll create a custom function instead of using RandomWordAug
-        # because it doesn't support direct dictionary mapping
-
-        def financial_synonym_replacement(text):
-            words = text.split()
-            for i, word in enumerate(words):
-                word_lower = word.lower()
-                if (
-                    word_lower in FINANCIAL_SYNONYMS and random.random() < 0.3
-                ):  # 30% chance to replace
-                    synonyms = FINANCIAL_SYNONYMS[word_lower]
-                    replacement = random.choice(synonyms)
-
-                    # Preserve capitalization
-                    if word.istitle():
-                        replacement = replacement.capitalize()
-                    elif word.isupper():
-                        replacement = replacement.upper()
-
-                    words[i] = replacement
-
-            return " ".join(words)
-
-        # Return the function as our "augmenter"
-        return financial_synonym_replacement
+            self.openai_client = None
+        else:
+            self.openai_client = OpenAI(api_key=api_key)
+            logger.info("OpenAI client initialized successfully")
 
     def get_embedding(self, text: str) -> np.ndarray:
         """Get embedding for a text using FinBERT."""
@@ -186,62 +98,9 @@ class FinBertDataAugmenter:
 
         return similarity
 
-    def apply_synonym_augmentation(self, text: str) -> str:
-        """
-        Apply synonym replacement augmentation.
-
-        Args:
-            text: The text to augment
-
-        Returns:
-            str: Augmented text
-        """
-        try:
-            # 50% chance to use financial synonym replacement
-            if random.random() < 0.5:
-                # Our financial synonym augmenter is a function, not an augmenter object
-                augmented = self.financial_synonym_aug(text)
-            else:
-                augmented = self.synonym_aug.augment(text)
-                # Return the first augmented text if multiple were generated
-                if isinstance(augmented, list):
-                    augmented = augmented[0] if augmented else text
-
-            return augmented
-        except Exception as e:
-            logger.warning(f"Synonym augmentation failed: {e}")
-            return text
-
-    def apply_back_translation(self, text: str) -> str:
-        """
-        Apply back-translation augmentation.
-
-        Args:
-            text: The text to augment
-
-        Returns:
-            str: Augmented text
-        """
-        if self.back_translate_aug is None:
-            return text
-
-        try:
-            augmented = self.back_translate_aug.translate(
-                text=text, src="en", tmp="zh-cn"
-            )
-
-            # Return the first augmented text if multiple were generated
-            if isinstance(augmented.result_text, list):
-                augmented = augmented[0] if augmented else text
-
-            return augmented.result_text
-        except Exception as e:
-            logger.warning(f"Back-translation failed: {e}")
-            return text
-
     def apply_llm_paraphrasing(self, text: str, sentiment_label: str) -> str:
         """
-        Apply LLM-based paraphrasing using GPT-4o-mini.
+        Apply LLM-based paraphrasing using GPT-5.
 
         Args:
             text: The text to augment
@@ -250,22 +109,50 @@ class FinBertDataAugmenter:
         Returns:
             str: Augmented text
         """
-        # This function would call an API endpoint with GPT-4o-mini
-        # Since we don't have direct API access, we'll return a placeholder
-        logger.warning(
-            "LLM paraphrasing requires API access. Using a simulated response."
-        )
+        if not self.openai_client:
+            logger.warning("OpenAI client not initialized. Returning original text.")
+            return text
 
-        # Simulated response (in a real implementation, this would call an API)
-        # Use some word substitutions as a basic paraphrase simulation
-        words = text.split()
-        if len(words) > 3:
-            idx = random.randint(0, len(words) - 1)
-            if words[idx].lower() in FINANCIAL_SYNONYMS:
-                synonyms = FINANCIAL_SYNONYMS[words[idx].lower()]
-                words[idx] = random.choice(synonyms)
+        try:
+            # Create a prompt that preserves sentiment while paraphrasing
+            prompt = f"""You are a financial text paraphrasing expert. Your task is to paraphrase the following financial text while preserving its exact sentiment ({sentiment_label}).
 
-        return " ".join(words)
+Important instructions:
+1. Keep the sentiment EXACTLY the same ({sentiment_label})
+2. Maintain the financial context and terminology
+3. Use different words and sentence structure while keeping the same meaning
+4. Return ONLY the paraphrased text without any explanations or quotes
+5. The paraphrase should sound natural and fluent
+
+Original text: {text}
+
+Paraphrased text:"""
+
+            # Call OpenAI API
+            response = self.openai_client.responses.create(
+                model="gpt-5",
+                input=[
+                    {
+                        "role": "system",
+                        "content": "You are an expert at paraphrasing financial texts while preserving sentiment and meaning.",
+                    },
+                    {"role": "user", "content": prompt},
+                ],
+            )
+
+            paraphrased_text = response.output_text
+
+            # Clean up any quotes that might have been added
+            paraphrased_text = paraphrased_text.strip('"').strip("'")
+
+            logger.debug(f"Original: {text}")
+            logger.debug(f"Paraphrased: {paraphrased_text}")
+
+            return paraphrased_text
+
+        except Exception as e:
+            logger.error(f"Error during LLM paraphrasing: {str(e)}")
+            return text  # Return original text if paraphrasing fails
 
     def augment_text(self, text: str, label: str) -> List[Tuple[str, str]]:
         """
@@ -280,25 +167,8 @@ class FinBertDataAugmenter:
         """
         augmented_texts = []
 
-        # # Apply synonym replacement
-        # if random.random() < self.synonym_aug_p:
-        #     syn_augmented = self.apply_synonym_augmentation(text)
-        #     if syn_augmented != text:
-        #         similarity = self.check_similarity(text, syn_augmented)
-        #         if similarity >= self.similarity_threshold:
-        #             augmented_texts.append((syn_augmented, label))
-
-        # Apply back-translation
-        # if random.random() < self.backtranslate_p:
-        #     bt_augmented = self.apply_back_translation(text)
-        #     if bt_augmented != text:
-        #         similarity = self.check_similarity(text, bt_augmented)
-        #         if similarity >= self.similarity_threshold:
-        #             augmented_texts.append((bt_augmented, label))
-
         # Apply LLM paraphrasing
         if True:
-            # if random.random() < self.llm_p:
             llm_augmented = self.apply_llm_paraphrasing(text, label)
             if llm_augmented != text:
                 similarity = self.check_similarity(text, llm_augmented)

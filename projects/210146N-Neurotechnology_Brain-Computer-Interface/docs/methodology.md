@@ -6,37 +6,67 @@
 
 ## 1. Overview
 
-[Provide a brief overview of your methodology]
+This study aims to improve EEG-based classification performance on standard cognitive paradigms using publicly available EEG-ExPy datasets. The focus is on N170 and P300 ERP decoding, with optional inclusion of SSVEP. The methodology combines classical and advanced deep learning approaches, including CNNs, MLPNNs, hybrid architectures, and transformers, to optimize single-trial and cross-subject performance.
 
 ## 2. Research Design
 
-[Describe your overall research approach]
+The research follows an experimental design using open EEG datasets. Baseline comparisons will replicate EEG-ExPy models (logistic regression, LDA, pyRiemann/TRCA). Advanced models will then be implemented and evaluated against these baselines. Experiments include both within-subject and cross-subject evaluations to assess generalization.
 
 ## 3. Data Collection
 
 ### 3.1 Data Sources
-[List your data sources]
+
+- EEG-ExPy example datasets:
+- N170: Face vs. non-face visual stimuli (ERP CORE dataset)
+- P300: Target vs. non-target visual stimuli
+- SSVEP (optional): Frequency-based visual stimuli
 
 ### 3.2 Data Description
-[Describe your datasets]
+
+- Multi-channel EEG recordings (typically 32–64 channels)
+- Sampling rates: 250–512 Hz
+- Event markers indicating stimulus onset
+- Balanced classes for target/non-target or stimulus categories
 
 ### 3.3 Data Preprocessing
-[Explain preprocessing steps]
+
+- Bandpass filtering (e.g., 1-30 Hz) to remove drift and high-frequency noise
+- Epoch extraction around stimulus onset (e.g., −200 ms to +800 ms)
+- Baseline correction
+- Optional artifact rejection using ICA or automated methods
+- Normalization or standardization of channel data
 
 ## 4. Model Architecture
 
-[Describe your proposed model/algorithm]
+**Baseline models**: Logistic Regression, LDA, pyRiemann MDM (for comparison)
+**Advanced models**:
+- Convolutional Neural Networks (CNN) for temporal-spatial feature extraction
+- Multilayer Perceptrons (MLPNN) for single-trial ERP decoding
+- Hybrid LR-CNN or CNN-RNN architectures for combining global and local features
+- Transformers for sequence modeling across EEG channels/time points
+
+**Input**: preprocessed multi-channel EEG epochs
+**Output**: class probabilities (e.g., face vs. house, target vs. non-target)
 
 ## 5. Experimental Setup
 
 ### 5.1 Evaluation Metrics
-[List evaluation metrics you'll use]
+
+- **Primary**: Accuracy (ACC), Area Under ROC Curve (AUC)
+- **Optional**: F1-score, precision, recall, Information Transfer Rate (ITR) for SSVEP
 
 ### 5.2 Baseline Models
-[Describe baseline comparisons]
+
+- Logistic Regression
+- Linear Discriminant Analysis (LDA)
+- pyRiemann MDM / TRCA (SSVEP)
 
 ### 5.3 Hardware/Software Requirements
-[List computational requirements]
+
+- Python 3.10+
+- PyTorch or TensorFlow for deep learning models
+- Scikit-learn for baseline classifiers
+- GPU recommended for CNN/transformer training
 
 ## 6. Implementation Plan
 
@@ -49,12 +79,14 @@
 
 ## 7. Risk Analysis
 
-[Identify potential risks and mitigation strategies]
+- **Overfitting**: Mitigate with cross-validation, dropout, early stopping
+- **Low SNR in EEG**: Apply artifact rejection and data augmentation
+- **Cross-subject variability**: Use domain adaptation or transfer learning
+- **Computational constraints**: Optimize model size; consider lightweight CNNs for faster training
 
 ## 8. Expected Outcomes
 
-[Describe expected results and contributions]
-
----
-
-**Note:** Update this document as your methodology evolves during implementation.
+- Improved classification accuracy and AUC for N170 and P300 paradigms compared to EEG-ExPy baselines
+- Demonstration of generalizable models for cross-subject decoding
+- Insights into the effectiveness of hybrid and transformer architectures for EEG classification
+- A reusable methodology for researchers using EEG-ExPy datasets

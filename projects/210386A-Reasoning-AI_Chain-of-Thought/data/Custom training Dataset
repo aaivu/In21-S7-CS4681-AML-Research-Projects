@@ -1,0 +1,34 @@
+samples = [
+        {
+            "problem": "What is 25 + 17?",
+            "first_attempt": "Let me calculate: 25 + 17 = 41",
+            "second_attempt": "Let me recalculate: 25 + 17 = 42",
+            "answer": "42",
+            "is_correct_1": False,
+            "is_correct_2": True
+        },
+        {
+            "problem": "Solve: 3x + 5 = 14",
+            "first_attempt": "3x = 14 - 5 = 9, so x = 4",
+            "second_attempt": "3x = 14 - 5 = 9, so x = 3",
+            "answer": "3",
+            "is_correct_1": False,
+            "is_correct_2": True
+        },
+        {
+            "problem": "What is 15 * 8?",
+            "first_attempt": "15 * 8 = 110",
+            "second_attempt": "Let me recalculate: 15 * 8 = 120",
+            "answer": "120",
+            "is_correct_1": False,
+            "is_correct_2": True
+        },
+        {
+            "problem": "If y - 7 = 12, what is y?",
+            "first_attempt": "y = 12 + 7 = 20",
+            "second_attempt": "y = 12 + 7 = 19",
+            "answer": "19",
+            "is_correct_1": False,
+            "is_correct_2": True
+        },
+    ]
