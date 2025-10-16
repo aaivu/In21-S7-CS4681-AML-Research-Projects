@@ -1,0 +1,2 @@
+Model,Size (GB),Perplexity,Latency (ms/token)
+Qwen2.5-0.5B (QAT),1.84,18.15,7.52
