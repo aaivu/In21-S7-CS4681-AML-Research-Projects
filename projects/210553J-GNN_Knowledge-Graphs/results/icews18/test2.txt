@@ -1,0 +1,93 @@
+nohup: ignoring input
+Full train size: torch.Size([323895, 4]), Test size: 340043
+num_relation 260
+loader edges : 260
+loader edges : 260
+loader edges : 260
+[DEBUG] Train set size: 4000, Valid set size: 3239, Test set size: 340043
+[DEBUG] Initializing model...
+[DEBUG] Initialized model with 185409 parameters.
+[DEBUG] Creating task and moving to device...
+[DEBUG] Creating engine...
+19:44:38   Preprocess training set
+19:44:38   {'batch_size': 64,
+ 'class': 'core.Engine',
+ 'gpus': [0],
+ 'gradient_interval': 1,
+ 'log_interval': 100,
+ 'logger': 'logging',
+ 'num_worker': 0,
+ 'optimizer': {'amsgrad': False,
+               'betas': (0.9, 0.999),
+               'class': 'optim.Adam',
+               'eps': 1e-08,
+               'lr': 0.0005,
+               'weight_decay': 1e-05},
+ 'scheduler': None,
+ 'task': {'class': 'tasks.TemporalKnowledgeGraphCompletionMemory',
+          'criterion': 'bce',
+          'debug': False,
+          'filtered_ranking': True,
+          'full_batch_eval': True,
+          'metric': ('mr', 'mrr', 'hits@1', 'hits@3', 'hits@10'),
+          'model': {'activation': 'relu',
+                    'aggregate_func': 'pna',
+                    'class': 'model.NBFNetTemporal',
+                    'concat_hidden': False,
+                    'debug': False,
+                    'dependent': True,
+                    'hidden_dims': [8, 8, 8],
+                    'input_dim': 8,
+                    'layer_norm': True,
+                    'memory_time_dim': 32,
+                    'message_func': 'rotate',
+                    'num_beam': 10,
+                    'num_mlp_layer': 2,
+                    'num_relation': 260,
+                    'path_topk': 10,
+                    'remove_one_hop': False,
+                    'short_cut': True,
+                    'symmetric': False,
+                    'time_decay': 'exp',
+                    'time_encode_dim': 32,
+                    'time_half_life': 300,
+                    'time_window': None,
+                    'use_memory': True},
+          'num_negative': 200,
+          'strict_negative': True},
+ 'test_set': <__main__.TemporalKGBenchmark object at 0x732d6f5e7d90>,
+ 'train_set': <__main__.TemporalKGBenchmark object at 0x732d80deb7f0>,
+ 'valid_set': <__main__.TemporalKGBenchmark object at 0x732eb8310820>}
+[DEBUG] Loaded checkpoint from /home/sajeenthiranp/KG/fork/NBFNet/nbfnet/data/ICEWS14/model_epoch_1.pt, epoch 1
+19:44:38   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:44:38   Evaluate on test
+Traceback (most recent call last):
+  File "memory_icews_loader_and_train.py", line 248, in <module>
+    main()
+  File "memory_icews_loader_and_train.py", line 218, in main
+    test_results = engine.evaluate("test")
+  File "/home/sajeenthiranp/miniconda3/envs/NBFNet/lib/python3.8/site-packages/torch/autograd/grad_mode.py", line 27, in decorate_context
+    return func(*args, **kwargs)
+  File "/home/sajeenthiranp/miniconda3/envs/NBFNet/lib/python3.8/site-packages/torchdrug/core/engine.py", line 213, in evaluate
+    pred, target = model.predict_and_target(batch)
+  File "/home/sajeenthiranp/miniconda3/envs/NBFNet/lib/python3.8/site-packages/torchdrug/tasks/task.py", line 30, in predict_and_target
+    return self.predict(batch, all_loss, metric), self.target(batch)
+  File "/home/sajeenthiranp/KG/fork/NBFNet/nbfnet/memory_temporal_tasks.py", line 123, in predict
+    h_pred = self.model(graph, h_index, t_index, r_index, query_time=q_time)
+  File "/home/sajeenthiranp/miniconda3/envs/NBFNet/lib/python3.8/site-packages/torch/nn/modules/module.py", line 889, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/home/sajeenthiranp/KG/fork/NBFNet/nbfnet/memory_temporal_nbfnet.py", line 610, in forward
+    out = self.bellmanford(graph, h_index[:, 0], r_index[:, 0], query_time=query_time)
+  File "/home/sajeenthiranp/KG/fork/NBFNet/nbfnet/memory_temporal_nbfnet.py", line 570, in bellmanford
+    hidden = layer(step_graph, layer_input)
+  File "/home/sajeenthiranp/miniconda3/envs/NBFNet/lib/python3.8/site-packages/torch/nn/modules/module.py", line 889, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/home/sajeenthiranp/miniconda3/envs/NBFNet/lib/python3.8/site-packages/torchdrug/layers/conv.py", line 91, in forward
+    update = self.message_and_aggregate(graph, input)
+  File "/home/sajeenthiranp/KG/fork/NBFNet/nbfnet/memory_temporal_nbfnet.py", line 381, in message_and_aggregate
+    return super().message_and_aggregate(graph, input)
+  File "/home/sajeenthiranp/miniconda3/envs/NBFNet/lib/python3.8/site-packages/torchdrug/layers/conv.py", line 60, in message_and_aggregate
+    message = self.message(graph, input)
+  File "/home/sajeenthiranp/KG/fork/NBFNet/nbfnet/memory_temporal_nbfnet.py", line 325, in message
+    msg = msg + time_proj.unsqueeze(1)                # [E, B, D] (broadcasted)
+RuntimeError: CUDA out of memory. Tried to allocate 1.22 GiB (GPU 0; 11.92 GiB total capacity; 8.13 GiB already allocated; 652.31 MiB free; 10.63 GiB reserved in total by PyTorch)

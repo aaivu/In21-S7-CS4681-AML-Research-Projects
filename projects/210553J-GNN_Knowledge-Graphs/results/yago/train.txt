@@ -1,0 +1,230 @@
+nohup: ignoring input
+Full train size: torch.Size([157846, 4]), Test size: 20025
+num_relation 10
+loader edges : 10
+loader edges : 10
+loader edges : 10
+[DEBUG] Train set size: 10000, Valid set size: 15499, Test set size: 20025
+[DEBUG] Initializing model...
+[DEBUG] Initialized model with 266881 parameters.
+[DEBUG] Creating task and moving to device...
+[DEBUG] Creating engine...
+18:36:51   Preprocess training set
+18:36:51   {'batch_size': 8,
+ 'class': 'core.Engine',
+ 'gpus': [0],
+ 'gradient_interval': 1,
+ 'log_interval': 100,
+ 'logger': 'logging',
+ 'num_worker': 0,
+ 'optimizer': {'amsgrad': False,
+               'betas': (0.9, 0.999),
+               'class': 'optim.Adam',
+               'eps': 1e-08,
+               'lr': 0.0005,
+               'weight_decay': 1e-05},
+ 'scheduler': None,
+ 'task': {'class': 'tasks.TemporalKnowledgeGraphCompletionMemory',
+          'criterion': 'bce',
+          'debug': False,
+          'filtered_ranking': True,
+          'full_batch_eval': True,
+          'metric': ('mr', 'mrr', 'hits@1', 'hits@3', 'hits@10'),
+          'model': {'activation': 'relu',
+                    'aggregate_func': 'sum',
+                    'class': 'model.NBFNetTemporal',
+                    'concat_hidden': False,
+                    'debug': False,
+                    'dependent': True,
+                    'hidden_dims': [32, 32, 32, 32, 32, 32],
+                    'input_dim': 32,
+                    'layer_norm': True,
+                    'memory_time_dim': 32,
+                    'message_func': 'rotate',
+                    'num_beam': 10,
+                    'num_mlp_layer': 12,
+                    'num_relation': 10,
+                    'path_topk': 10,
+                    'remove_one_hop': False,
+                    'short_cut': True,
+                    'symmetric': False,
+                    'time_decay': 'exp',
+                    'time_encode_dim': 32,
+                    'time_half_life': 300,
+                    'time_window': None,
+                    'use_memory': True},
+          'num_negative': 200,
+          'strict_negative': True},
+ 'test_set': <__main__.TemporalKGBenchmark object at 0x7eec9e297e50>,
+ 'train_set': <__main__.TemporalKGBenchmark object at 0x7eecb84bab80>,
+ 'valid_set': <__main__.TemporalKGBenchmark object at 0x7eed5c549490>}
+[DEBUG] Starting training loop...
+[DEBUG] Epoch 0 begin
+18:36:51   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+18:36:51   Epoch 0 begin
+18:36:53   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+18:36:53   binary cross entropy: 0.693176
+18:40:02   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+18:40:02   binary cross entropy: 0.0423165
+18:43:13   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+18:43:13   binary cross entropy: 0.0273126
+18:46:23   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+18:46:23   binary cross entropy: 0.0123726
+18:49:31   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+18:49:31   binary cross entropy: 0.00694807
+18:52:40   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+18:52:40   binary cross entropy: 0.0339145
+18:55:48   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+18:55:48   binary cross entropy: 0.019769
+18:58:57   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+18:58:57   binary cross entropy: 0.00329469
+19:02:06   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:02:06   binary cross entropy: 0.00573118
+19:05:14   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:05:14   binary cross entropy: 0.0017392
+19:08:23   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:08:23   binary cross entropy: 0.00214671
+19:11:32   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:11:32   binary cross entropy: 0.0169841
+19:14:40   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:14:40   binary cross entropy: 0.00096822
+19:16:13   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:16:13   Epoch 0 end
+19:16:13   duration: 39.36 mins
+19:16:13   speed: 0.53 batch / sec
+19:16:13   ETA: 0.00 secs
+19:16:13   max GPU memory: 10742.4 MiB
+19:16:13   ------------------------------
+19:16:13   average binary cross entropy: 0.0546165
+[DEBUG] Epoch 0 training finished, starting evaluation...
+19:16:13   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:16:13   Evaluate on valid
+19:35:14   ------------------------------
+19:35:14   hits@1: 0.705207
+19:35:14   hits@10: 0.726047
+19:35:14   hits@3: 0.712046
+19:35:14   mr: 443.458
+19:35:14   mrr: 0.713626
+[DEBUG] Epoch 0: Validation results: {'mr': tensor(443.4580), 'mrr': tensor(0.7136), 'hits@1': tensor(0.7052), 'hits@3': tensor(0.7120), 'hits@10': tensor(0.7260)}
+[DEBUG] Saved checkpoint: data/YAGO/model_epoch_0.pt
+[DEBUG] Epoch 1 begin
+19:35:14   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:35:14   Epoch 1 begin
+19:36:51   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:36:51   binary cross entropy: 0.000890997
+19:39:59   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:39:59   binary cross entropy: 0.000676497
+19:43:10   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:43:10   binary cross entropy: 0.00299864
+19:46:21   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:46:21   binary cross entropy: 0.00350587
+19:49:31   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:49:31   binary cross entropy: 0.00793105
+19:52:42   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:52:42   binary cross entropy: 0.000251926
+19:55:53   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:55:53   binary cross entropy: 0.00113745
+19:59:03   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:59:03   binary cross entropy: 0.00108161
+20:02:13   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:02:13   binary cross entropy: 0.00566229
+20:05:22   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:05:22   binary cross entropy: 0.039917
+20:08:31   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:08:31   binary cross entropy: 0.00101269
+20:11:41   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:11:41   binary cross entropy: 0.033296
+20:14:48   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:14:48   Epoch 1 end
+20:14:48   duration: 58.59 mins
+20:14:48   speed: 0.36 batch / sec
+20:14:48   ETA: 0.00 secs
+20:14:48   max GPU memory: 10742.4 MiB
+20:14:48   ------------------------------
+20:14:48   average binary cross entropy: 0.00979603
+[DEBUG] Epoch 1 training finished, starting evaluation...
+20:14:48   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:14:48   Evaluate on valid
+20:33:57   ------------------------------
+20:33:57   hits@1: 0.705207
+20:33:57   hits@10: 0.730112
+20:33:57   hits@3: 0.713336
+20:33:57   mr: 409.611
+20:33:57   mrr: 0.714434
+[DEBUG] Epoch 1: Validation results: {'mr': tensor(409.6113), 'mrr': tensor(0.7144), 'hits@1': tensor(0.7052), 'hits@3': tensor(0.7133), 'hits@10': tensor(0.7301)}
+[DEBUG] Saved checkpoint: data/YAGO/model_epoch_1.pt
+[DEBUG] Epoch 2 begin
+20:33:57   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:33:57   Epoch 2 begin
+20:33:59   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:33:59   binary cross entropy: 0.00215536
+20:37:10   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:37:10   binary cross entropy: 0.000676267
+20:40:20   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:40:20   binary cross entropy: 0.000716878
+20:43:30   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:43:30   binary cross entropy: 4.73421e-05
+20:46:40   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:46:40   binary cross entropy: 0.0137172
+20:49:50   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:49:50   binary cross entropy: 0.0117979
+20:53:02   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:53:02   binary cross entropy: 0.000299393
+20:56:13   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:56:13   binary cross entropy: 0.000336063
+20:59:24   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:59:24   binary cross entropy: 0.000279451
+21:02:34   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:02:34   binary cross entropy: 0.0072784
+21:05:44   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:05:44   binary cross entropy: 0.00326943
+21:08:55   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:08:55   binary cross entropy: 0.00107149
+21:12:05   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:12:05   binary cross entropy: 0.00100597
+21:13:38   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:13:38   Epoch 2 end
+21:13:38   duration: 58.83 mins
+21:13:38   speed: 0.35 batch / sec
+21:13:38   ETA: 0.00 secs
+21:13:38   max GPU memory: 10742.4 MiB
+21:13:38   ------------------------------
+21:13:38   average binary cross entropy: 0.0053758
+[DEBUG] Epoch 2 training finished, starting evaluation...
+21:13:38   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:13:38   Evaluate on valid
+21:32:48   ------------------------------
+21:32:48   hits@1: 0.705207
+21:32:48   hits@10: 0.731337
+21:32:48   hits@3: 0.711336
+21:32:48   mr: 437.247
+21:32:48   mrr: 0.714257
+[DEBUG] Epoch 2: Validation results: {'mr': tensor(437.2473), 'mrr': tensor(0.7143), 'hits@1': tensor(0.7052), 'hits@3': tensor(0.7113), 'hits@10': tensor(0.7313)}
+[DEBUG] Saved checkpoint: data/YAGO/model_epoch_2.pt
+[DEBUG] Epoch 3 begin
+21:32:48   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:32:48   Epoch 3 begin
+21:34:26   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:34:26   binary cross entropy: 0.000458207
+21:37:35   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:37:35   binary cross entropy: 0.0237406
+21:40:44   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:40:44   binary cross entropy: 0.000103004
+21:43:54   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:43:54   binary cross entropy: 0.00844581
+21:47:03   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:47:03   binary cross entropy: 0.000171585
+21:50:13   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:50:13   binary cross entropy: 0.00144648
+21:53:23   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:53:23   binary cross entropy: 0.0016854
+21:56:33   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:56:33   binary cross entropy: 0.00205442
+21:59:45   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+21:59:45   binary cross entropy: 0.00551674
+22:02:56   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+22:02:56   binary cross entropy: 0.00114142
+22:06:07   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+22:06:07   binary cross entropy: 0.000200159
+22:09:19   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+22:09:19   binary cross entropy: 0.000101481

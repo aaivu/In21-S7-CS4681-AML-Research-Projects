@@ -1,0 +1,70 @@
+nohup: ignoring input
+Full train size: torch.Size([371229, 4]), Test size: 47825
+num_relation 256
+loader edges : 256
+loader edges : 256
+loader edges : 256
+[DEBUG] Train set size: 10000, Valid set size: 44055, Test set size: 47825
+[DEBUG] Initializing model...
+[DEBUG] Initialized model with 3399937 parameters.
+[DEBUG] Creating task and moving to device...
+[DEBUG] Creating engine...
+09:30:12   Preprocess training set
+09:30:12   {'batch_size': 6,
+ 'class': 'core.Engine',
+ 'gpus': [0],
+ 'gradient_interval': 1,
+ 'log_interval': 100,
+ 'logger': 'logging',
+ 'num_worker': 0,
+ 'optimizer': {'amsgrad': False,
+               'betas': (0.9, 0.999),
+               'class': 'optim.Adam',
+               'eps': 1e-08,
+               'lr': 0.0005,
+               'weight_decay': 1e-05},
+ 'scheduler': None,
+ 'task': {'class': 'tasks.TemporalKnowledgeGraphCompletionMemory',
+          'criterion': 'bce',
+          'debug': False,
+          'filtered_ranking': True,
+          'full_batch_eval': True,
+          'metric': ('mr', 'mrr', 'hits@1', 'hits@3', 'hits@10'),
+          'model': {'activation': 'relu',
+                    'aggregate_func': 'sum',
+                    'class': 'model.NBFNetTemporal',
+                    'concat_hidden': False,
+                    'debug': False,
+                    'dependent': True,
+                    'hidden_dims': [32, 32, 32, 32, 32, 32],
+                    'input_dim': 32,
+                    'layer_norm': True,
+                    'memory_time_dim': 32,
+                    'message_func': 'rotate',
+                    'num_beam': 10,
+                    'num_mlp_layer': 12,
+                    'num_relation': 256,
+                    'path_topk': 10,
+                    'remove_one_hop': False,
+                    'short_cut': True,
+                    'symmetric': False,
+                    'time_decay': 'exp',
+                    'time_encode_dim': 32,
+                    'time_half_life': 300,
+                    'time_window': None,
+                    'use_memory': True},
+          'num_negative': 200,
+          'strict_negative': True},
+ 'test_set': <__main__.TemporalKGBenchmark object at 0x7b1292f3ee20>,
+ 'train_set': <__main__.TemporalKGBenchmark object at 0x7b129d188b50>,
+ 'valid_set': <__main__.TemporalKGBenchmark object at 0x7b13dbc3e160>}
+[DEBUG] Loaded checkpoint from /home/sajeenthiranp/KG/fork/NBFNet/t-nbfnet/data/ICEWS18/model_epoch_2.pt, epoch 2
+09:30:12   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+09:30:12   Evaluate on test
+11:48:45   ------------------------------
+11:48:45   hits@1: 0.121777
+11:48:45   hits@10: 0.34712
+11:48:45   hits@3: 0.214302
+11:48:45   mr: 754.9
+11:48:45   mrr: 0.19571
+[DEBUG] Test results: {'mr': tensor(754.9001), 'mrr': tensor(0.1957), 'hits@1': tensor(0.1218), 'hits@3': tensor(0.2143), 'hits@10': tensor(0.3471)}

@@ -1,0 +1,5 @@
+nohup: ignoring input
+Traceback (most recent call last):
+  File "/home/sajeenthiranp/KG/fork/NBFNet/t-nbfnet/memory_icews18_loader_and_train copy.py", line 5, in <module>
+    from torchdrug import data as td_data, core
+ModuleNotFoundError: No module named 'torchdrug'
