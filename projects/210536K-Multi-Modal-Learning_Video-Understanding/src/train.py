@@ -9,8 +9,6 @@ from pprint import pprint
 import torch
 import torch.nn as nn
 import torch.utils.data
-# for visualization
-from torch.utils.tensorboard import SummaryWriter
 
 # our code
 from libs.core import load_config
@@ -47,8 +45,6 @@ def main(args):
             cfg['output_folder'], cfg_filename + '_' + str(args.output))
     if not os.path.exists(ckpt_folder):
         os.mkdir(ckpt_folder)
-    # tensorboard writer
-    tb_writer = SummaryWriter(os.path.join(ckpt_folder, 'logs'))
 
     # fix the random seeds (this will fix everything)
     rng_generator = fix_random_seed(cfg['init_rand_seed'], include_cuda=True)
@@ -90,9 +86,9 @@ def main(args):
         if os.path.isfile(args.resume):
             # load ckpt, reset epoch / best rmse
             checkpoint = torch.load(args.resume,
-                map_location = lambda storage, loc: storage.cuda(
-                    cfg['devices'][0]))
-            args.start_epoch = checkpoint['epoch']
+                                    map_location=lambda storage, loc: storage.cuda(
+                                        cfg['devices'][0]))
+            args.start_epoch = checkpoint['epoch'] + 1
             model.load_state_dict(checkpoint['state_dict'])
             model_ema.module.load_state_dict(checkpoint['state_dict_ema'])
             # also load the optimizer / scheduler if necessary
@@ -127,19 +123,22 @@ def main(args):
             optimizer,
             scheduler,
             epoch,
-            model_ema = model_ema,
-            clip_grad_l2norm = cfg['train_cfg']['clip_grad_l2norm'],
-            tb_writer=tb_writer,
+            model_ema=model_ema,
+            clip_grad_l2norm=cfg['train_cfg']['clip_grad_l2norm'],
             print_freq=args.print_freq
         )
 
         # save ckpt once in a while
         if (
-            ((epoch + 1) == max_epochs) or
-            ((args.ckpt_freq > 0) and ((epoch + 1) % args.ckpt_freq == 0))
+                (epoch == max_epochs - 1) or
+                (
+                        (args.ckpt_freq > 0) and
+                        (epoch % args.ckpt_freq == 0) and
+                        (epoch > 0)
+                )
         ):
             save_states = {
-                'epoch': epoch + 1,
+                'epoch': epoch,
                 'state_dict': model.state_dict(),
                 'scheduler': scheduler.state_dict(),
                 'optimizer': optimizer.state_dict(),
@@ -150,11 +149,9 @@ def main(args):
                 save_states,
                 False,
                 file_folder=ckpt_folder,
-                file_name='epoch_{:03d}.pth.tar'.format(epoch + 1)
+                file_name='epoch_{:03d}.pth.tar'.format(epoch)
             )
 
-    # wrap up
-    tb_writer.close()
     print("All done!")
     return
 
@@ -163,7 +160,7 @@ if __name__ == '__main__':
     """Entry Point"""
     # the arg parser
     parser = argparse.ArgumentParser(
-      description='Train a point-based transformer for action localization')
+        description='Train a point-based transformer for action localization')
     parser.add_argument('config', metavar='DIR',
                         help='path to a config file')
     parser.add_argument('-p', '--print-freq', default=10, type=int,

@@ -32,14 +32,8 @@ def main(args):
         ckpt_file = args.ckpt
     else:
         assert os.path.isdir(args.ckpt), "CKPT file folder does not exist!"
-        if args.epoch > 0:
-            ckpt_file = os.path.join(
-                args.ckpt, 'epoch_{:03d}.pth.tar'.format(args.epoch)
-            )
-        else:
-            ckpt_file_list = sorted(glob.glob(os.path.join(args.ckpt, '*.pth.tar')))
-            ckpt_file = ckpt_file_list[-1]
-        assert os.path.exists(ckpt_file)
+        ckpt_file_list = sorted(glob.glob(os.path.join(args.ckpt, '*.pth.tar')))
+        ckpt_file = ckpt_file_list[-1]
 
     if args.topk > 0:
         cfg['model']['test_cfg']['max_seg_num'] = args.topk
@@ -69,7 +63,7 @@ def main(args):
     # load ckpt, reset epoch / best rmse
     checkpoint = torch.load(
         ckpt_file,
-        map_location = lambda storage, loc: storage.cuda(cfg['devices'][0])
+        map_location=lambda storage, loc: storage.cuda(cfg['devices'][0])
     )
     # load ema model instead
     print("Loading from EMA model ...")
@@ -83,7 +77,7 @@ def main(args):
         det_eval = ANETdetection(
             val_dataset.json_file,
             val_dataset.split[0],
-            tiou_thresholds = val_db_vars['tiou_thresholds']
+            tiou_thresholds=val_db_vars['tiou_thresholds']
         )
     else:
         output_file = os.path.join(os.path.split(ckpt_file)[0], 'eval_results.pkl')
@@ -105,18 +99,17 @@ def main(args):
     print("All done! Total time: {:0.2f} sec".format(end - start))
     return
 
+
 ################################################################################
 if __name__ == '__main__':
     """Entry Point"""
     # the arg parser
     parser = argparse.ArgumentParser(
-      description='Train a point-based transformer for action localization')
+        description='Train a point-based transformer for action localization')
     parser.add_argument('config', type=str, metavar='DIR',
                         help='path to a config file')
     parser.add_argument('ckpt', type=str, metavar='DIR',
                         help='path to a checkpoint')
-    parser.add_argument('-epoch', type=int, default=-1,
-                        help='checkpoint epoch')
     parser.add_argument('-t', '--topk', default=-1, type=int,
                         help='max number of output actions (default: -1)')
     parser.add_argument('--saveonly', action='store_true',

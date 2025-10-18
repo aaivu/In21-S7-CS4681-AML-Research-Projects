@@ -2,9 +2,8 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 
-from .blocks import (get_sinusoid_encoding, MaskedConv1D, ConvBlock, LayerNorm, SGPBlock, TransformerBlock)
+from .blocks import (get_sinusoid_encoding, MaskedConv1D, ConvBlock, LayerNorm, TransformerBlock)
 from .models import register_backbone
-
 
 @register_backbone("conv")
 class ConvBackbone(nn.Module):
