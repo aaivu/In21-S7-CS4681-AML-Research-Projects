@@ -40,7 +40,7 @@ DEFAULTS = {
     # network architecture
     "model": {
         # type of backbone (SGP | conv | convTransformer)
-        "backbone_type": 'SGP',
+        "backbone_type": 'convTransformer',
         # type of FPN (fpn | identity)
         "fpn_type": "identity",
         "backbone_arch": (2, 2, 5),
