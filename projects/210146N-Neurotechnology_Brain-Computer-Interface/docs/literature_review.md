@@ -90,20 +90,35 @@ The EEG-ExPy benchmark provides open datasets and baseline models for N170, P300
 ## References
 
 [1] R. Afrah, Z. Amini, and R. Kafieh. An unsupervised feature extraction method based on clstm-ae for accurate p300 classification. Journal of Biomedical Physics & Engineering, 2024.
+
 [2] Bruno Aristimunha, Raphael Y. de Camargo, Walter H. Lopez Pinaya, Sylvain Chevallier, Alexandre Gramfort, and Cedric Rommel. Evaluating the structure of cognitive tasks with transfer learning. arXiv preprint, 2023.
+
 [3] D. Borra et al. Ms-eegnet: A lightweight multi-scale convolutional neural network for p300 decoding. Journal of Neural Engineering, 2021.
+
 [4] J. Chen, Y. Zhang, P. Peng, et al. A transformer-based deep neural network model for ssvep classification (ssvepformer). arXiv preprint, 2022.
+
 [5] Y. Dai, Z. Chen, et al. A time-frequency feature fusion-based deep learning network for ssvep frequency recognition (ssvep-tffnet). Frontiers in Neuroscience, 2025.
+
 [6] W. Dong, C. Xu, et al. Enhanced ssvep bionic spelling via xlstm-based deep learning and spatial attention. Biomimetics, 2025.
+
 [7] P. Du, P. Li, et al. Single-trial p300 classification algorithm based on centralized multi-person data fusion cnn. Frontiers in Neuroscience, 2023.
+
 [8] Z. Ermaganbet, A. Mussabayeva, et al. Subject-independent p300 speller classification using time-frequency representation and double input cnn with feature concatenation. In IEEE DSP Conference, 2023.
+
 [9] J. Hong, G. Mackellar, and S. Ghane. Spellerssl: Self-supervised learning with p300 aggregation for speller bcis. arXiv preprint, 2025.
+
 [10] Roman Kessler, Alexander Enge, and Michael A. Skeide. How eeg preprocessing shapes decoding performance. Communications Biology,
 2025.
+
 [11] Yi Liu, Zach Quince, Steven Goh, Shoryu Teragawa, and Tobias Low. A lightweight deep learning model for eeg classification across visual stimuli. University of Southern Queensland preprint, 2023.
+
 [12] V. Marochko et al. Integrated gradients for enhanced interpretation of p3b-erp classifiers trained with eeg-superlets in traditional and virtual environments. In CEUR Workshop, 2025.
+
 [13] J. A. O’Reilly et al. Blind source separation of event-related potentials using a recurrent neural network. bioRxiv, 2024.
+
 [14] J. A. O’Reilly, J. Wehrman, et al. Neural correlates of face perception modeled with a convolutional recurrent neural network. bioRxiv, 2023.
+
 [15] Y. Ravipati, N. Pouratian, et al. Evaluating deep learning performance for p300 neural signal classification. In AMIA Annual Symposium
 Proceedings, 2024.
+
 [16] G. Zhang et al. Assessing the effectiveness of spatial pca on svm-based decoding of eeg data. NeuroImage, 2023.
