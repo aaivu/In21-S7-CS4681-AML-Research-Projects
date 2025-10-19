@@ -1,15 +1,3 @@
-"""
-LAMBADA Evaluation with GPT API (Optimized Prompt Engineering Version)
----------------------------------------------------------------------
-Features:
-- Strong instruction formatting
-- Semantic few-shot selection (SentenceTransformers)
-- Cloze-mode fill-in-the-blank style
-- Multi-sampling (self-consistency)
-- Clean example filtering
-- Result logging for analysis
-"""
-
 from openai import OpenAI
 from datasets import load_dataset
 import random, re, csv, os, torch
@@ -66,7 +54,7 @@ dev_pos = [nlp(text)[-1].pos_ if len(nlp(text)) > 0 else "X" for text in dev_tex
 # ---------------------------------------------------------------------
 # Hybrid similarity function: semantic + POS
 # ---------------------------------------------------------------------
-def get_hybrid_scores(test_context):
+def get_hybrid_scores(test_context,alpha):
     """Return hybrid similarity scores for all dev examples."""
     test_emb = embedder.encode(test_context, convert_to_tensor=True)
     sem_sim = util.cos_sim(test_emb, dev_embs)[0].cpu().numpy()
@@ -77,13 +65,13 @@ def get_hybrid_scores(test_context):
     pos_match = np.array([1.0 if p == test_pos else 0.0 for p in dev_pos])
 
     # Combine semantic + POS
-    hybrid_score = 0.2 * sem_sim + 0.8 * pos_match
+    hybrid_score = alpha * sem_sim + (1-alpha) * pos_match
     return hybrid_score
 
 # ---------------------------------------------------------------------
 # Prompt builder
 # ---------------------------------------------------------------------
-def build_prompt(context, k=5, mode="cloze", use_semantic=True):
+def build_prompt(context, k=5, mode="cloze", use_POS_sem=True,alpha=0.2):
     """
     Build a strong, instruction-driven few-shot prompt.
     """
@@ -92,8 +80,8 @@ def build_prompt(context, k=5, mode="cloze", use_semantic=True):
 
     # === Few-shot example selection ===
     if k > 0:
-        if use_semantic:
-            scores = get_hybrid_scores(context)
+        if use_POS_sem:
+            scores = get_hybrid_scores(context,alpha)
             top_k_indices = scores.argsort()[-k:][::-1]  # highest scores first
             examples = [clean_dev[i] for i in top_k_indices]
         else:
@@ -166,25 +154,27 @@ def evaluate(
     k=5,
     model="gpt-3.5-turbo-instruct",
     mode="cloze",
-    use_semantic=True,
+    use_POS_sem=True,
+    alpha=0.2,
     log_path="results.csv",
 ):
     correct, total = 0, 0
     results = []
 
-    print(f"Running {n_samples} samples | {k}-shot | Semantic={use_semantic} | Mode={mode}")
+    print(f"Running {n_samples} samples | {k}-shot | POS and Semantic Selection ={use_POS_sem} | Mode={mode}")
 
     # Prepare CSV logger
     with open(log_path, "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         writer.writerow(["#","Gold","Prediction","Correct","PromptLength"])
 
-        for idx, ex in enumerate(dataset.select(range(n_samples))):
+        # for idx, ex in enumerate(dataset.select(range(n_samples))):
+        for idx, ex in enumerate(dataset):
             text = ex["text"].strip()
             if " " not in text:
                 continue
             ctx, gold = text.rsplit(" ", 1)
-            prompt = build_prompt(ctx, k=k, mode=mode, use_semantic=use_semantic)
+            prompt = build_prompt(ctx, k=k, mode=mode, use_POS_sem=use_POS_sem,alpha=alpha)
             pred = query_model(prompt, model=model)
 
             is_correct = pred.lower() == gold.lower()
