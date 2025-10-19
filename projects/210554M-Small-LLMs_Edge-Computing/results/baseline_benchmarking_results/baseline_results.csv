@@ -1,0 +1,5 @@
+Model,Size (GB),Latency (ms_per_token),Perplexity (WikiText-2),BoolQ Acc (%),SQuAD EM (%),SQuAD F1 (%)
+Qwen/Qwen2.5-0.5B,0.92,6.44,22.9,39.0,25.5,29.61
+TinyLlama/TinyLlama-1.1B-intermediate-step-1431k-3T,2.05,5.66,14.94,49.5,0.0,4.47
+microsoft/phi-1_5,2.64,6.23,52.34,47.5,0.0,6.08
+google/gemma-3-1b-it,1.86,12.4,59.76,64.0,12.5,22.94

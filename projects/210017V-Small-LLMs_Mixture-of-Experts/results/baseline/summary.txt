@@ -1,0 +1,4 @@
+Mode: baseline
+Use MoE: True
+Parameters: 178.73M
+Final Test Perplexity: 537.10
