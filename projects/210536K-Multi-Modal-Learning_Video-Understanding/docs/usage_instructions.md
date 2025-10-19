@@ -85,43 +85,8 @@ TBT-Former/
 ```
 
 ---
-
-### ActivityNet 1.3
-
-#### Download Features and Annotations
-
-- Download `anet_1.3.tar.gz` (`md5sum c415f50120b9425ee1ede9ac3ce11203`) from:
-  - [Box Link](https://uwmadison.box.com/s/aisdoymowukc99zoc7gpqegxbb4whikx)
-  - [Google Drive Link](https://drive.google.com/file/d/1VW8px1Nz9A17i0wMVUfxh6YsPCLVqL-S/view?usp=sharing)
-- The file includes TSP features and annotations.
-
-**Feature Details:**
-
-- Extracted from R(2+1)D-34 model pretrained with TSP on ActivityNet
-- Non-overlapping clips of `16 frames` at `15 fps`
-- Results in one feature vector per `16/15 ~= 1.067` seconds
-
+- For EPIC-Kitchens 100  & ActivityNet dataset setup, follow the same procedure as THUMOS14. Refer to the [EPIC-Kitchens 100 dataset documentation](../data/EPIC_Kitchens_100.md) for more details about the EPIC-Kitchens 100 dataset.
 For more information about ActivityNet, see the [ActivityNet dataset documentation](../data/ActivityNet.md).
-
-#### Unpack Features and Annotations
-
-Unpack the file under `./data`. The folder structure should be:
-
-```
-TBT-Former/
-│   ...
-└───data/
-    └───anet_1.3/
-        └───annotations/
-        └───tsp_features/
-```
-
----
-
-### EPIC-Kitchens 100
-
-For EPIC-Kitchens 100 dataset setup, follow the same procedure as THUMOS14. Refer to the [EPIC-Kitchens 100 dataset documentation](../data/EPIC_Kitchens_100.md) for more details about the dataset.
-
 ---
 
 ## Training
@@ -139,22 +104,6 @@ python ./train.py ./configs/tbtformer_thumos_i3d.yaml --output reproduce_tbtform
 - Training requires ~5GB GPU memory
 - Inference may require over 10GB GPU memory
 - A GPU with at least 12GB memory is recommended
-
----
-
-### Training on ActivityNet 1.3
-
-Train TBT-Former with TSP features:
-
-```shell
-python ./train.py ./configs/tbtformer_anet_tsp.yaml --output reproduce_tbtformer
-```
-
----
-
-### Training on EPIC-Kitchens 100
-
-For EPIC-Kitchens 100, follow the same training procedure as THUMOS14 with the appropriate configuration file.
 
 ---
 
@@ -192,57 +141,6 @@ Detailed results (mAP at different tIoU thresholds):
 
 ---
 
-### Evaluating on ActivityNet 1.3
-
-Evaluate the trained model:
-
-```shell
-python ./eval.py ./configs/tbtformer_anet_tsp.yaml ./ckpt/tbtformer_anet_tsp_reproduce_tbtformer
-```
-
-**Expected Results:**
-
-- Average mAP: **36.8%**
-
-Detailed results:
-
-| Method         | mAP@0.5 | mAP@0.75 | mAP@0.95 | **Avg mAP** |
-| -------------- | ------- | -------- | -------- | ----------- |
-| **TBT-Former** | 53.9    | 38.2     | 8.5      | **36.8**    |
-
----
-
-### Evaluating on EPIC-Kitchens 100
-
-For EPIC-Kitchens 100, follow the same evaluation procedure as THUMOS14 with the appropriate configuration file.
-
----
-
-## Pre-trained Models
-
-### THUMOS14 Pre-trained Model
-
-1. Download the pre-trained TBT-Former model for THUMOS14 (link to be provided)
-2. Create a folder `./pretrained` and unpack the file there
-3. Evaluate the pre-trained model:
-
-```shell
-python ./eval.py ./configs/tbtformer_thumos_i3d.yaml ./pretrained/tbtformer_thumos_i3d_reproduce/
-```
-
----
-
-### ActivityNet 1.3 Pre-trained Model
-
-1. Download the pre-trained TBT-Former model for ActivityNet (link to be provided)
-2. Create `./pretrained` and unpack the file there
-3. Evaluate the pre-trained model:
-
-```shell
-python ./eval.py ./configs/tbtformer_anet_tsp.yaml ./pretrained/tbtformer_anet_tsp_reproduce/
-```
-
----
 
 ## Additional Resources
 
