@@ -62,8 +62,13 @@ The study will use EEG-ExPy datasets for N170 and P300 experiments, with optiona
 ## References
 
 [1] Yi Liu, Zach Quince, Steven Goh, Shoryu Teragawa, and Tobias Low. A lightweight deep learning model for eeg classification across visual stimuli. University of Southern Queensland preprint, 2023.
+
 [2] G. Zhang et al. Assessing the effectiveness of spatial pca on svm-based decoding of eeg data. NeuroImage, 2023.
+
 [3] R. Afrah, Z. Amini, and R. Kafieh. An unsupervised feature extraction method based on clstm-ae for accurate p300 classification. Journal of Biomedical Physics & Engineering, 2024.
+
 [4] D. Borra et al. Ms-eegnet: A lightweight multi-scale convolutional neural network for p300 decoding. Journal of Neural Engineering, 2021.
+
 [5] J. Chen, Y. Zhang, P. Peng, et al. A transformer-based deep neural network model for ssvep classification (ssvepformer). arXiv preprint, 2022.
+
 [6] Y. Dai, Z. Chen, et al. A time-frequency feature fusion-based deep learning network for ssvep frequency recognition (ssvep-tffnet). Frontiers in Neuroscience, 2025.

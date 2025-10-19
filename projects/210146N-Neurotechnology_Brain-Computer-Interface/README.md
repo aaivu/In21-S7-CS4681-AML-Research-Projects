@@ -1,63 +1,50 @@
-# Neurotechnology:Brain-Computer Interface - 210146N
+# Assessing EEG Classification Performance: Classical vs Deep Learning Approaches
 
-## Student Information
-
-- **Index Number:** 210146N
-- **Research Area:** Neurotechnology:Brain-Computer Interface
-- **GitHub Username:** @PavithaDissanayake
-- **Email:** pavitha.21@cse.mrt.ac.lk
-
-## Project Structure
-```
-210146N-Neurotechnology:Brain-Computer-Interface/
-├── README.md                    # This file
-├── docs/
-│   ├── research_proposal.md     # Your research proposal (Required)
-│   ├── literature_review.md     # Literature review and references
-│   ├── methodology.md           # Detailed methodology
-│   └── progress_reports/        # Weekly progress reports
-├── src/                         # Your source code
-├── data/                        # Datasets and data files
-├── experiments/                 # Experiment scripts and configs
-├── results/                     # Experimental results
-└── requirements.txt             # Project dependencies
-```
-
-## Getting Started
-
-1. **Complete Research Proposal:** Fill out `docs/research_proposal.md`
-2. **Literature Review:** Document your literature review in `docs/literature_review.md`
-3. **Set Up Environment:** Add your dependencies to `requirements.txt`
-4. **Start Coding:** Begin implementation in the `src/` folder
-5. **Track Progress:** Use GitHub Issues to report weekly progress
-
-## Milestones
-
-- [ ] **Week 4:** Research Proposal Submission
-- [ ] **Week 5:** Literature Review Completion  
-- [ ] **Week 8:** Methodology Implementation
-- [ ] **Week 12:** Final Evaluation
-
-## Progress Tracking
-
-Create GitHub Issues with the following labels for tracking:
-- `student-210146N` (automatically added)
-- `literature-review`, `implementation`, `evaluation`, etc.
-- Tag supervisors (@supervisor) for feedback
-
-## Resources
-
-- Check the main repository `docs/` folder for guidelines
-- Use the `templates/` folder for document templates
-- Refer to `docs/project_guidelines.md` for detailed instructions
-
-## Academic Integrity
-
-- All work must be original
-- Properly cite all references
-- Acknowledge any collaboration
-- Follow university academic integrity policies
+This repository contains the codebase, experiments, and analysis conducted for the research project exploring EEG-based brain–computer interface (BCI) decoding using the **EEG-ExPy benchmark** from [NeuroTechX](https://github.com/NeuroTechX/eeg-expy).  
+The study evaluates **classical signal processing pipelines** and **deep learning approaches** across three EEG paradigms, **N170**, **P300**, and **SSVEP**, with a focus on **cross-subject generalization** and **performance consistency**.
 
 ---
 
-**Remember:** Regular commits and clear documentation are essential for project success!
+## Overview
+
+EEG-ExPy provides a standardized benchmark for evaluating EEG decoding methods under realistic conditions.  
+This project builds upon the provided baseline notebooks to:
+
+- Implement and extend **classical pipelines** using methods such as **Common Spatial Patterns (CSP)**, **Minimum Distance to Mean (MDM)**, and **Tangent Space Mapping**.  
+- Experiment with **deep learning models**, including **autoencoders** and simple CNN-based architectures, to test their performance and generalization across subjects.  
+- Compare results under **single-subject** and **all-subject** evaluation setups.  
+
+Despite deep models showing promising **training accuracies (up to ~80%)**, their **test accuracies remained near-chance (≈0.5)**, indicating poor generalization due to the nature of the data and lack of.
+
+---
+
+## Repository Structure
+
+```
+│
+├── README.md # This file
+│
+├── data/ # Data provided with the EEG-ExPy package
+│ ├── visual-N170
+│ ├── visual-P300
+│ └── visual-SSVEP
+│
+├── docs/ # Documentation
+│ ├── literature_review.md
+│ ├── methodology.md
+│ ├── research_proposal.md
+│ └── usage_instructions.md
+│
+├── experiments/ # Experiment notebooks (modified EEG-ExPy baseline)
+│ ├── N170_experiment.ipynb
+│ ├── P300_experiment.ipynb
+│ └── SSVEP_experiment.ipynb
+│
+├── results/ # Experimental outputs
+│ └── results.md
+│
+├── src/ # EEG-ExPy package, the baseline
+│
+└── requirements.txt
+```
+
