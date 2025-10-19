@@ -1,0 +1,9 @@
+name: simple-env
+channels:
+   - default
+{{ channels }}
+dependencies:
+  - pip=23.3
+  - python=3.9.18
+{{ conda_dependencies }}
+  {{ pip }}

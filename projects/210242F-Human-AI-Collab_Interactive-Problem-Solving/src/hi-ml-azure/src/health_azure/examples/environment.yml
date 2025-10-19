@@ -1,0 +1,8 @@
+name: simple-env
+channels:
+  - defaults
+dependencies:
+  - pip=23.3
+  - python=3.9.18
+  - pip:
+      - hi-ml-azure>=0.1.8
