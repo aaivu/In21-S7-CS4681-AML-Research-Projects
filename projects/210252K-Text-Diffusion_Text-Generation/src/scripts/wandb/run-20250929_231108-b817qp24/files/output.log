@@ -1,0 +1,46 @@
+creating data loader...
+load data **************************************************
+hello loading text data.
+hello loading e2e-tgt.
+Traceback (most recent call last):
+  File "C:\Users\ASUS TUF\Downloads\Diffusion-LM\improved-diffusion\scripts\train.py", line 208, in <module>
+    main()
+  File "C:\Users\ASUS TUF\Downloads\Diffusion-LM\improved-diffusion\scripts\train.py", line 106, in main
+    next(data)
+  File "c:\users\asus tuf\downloads\diffusion-lm\improved-diffusion\improved_diffusion\text_datasets.py", line 56, in load_data_text
+    training_data, model = get_corpus_rocstory(data_args, model, image_size,
+  File "c:\users\asus tuf\downloads\diffusion-lm\improved-diffusion\improved_diffusion\text_datasets.py", line 314, in get_corpus_rocstory
+    from spacy.lang.en import English
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 986, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 680, in _load_unlocked
+  File "C:\Users\ASUS TUF\miniconda3\envs\diff-lm\lib\site-packages\wandb\sdk\lib\import_hooks.py", line 182, in _exec_module
+    self.loader.exec_module(module)
+  File "C:\Users\ASUS TUF\miniconda3\envs\diff-lm\lib\site-packages\spacy\__init__.py", line 14, in <module>
+    from . import pipeline  # noqa: F401
+  File "C:\Users\ASUS TUF\miniconda3\envs\diff-lm\lib\site-packages\spacy\pipeline\__init__.py", line 1, in <module>
+    from .attributeruler import AttributeRuler
+  File "C:\Users\ASUS TUF\miniconda3\envs\diff-lm\lib\site-packages\spacy\pipeline\attributeruler.py", line 6, in <module>
+    from .pipe import Pipe
+  File "spacy\pipeline\pipe.pyx", line 8, in init spacy.pipeline.pipe
+  File "C:\Users\ASUS TUF\miniconda3\envs\diff-lm\lib\site-packages\spacy\training\__init__.py", line 11, in <module>
+    from .callbacks import create_copy_from_base_model  # noqa: F401
+  File "C:\Users\ASUS TUF\miniconda3\envs\diff-lm\lib\site-packages\spacy\training\callbacks.py", line 3, in <module>
+    from ..language import Language
+  File "C:\Users\ASUS TUF\miniconda3\envs\diff-lm\lib\site-packages\spacy\language.py", line 25, in <module>
+    from .training.initialize import init_vocab, init_tok2vec
+  File "C:\Users\ASUS TUF\miniconda3\envs\diff-lm\lib\site-packages\spacy\training\initialize.py", line 14, in <module>
+    from .pretrain import get_tok2vec_ref
+  File "C:\Users\ASUS TUF\miniconda3\envs\diff-lm\lib\site-packages\spacy\training\pretrain.py", line 16, in <module>
+    from ..schemas import ConfigSchemaPretrain
+  File "C:\Users\ASUS TUF\miniconda3\envs\diff-lm\lib\site-packages\spacy\schemas.py", line 216, in <module>
+    class TokenPattern(BaseModel):
+  File "pydantic\main.py", line 299, in pydantic.main.ModelMetaclass.__new__
+  File "pydantic\fields.py", line 411, in pydantic.fields.ModelField.infer
+  File "pydantic\fields.py", line 342, in pydantic.fields.ModelField.__init__
+  File "pydantic\fields.py", line 451, in pydantic.fields.ModelField.prepare
+  File "pydantic\fields.py", line 545, in pydantic.fields.ModelField._type_analysis
+  File "pydantic\fields.py", line 550, in pydantic.fields.ModelField._type_analysis
+  File "C:\Users\ASUS TUF\miniconda3\envs\diff-lm\lib\typing.py", line 852, in __subclasscheck__
+    return issubclass(cls, self.__origin__)
+TypeError: issubclass() arg 1 must be a class
