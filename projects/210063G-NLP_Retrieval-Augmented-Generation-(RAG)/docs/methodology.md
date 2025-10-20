@@ -109,11 +109,6 @@ The Agentic LightRAG framework comprises four specialized agent components opera
 
 ### 5.3 Hardware/Software Requirements
 
-**Computational Infrastructure**:
-- GPU: NVIDIA A100 or equivalent (40GB VRAM minimum) for model inference and embedding generation
-- CPU: 16+ cores for parallel retrieval operations
-- RAM: 64GB minimum system memory
-- Storage: 2TB for document collection, embeddings, and graph indices
 
 **Software Stack**:
 - Python 3.10+
