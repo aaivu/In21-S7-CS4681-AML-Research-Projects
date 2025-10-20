@@ -1,0 +1,163 @@
+================================================================================
+Running experiment 1/6: exp_000_1shot_prototypical_augFalse_default
+================================================================================
+LoRA Config (1-shot, low_shot): r=4, alpha=16, dropout=0.15, modules={'attn.out_proj'}
+trainable params: 202,752 || all params: 306,927,616 || trainable%: 0.0661
+Preparing 1-shot training data...
+Total training samples: 100
+/tmp/ipykernel_36/2920910267.py:391: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.no_grad(), torch.cuda.amp.autocast():
+
+Training with LoRA and prototypical loss...
+Config: LR=0.0001, WD=0.01, Label Smoothing=0.1
+Augmentation: False, Temperature: 0.1
+/tmp/ipykernel_36/2920910267.py:453: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+/tmp/ipykernel_36/2920910267.py:556: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch [1/100] Loss: 4.7195 | Train Acc: 3.00% | Val Acc: 19.00% | LR: 0.000100
+Epoch [10/100] Loss: 2.0356 | Train Acc: 100.00% | Val Acc: 100.00% | LR: 0.000098
+Epoch [20/100] Loss: 1.0353 | Train Acc: 100.00% | Val Acc: 100.00% | LR: 0.000091
+Early stopping at epoch 26
+Training complete! Best validation accuracy: 100.00%
+Training time: 119.07 seconds
+
+Evaluating on test set...
+Testing:   0%|          | 0/63 [00:00<?, ?it/s]/tmp/ipykernel_36/2920910267.py:586: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Testing: 100%|██████████| 63/63 [00:35<00:00,  1.77it/s]
+/usr/local/lib/python3.11/dist-packages/peft/mapping_func.py:73: UserWarning: You are trying to modify a model with PEFT for a second time. If you want to reload the model with a different config, make sure to call `.unload()` before.
+  warnings.warn(
+/usr/local/lib/python3.11/dist-packages/peft/tuners/tuners_utils.py:167: UserWarning: Already found a `peft_config` attribute in the model. This will lead to having multiple adapters in the model. Make sure to know what you are doing!
+  warnings.warn(
+✓ Completed: Overall Acc: 71.85% | Time: 155.72s
+
+================================================================================
+Running experiment 2/6: exp_001_1shot_prototypical_augFalse_high_lr
+================================================================================
+LoRA Config (1-shot, low_shot): r=4, alpha=16, dropout=0.15, modules={'attn.out_proj'}
+trainable params: 202,752 || all params: 306,927,616 || trainable%: 0.0661
+Preparing 1-shot training data...
+Total training samples: 100
+
+Training with LoRA and prototypical loss...
+Config: LR=0.0005, WD=0.05, Label Smoothing=0.2
+Augmentation: False, Temperature: 0.2
+Epoch [1/150] Loss: 5.1385 | Train Acc: 0.00% | Val Acc: 63.00% | LR: 0.000500
+Epoch [10/150] Loss: 1.4406 | Train Acc: 100.00% | Val Acc: 100.00% | LR: 0.000496
+Epoch [20/150] Loss: 1.4187 | Train Acc: 100.00% | Val Acc: 100.00% | LR: 0.000480
+Early stopping at epoch 27
+Training complete! Best validation accuracy: 100.00%
+Training time: 152.26 seconds
+
+Evaluating on test set...
+Testing: 100%|██████████| 63/63 [00:35<00:00,  1.78it/s]
+✓ Completed: Overall Acc: 72.85% | Time: 187.86s
+
+================================================================================
+Running experiment 3/6: exp_002_5shot_prototypical_augFalse_default
+================================================================================
+LoRA Config (5-shot, medium_shot): r=8, alpha=32, dropout=0.1, modules={'attn.out_proj'}
+trainable params: 405,504 || all params: 307,130,368 || trainable%: 0.1320
+Preparing 5-shot training data...
+Total training samples: 500
+
+Training with LoRA and prototypical loss...
+Config: LR=0.0001, WD=0.01, Label Smoothing=0.1
+Augmentation: False, Temperature: 0.1
+Epoch [1/100] Loss: 4.6788 | Train Acc: 11.00% | Val Acc: 56.60% | LR: 0.000100
+Epoch [10/100] Loss: 0.9778 | Train Acc: 100.00% | Val Acc: 100.00% | LR: 0.000098
+Epoch [20/100] Loss: 0.8943 | Train Acc: 100.00% | Val Acc: 100.00% | LR: 0.000091
+Early stopping at epoch 27
+Training complete! Best validation accuracy: 100.00%
+Training time: 564.34 seconds
+
+Evaluating on test set...
+Testing: 100%|██████████| 63/63 [00:35<00:00,  1.78it/s]
+✓ Completed: Overall Acc: 89.95% | Time: 600.01s
+
+================================================================================
+Running experiment 4/6: exp_003_5shot_prototypical_augFalse_high_lr
+================================================================================
+LoRA Config (5-shot, medium_shot): r=8, alpha=32, dropout=0.1, modules={'attn.out_proj'}
+trainable params: 405,504 || all params: 307,130,368 || trainable%: 0.1320
+Preparing 5-shot training data...
+Total training samples: 500
+
+Training with LoRA and prototypical loss...
+Config: LR=0.0005, WD=0.05, Label Smoothing=0.2
+Augmentation: False, Temperature: 0.2
+Epoch [1/150] Loss: 3.6626 | Train Acc: 38.40% | Val Acc: 95.20% | LR: 0.000500
+Epoch [10/150] Loss: 1.4445 | Train Acc: 100.00% | Val Acc: 100.00% | LR: 0.000496
+Epoch [20/150] Loss: 1.5058 | Train Acc: 100.00% | Val Acc: 100.00% | LR: 0.000480
+Early stopping at epoch 28
+Training complete! Best validation accuracy: 100.00%
+Training time: 717.26 seconds
+
+Evaluating on test set...
+Testing: 100%|██████████| 63/63 [00:35<00:00,  1.78it/s]
+✓ Completed: Overall Acc: 87.10% | Time: 752.89s
+
+================================================================================
+Running experiment 5/6: exp_004_10shot_prototypical_augFalse_default
+================================================================================
+LoRA Config (10-shot, medium_shot): r=8, alpha=32, dropout=0.1, modules={'attn.out_proj'}
+trainable params: 405,504 || all params: 307,130,368 || trainable%: 0.1320
+Preparing 10-shot training data...
+Total training samples: 1000
+
+Training with LoRA and prototypical loss...
+Config: LR=0.0001, WD=0.01, Label Smoothing=0.1
+Augmentation: False, Temperature: 0.1
+Epoch [1/100] Loss: 4.0741 | Train Acc: 31.20% | Val Acc: 89.50% | LR: 0.000100
+Epoch [10/100] Loss: 0.9089 | Train Acc: 99.60% | Val Acc: 99.90% | LR: 0.000098
+Epoch [20/100] Loss: 0.8454 | Train Acc: 100.00% | Val Acc: 100.00% | LR: 0.000091
+Epoch [30/100] Loss: 0.8278 | Train Acc: 100.00% | Val Acc: 100.00% | LR: 0.000081
+Early stopping at epoch 32
+Training complete! Best validation accuracy: 100.00%
+Training time: 1321.39 seconds
+
+Evaluating on test set...
+Testing: 100%|██████████| 63/63 [00:35<00:00,  1.77it/s]
+✓ Completed: Overall Acc: 91.85% | Time: 1357.23s
+
+================================================================================
+Running experiment 6/6: exp_005_10shot_prototypical_augFalse_high_lr
+================================================================================
+LoRA Config (10-shot, medium_shot): r=8, alpha=32, dropout=0.1, modules={'attn.out_proj'}
+trainable params: 405,504 || all params: 307,130,368 || trainable%: 0.1320
+Preparing 10-shot training data...
+Total training samples: 1000
+
+Training with LoRA and prototypical loss...
+Config: LR=0.0005, WD=0.05, Label Smoothing=0.2
+Augmentation: False, Temperature: 0.2
+Epoch [1/150] Loss: 2.8557 | Train Acc: 59.70% | Val Acc: 98.20% | LR: 0.000500
+Epoch [10/150] Loss: 1.4862 | Train Acc: 100.00% | Val Acc: 100.00% | LR: 0.000496
+Epoch [20/150] Loss: 1.5634 | Train Acc: 99.90% | Val Acc: 99.70% | LR: 0.000480
+Epoch [30/150] Loss: 1.5251 | Train Acc: 99.90% | Val Acc: 99.90% | LR: 0.000455
+Early stopping at epoch 30
+Training complete! Best validation accuracy: 100.00%
+Training time: 1518.26 seconds
+
+Evaluating on test set...
+Testing: 100%|██████████| 63/63 [00:35<00:00,  1.78it/s]
+✓ Completed: Overall Acc: 89.40% | Time: 1553.91s
+
+All results saved to comprehensive_lora_results.json
+
+====================================================================================================
+EXPERIMENT SUMMARY
+====================================================================================================
+Config                                                       Epochs   Best Val Acc Test Acc   Time (s)  
+----------------------------------------------------------------------------------------------------
+exp_000_1shot_prototypical_augFalse_default                  26       100.00       71.85      155.7     
+exp_001_1shot_prototypical_augFalse_high_lr                  27       100.00       72.85      187.9     
+exp_002_5shot_prototypical_augFalse_default                  27       100.00       89.95      600.0     
+exp_003_5shot_prototypical_augFalse_high_lr                  28       100.00       87.10      752.9     
+exp_004_10shot_prototypical_augFalse_default                 32       100.00       91.85      1357.2    
+exp_005_10shot_prototypical_augFalse_high_lr                 30       100.00       89.40      1553.9    
+====================================================================================================
+Successful experiments: 6/6
+
+All experiments completed!
