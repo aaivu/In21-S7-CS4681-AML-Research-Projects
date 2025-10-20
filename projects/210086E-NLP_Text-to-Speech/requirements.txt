@@ -5,30 +5,39 @@ scikit-learn>=1.0.0
 matplotlib>=3.5.0
 seaborn>=0.11.0
 
-# Deep Learning (uncomment as needed)
-# torch>=1.10.0
-# torchvision>=0.11.0
-# tensorflow>=2.8.0
-# keras>=2.8.0
+# Deep Learning
+torch>=2.0.0
+torchaudio>=2.0.0
+torchvision>=0.15.0
 
-# NLP Libraries (uncomment as needed)
-# nltk>=3.7.0
-# spacy>=3.4.0
-# transformers>=4.15.0
+# TTS and Audio Processing
+TTS==0.22.0
+soundfile>=0.12.0
+librosa>=0.10.0
+scipy>=1.9.0
 
-# Computer Vision (uncomment as needed)
-# opencv-python>=4.5.0
-# pillow>=8.3.0
+# Audio Quality Metrics
+pesq>=0.0.4
+pystoi>=0.3.3
+
+# Evaluation and Analysis
+jiwer>=3.0.0
+
+# Training and Monitoring
+tensorboard>=2.13.0
+torch-tb-profiler>=0.4.0
 
 # Utilities
 jupyter>=1.0.0
 tqdm>=4.62.0
 python-dotenv>=0.19.0
+gputil>=1.4.0
 
-# Add your specific requirements below
-TTS==0.22.0
-soundfile
-librosa
-jiwer
-torch-tb-profiler
-gputil
+# NLP Libraries (if needed for full TTS pipeline)
+# nltk>=3.7.0
+# spacy>=3.4.0
+# transformers>=4.15.0
+
+# Additional utilities
+ipywidgets>=8.0.0
+
