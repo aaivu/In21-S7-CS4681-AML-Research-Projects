@@ -12,7 +12,7 @@ This guide provides instructions for using the trained iSTFT Vocoder models for 
 ## Prerequisites
 
 1. **Trained Model Checkpoint**: Available in `checkpoints/istft_vocoder_v2/`
-2. **Python Environment**: Python 3.8+ with PyTorch, torchaudio
+2. **Python Environment**: Python 3.10 with PyTorch, torchaudio
 3. **Dependencies**: All packages from `requirements.txt` installed
 
 ## Quick Start
