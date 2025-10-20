@@ -1,0 +1,228 @@
+wandb_version: 1
+
+_wandb:
+  desc: null
+  value:
+    python_version: 3.9.23
+    cli_version: 0.15.1
+    framework: huggingface
+    huggingface_version: 4.6.1
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    start_time: 1759168904.31551
+    t:
+      1:
+      - 1
+      - 11
+      - 49
+      - 51
+      - 53
+      - 55
+      2:
+      - 1
+      - 11
+      - 49
+      - 51
+      - 53
+      - 55
+      3:
+      - 13
+      - 23
+      4: 3.9.23
+      5: 0.15.1
+      6: 4.6.1
+      8:
+      - 3
+      - 5
+data_dir:
+  desc: null
+  value: ''
+schedule_sampler:
+  desc: null
+  value: uniform
+lr:
+  desc: null
+  value: 0.0001
+weight_decay:
+  desc: null
+  value: 0.0
+lr_anneal_steps:
+  desc: null
+  value: 200000
+batch_size:
+  desc: null
+  value: 64
+microbatch:
+  desc: null
+  value: -1
+ema_rate:
+  desc: null
+  value: '0.9999'
+log_interval:
+  desc: null
+  value: 50
+save_interval:
+  desc: null
+  value: 50000
+resume_checkpoint:
+  desc: null
+  value: ''
+use_fp16:
+  desc: null
+  value: false
+fp16_scale_growth:
+  desc: null
+  value: 0.001
+seed:
+  desc: null
+  value: 102
+gradient_clipping:
+  desc: null
+  value: -1.0
+eval_interval:
+  desc: null
+  value: 2000
+checkpoint_path:
+  desc: null
+  value: diffusion_models/diff_e2e-tgt_block_rand16_transformer_lr0.0001_0.0_2000_sqrt_Lsimple_h128_s2_d0.1_sd102_xstart_e2e_with_rounding
+image_size:
+  desc: null
+  value: 8
+num_channels:
+  desc: null
+  value: 128
+num_res_blocks:
+  desc: null
+  value: 2
+num_heads:
+  desc: null
+  value: 4
+num_heads_upsample:
+  desc: null
+  value: -1
+attention_resolutions:
+  desc: null
+  value: 16,8
+dropout:
+  desc: null
+  value: 0.1
+learn_sigma:
+  desc: null
+  value: false
+sigma_small:
+  desc: null
+  value: false
+class_cond:
+  desc: null
+  value: false
+diffusion_steps:
+  desc: null
+  value: 2000
+noise_schedule:
+  desc: null
+  value: sqrt
+timestep_respacing:
+  desc: null
+  value: ''
+use_kl:
+  desc: null
+  value: false
+predict_xstart:
+  desc: null
+  value: true
+rescale_timesteps:
+  desc: null
+  value: true
+rescale_learned_sigmas:
+  desc: null
+  value: true
+use_checkpoint:
+  desc: null
+  value: false
+use_scale_shift_norm:
+  desc: null
+  value: true
+model_arch:
+  desc: null
+  value: transformer
+in_channel:
+  desc: null
+  value: 16
+out_channel:
+  desc: null
+  value: 16
+training_mode:
+  desc: null
+  value: e2e
+vocab_size:
+  desc: null
+  value: 821
+config_name:
+  desc: null
+  value: bert-base-uncased
+experiment_mode:
+  desc: null
+  value: lm
+logits_mode:
+  desc: null
+  value: 1
+lambda_anchor:
+  desc: null
+  value: 0.0
+lambda_qce:
+  desc: null
+  value: 0.0
+rounding_tau:
+  desc: null
+  value: 0.1
+modality:
+  desc: null
+  value: e2e-tgt
+dataset_name:
+  desc: null
+  value: wikitext
+dataset_config_name:
+  desc: null
+  value: wikitext-2-raw-v1
+config:
+  desc: null
+  value: diffusion_lm/synthetic_data/configs/emnlp2020/experiments/difflm_seed0_m3_k128_trainc20000.yaml
+model_name_or_path:
+  desc: null
+  value: predictability/diff_models/compress_e=5_b=60_m=gpt2_wikitext-103-raw-v1_None
+experiment:
+  desc: null
+  value: random
+roc_train:
+  desc: null
+  value: diffusion_lm/ROCstory
+wiki_train:
+  desc: null
+  value: diffusion_lm/simple_wiki/data.v1.split/simple.training.txt
+e2e_train:
+  desc: null
+  value: ../datasets/e2e_data
+yelp_train:
+  desc: null
+  value: diffusion_lm/yelpnlg-resources/yelpnlg-corpus
+commonGen_train:
+  desc: null
+  value: diffusion_lm/common-gen/commongen_data
+emb_scale_factor:
+  desc: null
+  value: 1.0
+noise_level:
+  desc: null
+  value: 0.0
+cache_mode:
+  desc: null
+  value: 'no'
+use_bert_tokenizer:
+  desc: null
+  value: 'no'
+padding_mode:
+  desc: null
+  value: block
+preprocessing_num_workers:
+  desc: null
+  value: 1

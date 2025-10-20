@@ -1,0 +1,29 @@
+2025-09-30 09:13:15,199 INFO    MainThread:65260 [wandb_setup.py:_flush():76] Current SDK version is 0.15.1
+2025-09-30 09:13:15,199 INFO    MainThread:65260 [wandb_setup.py:_flush():76] Configure stats pid to 65260
+2025-09-30 09:13:15,199 INFO    MainThread:65260 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ASUS TUF\.config\wandb\settings
+2025-09-30 09:13:15,199 INFO    MainThread:65260 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ASUS TUF\Downloads\Diffusion-LM\improved-diffusion\scripts\wandb\settings
+2025-09-30 09:13:15,199 INFO    MainThread:65260 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2025-09-30 09:13:15,199 INFO    MainThread:65260 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2025-09-30 09:13:15,199 INFO    MainThread:65260 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'improved-diffusion\\scripts\\train.py', 'program': 'C:\\Users\\ASUS TUF\\Downloads\\Diffusion-LM\\improved-diffusion\\scripts\\train.py'}
+2025-09-30 09:13:15,199 INFO    MainThread:65260 [wandb_init.py:_log_setup():507] Logging user logs to C:\Users\ASUS TUF\Downloads\Diffusion-LM\improved-diffusion\scripts\wandb\run-20250930_091315-gbt6hn0a\logs\debug.log
+2025-09-30 09:13:15,199 INFO    MainThread:65260 [wandb_init.py:_log_setup():508] Logging internal logs to C:\Users\ASUS TUF\Downloads\Diffusion-LM\improved-diffusion\scripts\wandb\run-20250930_091315-gbt6hn0a\logs\debug-internal.log
+2025-09-30 09:13:15,199 INFO    MainThread:65260 [wandb_init.py:init():547] calling init triggers
+2025-09-30 09:13:15,199 INFO    MainThread:65260 [wandb_init.py:init():554] wandb.init called with sweep_config: {}
+config: {}
+2025-09-30 09:13:15,199 INFO    MainThread:65260 [wandb_init.py:init():596] starting backend
+2025-09-30 09:13:15,199 INFO    MainThread:65260 [wandb_init.py:init():600] setting up manager
+2025-09-30 09:13:15,215 INFO    MainThread:65260 [backend.py:_multiprocessing_setup():106] multiprocessing start_methods=spawn, using: spawn
+2025-09-30 09:13:15,231 INFO    MainThread:65260 [wandb_init.py:init():606] backend started and connected
+2025-09-30 09:13:15,247 INFO    MainThread:65260 [wandb_init.py:init():700] updated telemetry
+2025-09-30 09:13:15,374 INFO    MainThread:65260 [wandb_init.py:init():737] communicating run to backend with 60.0 second timeout
+2025-09-30 09:13:17,062 INFO    MainThread:65260 [wandb_run.py:_on_init():2177] communicating current version
+2025-09-30 09:13:18,251 INFO    MainThread:65260 [wandb_run.py:_on_init():2186] got version response upgrade_message: "wandb version 0.22.1 is available!  To upgrade, please run:\n $ pip install wandb --upgrade"
+
+2025-09-30 09:13:18,251 INFO    MainThread:65260 [wandb_init.py:init():787] starting run threads in backend
+2025-09-30 09:13:18,631 INFO    MainThread:65260 [wandb_run.py:_console_start():2158] atexit reg
+2025-09-30 09:13:18,631 INFO    MainThread:65260 [wandb_run.py:_redirect():2013] redirect: SettingsConsole.WRAP_RAW
+2025-09-30 09:13:18,631 INFO    MainThread:65260 [wandb_run.py:_redirect():2078] Wrapping output streams.
+2025-09-30 09:13:18,631 INFO    MainThread:65260 [wandb_run.py:_redirect():2103] Redirects installed.
+2025-09-30 09:13:18,631 INFO    MainThread:65260 [wandb_init.py:init():829] run started, returning control to user process
+2025-09-30 09:13:18,695 INFO    MainThread:65260 [wandb_run.py:_config_callback():1286] config_cb None None {'data_dir': '', 'schedule_sampler': 'uniform', 'lr': 0.0001, 'weight_decay': 0.0, 'lr_anneal_steps': 200000, 'batch_size': 64, 'microbatch': -1, 'ema_rate': '0.9999', 'log_interval': 50, 'save_interval': 50000, 'resume_checkpoint': '', 'use_fp16': False, 'fp16_scale_growth': 0.001, 'seed': 102, 'gradient_clipping': -1.0, 'eval_interval': 2000, 'checkpoint_path': 'diffusion_models/diff_e2e-tgt_block_rand16_transformer_lr0.0001_0.0_2000_sqrt_Lsimple_h128_s2_d0.1_sd102_xstart_e2e_with_rounding', 'image_size': 8, 'num_channels': 128, 'num_res_blocks': 2, 'num_heads': 4, 'num_heads_upsample': -1, 'attention_resolutions': '16,8', 'dropout': 0.1, 'learn_sigma': False, 'sigma_small': False, 'class_cond': False, 'diffusion_steps': 2000, 'noise_schedule': 'sqrt', 'timestep_respacing': '', 'use_kl': False, 'predict_xstart': True, 'rescale_timesteps': True, 'rescale_learned_sigmas': True, 'use_checkpoint': False, 'use_scale_shift_norm': True, 'model_arch': 'transformer', 'in_channel': 16, 'out_channel': 16, 'training_mode': 'e2e', 'vocab_size': 821, 'config_name': 'bert-base-uncased', 'experiment_mode': 'lm', 'logits_mode': 1, 'lambda_anchor': 0.0, 'lambda_qce': 0.0, 'rounding_tau': 0.1, 'modality': 'e2e-tgt', 'dataset_name': 'wikitext', 'dataset_config_name': 'wikitext-2-raw-v1', 'config': 'diffusion_lm/synthetic_data/configs/emnlp2020/experiments/difflm_seed0_m3_k128_trainc20000.yaml', 'model_name_or_path': 'predictability/diff_models/compress_e=5_b=60_m=gpt2_wikitext-103-raw-v1_None', 'experiment': 'random', 'roc_train': 'diffusion_lm/ROCstory', 'wiki_train': 'diffusion_lm/simple_wiki/data.v1.split/simple.training.txt', 'e2e_train': '../datasets/e2e_data', 'yelp_train': 'diffusion_lm/yelpnlg-resources/yelpnlg-corpus', 'commonGen_train': 'diffusion_lm/common-gen/commongen_data', 'emb_scale_factor': 1.0, 'noise_level': 0.0, 'cache_mode': 'no', 'use_bert_tokenizer': 'no', 'padding_mode': 'block', 'preprocessing_num_workers': 1}
+2025-09-30 09:13:33,734 WARNING MsgRouterThr:65260 [router.py:message_loop():77] message_loop has been closed
