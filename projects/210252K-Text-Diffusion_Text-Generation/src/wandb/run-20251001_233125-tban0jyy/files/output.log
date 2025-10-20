@@ -1,0 +1,40 @@
+  0%|                                                                                                                                          | 0/13140 [00:00<?, ?it/s]C:\Users\ASUS TUF\miniconda3\envs\diff-lm\lib\site-packages\transformers\trainer.py:1731: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with autocast():
+  0%|                                                                                                                             | 1/13140 [04:15<933:29:37, 255.77s/it]Traceback (most recent call last):
+  File "C:\Users\ASUS TUF\Downloads\Diffusion-LM\train_gpt2_e2e.py", line 100, in <module>
+    main()
+  File "C:\Users\ASUS TUF\Downloads\Diffusion-LM\train_gpt2_e2e.py", line 92, in main
+    trainer.train()
+  File "C:\Users\ASUS TUF\miniconda3\envs\diff-lm\lib\site-packages\transformers\trainer.py", line 1272, in train
+    tr_loss += self.training_step(model, inputs)
+  File "C:\Users\ASUS TUF\miniconda3\envs\diff-lm\lib\site-packages\transformers\trainer.py", line 1732, in training_step
+    loss = self.compute_loss(model, inputs)
+  File "C:\Users\ASUS TUF\miniconda3\envs\diff-lm\lib\site-packages\transformers\trainer.py", line 1766, in compute_loss
+    outputs = model(**inputs)
+  File "C:\Users\ASUS TUF\miniconda3\envs\diff-lm\lib\site-packages\torch\nn\modules\module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "C:\Users\ASUS TUF\miniconda3\envs\diff-lm\lib\site-packages\torch\nn\modules\module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "C:\Users\ASUS TUF\miniconda3\envs\diff-lm\lib\site-packages\transformers\models\gpt2\modeling_gpt2.py", line 941, in forward
+    transformer_outputs = self.transformer(
+  File "C:\Users\ASUS TUF\miniconda3\envs\diff-lm\lib\site-packages\torch\nn\modules\module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "C:\Users\ASUS TUF\miniconda3\envs\diff-lm\lib\site-packages\torch\nn\modules\module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "C:\Users\ASUS TUF\miniconda3\envs\diff-lm\lib\site-packages\transformers\models\gpt2\modeling_gpt2.py", line 789, in forward
+    outputs = block(
+  File "C:\Users\ASUS TUF\miniconda3\envs\diff-lm\lib\site-packages\torch\nn\modules\module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "C:\Users\ASUS TUF\miniconda3\envs\diff-lm\lib\site-packages\torch\nn\modules\module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "C:\Users\ASUS TUF\miniconda3\envs\diff-lm\lib\site-packages\transformers\models\gpt2\modeling_gpt2.py", line 354, in forward
+    feed_forward_hidden_states = self.mlp(hidden_states)
+  File "C:\Users\ASUS TUF\miniconda3\envs\diff-lm\lib\site-packages\torch\nn\modules\module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "C:\Users\ASUS TUF\miniconda3\envs\diff-lm\lib\site-packages\torch\nn\modules\module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "C:\Users\ASUS TUF\miniconda3\envs\diff-lm\lib\site-packages\transformers\models\gpt2\modeling_gpt2.py", line 282, in forward
+    hidden_states = self.act(hidden_states)
+  File "C:\Users\ASUS TUF\miniconda3\envs\diff-lm\lib\site-packages\transformers\activations.py", line 42, in gelu_new
+    return 0.5 * x * (1.0 + torch.tanh(math.sqrt(2.0 / math.pi) * (x + 0.044715 * torch.pow(x, 3.0))))
+KeyboardInterrupt
