@@ -21,6 +21,8 @@ import cv2
 from util.dataset import datasets
 from util.util import Timing, get_expon_lr_func, generate_dirs_equirect, viridis_cmap
 from util import config_util
+import time
+import lpips
 
 from warnings import warn
 from datetime import datetime
@@ -30,6 +32,9 @@ from tqdm import tqdm
 from typing import NamedTuple, Optional, Union
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
+
+# LPIPS model on GPU
+lpips_alex = lpips.LPIPS(net='alex').to(device)  # 'alex' or 'vgg'
 
 parser = argparse.ArgumentParser()
 config_util.define_common_args(parser)
@@ -366,6 +371,9 @@ if args.enable_random:
     warn("Randomness is enabled for training (normal for LLFF & scenes with background)")
 
 epoch_id = -1
+eval_mse_list, eval_psnr_list = [], []
+start_time = time.time()
+
 while True:
     dset.shuffle_rays()
     epoch_id += 1
@@ -405,6 +413,20 @@ while True:
                                    ndc_coeffs=dset_test.ndc_coeffs)
                 rgb_pred_test = grid.volume_render_image(cam, use_kernel=True)
                 rgb_gt_test = dset_test.gt[img_id].to(device=device)
+
+                # --- Compute LPIPS ---
+                # Convert range [0,1] → [-1,1]
+                rgb_pred_lpips = 2.0 * rgb_pred_test.clamp(0, 1) - 1.0
+                rgb_gt_lpips   = 2.0 * rgb_gt_test.clamp(0, 1) - 1.0
+
+                # HWC → NCHW for LPIPS input
+                rgb_pred_lpips = rgb_pred_lpips.permute(2, 0, 1).unsqueeze(0)
+                rgb_gt_lpips   = rgb_gt_lpips.permute(2, 0, 1).unsqueeze(0)
+
+                # Compute LPIPS
+                lpips_val = lpips_alex(rgb_pred_lpips, rgb_gt_lpips).item()
+                print(f"[LPIPS] Image {img_id}: {lpips_val:.6f}")
+
                 all_mses = ((rgb_gt_test - rgb_pred_test) ** 2).cpu()
                 if i % img_save_interval == 0:
                     img_pred = rgb_pred_test.cpu()
@@ -466,6 +488,8 @@ while True:
                         stats_test[stat_name], global_step=gstep_id_base)
             summary_writer.add_scalar('epoch_id', float(epoch_id), global_step=gstep_id_base)
             print('eval stats:', stats_test)
+            eval_mse_list.append(stats_test['mse'])
+            eval_psnr_list.append(stats_test['psnr'])
     if epoch_id % max(factor, args.eval_every) == 0: #and (epoch_id > 0 or not args.tune_mode):
         # NOTE: we do an eval sanity check, if not in tune_mode
         eval_step()
@@ -656,4 +680,8 @@ while True:
         timings_file.write(f"{secs / 60}\n")
         if not args.tune_nosave:
             grid.save(ckpt_path)
+        end_time = time.time()
+        print(f"Total training time: {end_time - start_time:.2f} seconds")
+        print("mse list",eval_mse_list)
+        print("psnr list",eval_psnr_list)
         break
