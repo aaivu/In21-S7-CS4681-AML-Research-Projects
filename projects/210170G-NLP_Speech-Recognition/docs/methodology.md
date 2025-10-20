@@ -80,10 +80,8 @@ The **final fine-tuning layer** employs **Connectionist Temporal Classification 
 
 ### 5.2 Baseline Models
 
-1. **Baseline Wav2Vec2.0** — Standard pretraining and fine-tuning pipeline.  
-2. **ICSL-enhanced Wav2Vec2.0** — Adds inter-codebook regularization during pretraining.  
-3. **RVQ-enhanced Wav2Vec2.0** — Integrates residual quantization during fine-tuning.  
-4. **ICSL + RVQ combined model** — Evaluates cumulative performance gains.
+1. **Baseline Wav2Vec2.0 without pretrained weights** — Use as pretraining experiment baseline.
+1. **Baseline Wav2Vec2.0 pretrained model** — Use as fintuning experiment basline
 
 ### 5.3 Hardware/Software Requirements
 
@@ -129,8 +127,3 @@ The **final fine-tuning layer** employs **Connectionist Temporal Classification 
 - Achieved competitive or superior **WER performance** compared to baseline models.  
 - Provided practical insights into **efficient low-resource ASR design** using SSL frameworks.
 
----
-
-**Note:** This methodology will be iteratively refined as new results and observations emerge during implementation and experimentation.
-
----
