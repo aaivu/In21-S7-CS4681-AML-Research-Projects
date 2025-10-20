@@ -18,47 +18,6 @@ This research presents a comprehensive empirical study on few-shot adaptation of
 - What is the optimal balance between performance and computational efficiency?
 - How do different adaptation strategies perform across varying data regimes?
 
-## Project Structure
-
-```
-210407R-Few-Shot-CoCa/
-├── README.md                          # This file
-├── requirements.txt                   # Project dependencies
-├── docs/
-│   ├── research_proposal.md          # Research proposal
-│   ├── methodology.md                # Detailed methodology
-│   ├── literature_review.md          # Literature review and analysis
-│   └── progress_reports/             # Weekly progress reports
-├── src/
-│   ├── __init__.py
-│   ├── data_loader.py                # Mini-ImageNet data pipeline
-│   ├── models.py                     # CoCa model wrapper
-│   ├── adaptation/
-│   │   ├── hybrid_prototype.py       # Parameter-free prototype method
-│   │   ├── linear_probing.py         # Linear probing strategy
-│   │   └── lora_finetuning.py        # LoRA fine-tuning implementation
-│   ├── losses.py                     # CE, Prototypical, SupCon losses
-│   └── utils.py                      # Utility functions
-├── experiments/
-│   ├── config_hybrid.yaml            # Hybrid prototype config
-│   ├── config_linear_probing.yaml    # Linear probing config
-│   ├── config_lora.yaml              # LoRA fine-tuning config
-│   ├── run_hybrid_prototype.py       # Hybrid prototype experiments
-│   ├── run_linear_probing.py         # Linear probing experiments
-│   └── run_lora_finetuning.py        # LoRA fine-tuning experiments
-├── data/
-│   └── mini_imagenet/                # Mini-ImageNet dataset location
-├── results/
-│   ├── hybrid_prototype/             # Hybrid prototype results
-│   ├── linear_probing/               # Linear probing results
-│   ├── lora_finetuning/              # LoRA fine-tuning results
-│   └── analysis.py                   # Result visualization and analysis
-└── notebooks/
-    ├── exploratory_analysis.ipynb    # Data exploration
-    ├── results_visualization.ipynb   # Results analysis and visualization
-    └── ablation_studies.ipynb        # Ablation study notebooks
-```
-
 ## Getting Started
 
 ### 1. Environment Setup
@@ -68,25 +27,6 @@ This research presents a comprehensive empirical study on few-shot adaptation of
 git clone https://github.com/luckylukezzz/210407R-Few-Shot-CoCa.git
 cd 210407R-Few-Shot-CoCa
 
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install dependencies
-pip install -r requirements.txt
-```
-
-### 2. Download Data
-
-```bash
-# Download Mini-ImageNet dataset
-# Place in data/mini_imagenet/ directory
-# Expected structure:
-# data/mini_imagenet/
-# ├── train/
-# ├── val/
-# └── test/
-```
 
 ### 3. Review Documentation
 
@@ -94,21 +34,6 @@ pip install -r requirements.txt
 - Read `docs/methodology.md` for detailed methodology
 - Check `docs/literature_review.md` for related work
 
-### 4. Run Experiments
-
-```bash
-# Hybrid prototype baseline
-python experiments/run_hybrid_prototype.py --config experiments/config_hybrid.yaml
-
-# Linear probing
-python experiments/run_linear_probing.py --config experiments/config_linear_probing.yaml
-
-# LoRA fine-tuning
-python experiments/run_lora_finetuning.py --config experiments/config_lora.yaml
-
-# Analyze results
-python results/analysis.py
-```
 
 ## Key Dependencies
 
@@ -153,13 +78,13 @@ Parameter-efficient adaptation via low-rank decomposition:
 
 - [x] **Week 1-2:** Literature review and related work analysis
 - [x] **Week 3-4:** Data preparation and experimental framework setup
-- [ ] **Week 5-6:** Hybrid prototype implementation and baseline experiments
-- [ ] **Week 7-8:** Linear probing implementation and hyperparameter tuning
-- [ ] **Week 9-10:** LoRA implementation with multiple loss functions
-- [ ] **Week 11-12:** Comprehensive experiments across all shot settings
-- [ ] **Week 13-14:** Comparative analysis and visualization
-- [ ] **Week 15-16:** Final report writing and documentation
-- [ ] **Week 17:** Final submission
+- [x] **Week 5-6:** Hybrid prototype implementation and baseline experiments
+- [x] **Week 7-8:** Linear probing implementation and hyperparameter tuning
+- [x] **Week 9-10:** LoRA implementation with multiple loss functions
+- [x] **Week 11-12:** Comprehensive experiments across all shot settings
+- [x] **Week 13-14:** Comparative analysis and visualization
+- [x] **Week 15-16:** Final report writing and documentation
+- [x] **Week 17:** Final submission
 
 ## Results Overview
 
@@ -186,30 +111,6 @@ results/
   - Metric-based losses excel in low-data regimes (1-5 shots)
   - Cross-entropy becomes competitive and superior at higher shots (20+)
   - Adaptive configuration provides consistent improvements across all settings
-
-## Code Usage Example
-
-```python
-from src.adaptation.hybrid_prototype import HybridPrototype
-from src.data_loader import load_mini_imagenet
-
-# Load data
-train_loader, val_loader, test_loader = load_mini_imagenet(
-    shots=5,
-    ways=5,
-    data_path='data/mini_imagenet'
-)
-
-# Initialize model
-model = HybridPrototype(
-    model_name='coca_ViT-L/14',
-    fusion_weight=0.7
-)
-
-# Evaluate
-accuracy = model.evaluate(test_loader)
-print(f"Accuracy: {accuracy:.2f}%")
-```
 
 ## Tracking Progress
 
