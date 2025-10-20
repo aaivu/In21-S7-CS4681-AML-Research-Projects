@@ -249,6 +249,15 @@ group.add_argument('--n_train', type=int, default=None, help='Number of training
 group.add_argument('--nosphereinit', action='store_true', default=False,
                      help='do not start with sphere bounds (please do not use for 360)')
 
+# --- gaussian initialisation -------------------------------------------------
+group.add_argument('--use_gaussian_init', action='store_true', default=False,
+                   help='Initialize SH coefficients and density with Gaussian distribution')
+group.add_argument('--gaussian_mean', type=float, default=0.0, help='Mean for Gaussian initialization')
+group.add_argument('--gaussian_std', type=float, default=0.01, help='Standard deviation for Gaussian initialization')
+group.add_argument('--gaussian_sigma', type=float, default=0.1, help='Initial sigma for density if using Gaussian')
+group.add_argument('--gaussian_sigma_bg', type=float, default=0.1, help='Initial sigma for background density if using Gaussian')
+
+
 args = parser.parse_args()
 config_util.maybe_merge_config_file(args)
 
@@ -301,13 +310,25 @@ grid = svox2.SparseGrid(reso=reso_list[reso_id],
                         background_nlayers=args.background_nlayers,
                         background_reso=args.background_reso)
 
-# DC -> gray; mind the SH scaling!
-grid.sh_data.data[:] = 0.0
-grid.density_data.data[:] = 0.0 if args.lr_fg_begin_step > 0 else args.init_sigma
 
-if grid.use_background:
-    grid.background_data.data[..., -1] = args.init_sigma_bg
-    #  grid.background_data.data[..., :-1] = 0.5 / svox2.utils.SH_C0
+if args.use_gaussian_init:
+    # Gaussian initialization for SH coefficients
+    grid.sh_data.data.normal_(mean=args.gaussian_mean, std=args.gaussian_std)
+    
+    # Gaussian initialization for density
+    grid.density_data.data.normal_(mean=args.gaussian_mean, std=args.gaussian_sigma)
+    
+    # Background initialization
+    if grid.use_background:
+        grid.background_data.data[..., -1].normal_(mean=args.gaussian_mean, std=args.gaussian_sigma_bg)
+else:
+    # DC -> gray; mind the SH scaling!
+    grid.sh_data.data[:] = 0.0
+    grid.density_data.data[:] = 0.0 if args.lr_fg_begin_step > 0 else args.init_sigma
+
+    if grid.use_background:
+        grid.background_data.data[..., -1] = args.init_sigma_bg
+        #  grid.background_data.data[..., :-1] = 0.5 / svox2.utils.SH_C0
 
 #  grid.sh_data.data[:, 0] = 4.0
 #  osh = grid.density_data.data.shape
