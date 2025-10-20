@@ -1,0 +1,5 @@
+experiment,accuracy,train_time_sec,max_memory_MB
+Baseline,0.852,204.88,1423.77
+FlashAttention,0.8398,206.56,1945.01
+Linear Attention,0.8376,206.47,2468.75
+Hybrid Flash+Linear,0.8406,206.64,2992.98
