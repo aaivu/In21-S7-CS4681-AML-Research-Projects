@@ -1,3 +1,4 @@
 # Student Usage Instructions
 
-[Instructions will be loaded from template]
+install requirements.txt
+run src/agentic/eval.py

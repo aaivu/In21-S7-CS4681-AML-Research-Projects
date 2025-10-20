@@ -1,15 +1,15 @@
-# Autonomous Systems:Motion Prediction - 210306G
+# Healthcare AI:Drug Discovery - 210306G
 
 ## Student Information
 
 - **Index Number:** 210306G
-- **Research Area:** Autonomous Systems:Motion Prediction
+- **Research Area:** Healthcare AI:Drug Discovery
 - **GitHub Username:** @JaninduTharuka
 - **Email:** janindu.21@cse.mrt.ac.lk
 
 ## Project Structure
 ```
-210306G-Autonomous-Systems:Motion-Prediction/
+210306G-Healthcare AI:Drug Discovery/
 ├── README.md                    # This file
 ├── docs/
 │   ├── research_proposal.md     # Your research proposal (Required)

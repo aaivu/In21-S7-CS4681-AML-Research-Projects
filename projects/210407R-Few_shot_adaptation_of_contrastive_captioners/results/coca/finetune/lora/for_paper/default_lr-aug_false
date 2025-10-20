@@ -1,0 +1,123 @@
+Starting comprehensive experiments: 4 total configurations
+
+================================================================================
+Running experiment 1/4: exp_000_1shot_cross_entropy_augFalse_default
+================================================================================
+LoRA Config (1-shot, low_shot): r=4, alpha=16, dropout=0.15, modules={'attn.out_proj'}
+trainable params: 202,752 || all params: 306,927,616 || trainable%: 0.0661
+Preparing 1-shot training data...
+Total training samples: 100
+/tmp/ipykernel_36/169390341.py:391: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.no_grad(), torch.cuda.amp.autocast():
+
+Training with LoRA and cross_entropy loss...
+Config: LR=0.0001, WD=0.01, Label Smoothing=0.1
+Augmentation: False, Temperature: 0.1
+/tmp/ipykernel_36/169390341.py:453: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+/tmp/ipykernel_36/169390341.py:556: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch [1/100] Loss: 4.7184 | Train Acc: 0.00% | Val Acc: 21.00% | LR: 0.000100
+Epoch [10/100] Loss: 2.0257 | Train Acc: 100.00% | Val Acc: 100.00% | LR: 0.000098
+Epoch [20/100] Loss: 0.9912 | Train Acc: 100.00% | Val Acc: 100.00% | LR: 0.000091
+Early stopping at epoch 26
+Training complete! Best validation accuracy: 100.00%
+Training time: 190.97 seconds
+
+Evaluating on test set...
+Testing:   0%|          | 0/63 [00:00<?, ?it/s]/tmp/ipykernel_36/169390341.py:586: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Testing: 100%|██████████| 63/63 [01:00<00:00,  1.04it/s]
+/usr/local/lib/python3.11/dist-packages/peft/mapping_func.py:73: UserWarning: You are trying to modify a model with PEFT for a second time. If you want to reload the model with a different config, make sure to call `.unload()` before.
+  warnings.warn(
+/usr/local/lib/python3.11/dist-packages/peft/tuners/tuners_utils.py:167: UserWarning: Already found a `peft_config` attribute in the model. This will lead to having multiple adapters in the model. Make sure to know what you are doing!
+  warnings.warn(
+✓ Completed: Overall Acc: 72.05% | Time: 251.98s
+
+================================================================================
+Running experiment 2/4: exp_001_5shot_cross_entropy_augFalse_default
+================================================================================
+LoRA Config (5-shot, medium_shot): r=8, alpha=32, dropout=0.1, modules={'attn.out_proj'}
+trainable params: 405,504 || all params: 307,130,368 || trainable%: 0.1320
+Preparing 5-shot training data...
+Total training samples: 500
+
+Training with LoRA and cross_entropy loss...
+Config: LR=0.0001, WD=0.01, Label Smoothing=0.1
+Augmentation: False, Temperature: 0.1
+Epoch [1/100] Loss: 4.4373 | Train Acc: 10.00% | Val Acc: 57.00% | LR: 0.000100
+Epoch [10/100] Loss: 0.9728 | Train Acc: 100.00% | Val Acc: 100.00% | LR: 0.000098
+Epoch [20/100] Loss: 0.8468 | Train Acc: 100.00% | Val Acc: 100.00% | LR: 0.000091
+Early stopping at epoch 28
+Training complete! Best validation accuracy: 100.00%
+Training time: 938.38 seconds
+
+Evaluating on test set...
+Testing: 100%|██████████| 63/63 [01:00<00:00,  1.05it/s]
+✓ Completed: Overall Acc: 89.65% | Time: 998.89s
+
+================================================================================
+Running experiment 3/4: exp_002_10shot_cross_entropy_augFalse_default
+================================================================================
+LoRA Config (10-shot, medium_shot): r=8, alpha=32, dropout=0.1, modules={'attn.out_proj'}
+trainable params: 405,504 || all params: 307,130,368 || trainable%: 0.1320
+Preparing 10-shot training data...
+Total training samples: 1000
+
+Training with LoRA and cross_entropy loss...
+Config: LR=0.0001, WD=0.01, Label Smoothing=0.1
+Augmentation: False, Temperature: 0.1
+Epoch [1/100] Loss: 4.0501 | Train Acc: 31.90% | Val Acc: 87.80% | LR: 0.000100
+Epoch [10/100] Loss: 0.9044 | Train Acc: 99.80% | Val Acc: 99.90% | LR: 0.000098
+Epoch [20/100] Loss: 0.8402 | Train Acc: 100.00% | Val Acc: 100.00% | LR: 0.000091
+Epoch [30/100] Loss: 0.8227 | Train Acc: 100.00% | Val Acc: 100.00% | LR: 0.000081
+Early stopping at epoch 32
+Training complete! Best validation accuracy: 100.00%
+Training time: 2129.14 seconds
+
+Evaluating on test set...
+Testing: 100%|██████████| 63/63 [01:00<00:00,  1.04it/s]
+✓ Completed: Overall Acc: 91.80% | Time: 2189.89s
+
+===============================================================================
+Running experiment 1/1: exp_000_20shot_cross_entropy_augFalse_default
+================================================================================
+LoRA Config (20-shot, high_shot): r=16, alpha=64, dropout=0.05, modules={'mlp.c_fc', 'mlp.c_proj', 'attn.out_proj'}
+trainable params: 4,743,168 || all params: 311,468,032 || trainable%: 1.5228
+Preparing 20-shot training data...
+Total training samples: 2000
+/tmp/ipykernel_36/2495923419.py:391: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.no_grad(), torch.cuda.amp.autocast():
+
+Training with LoRA and cross_entropy loss...
+Config: LR=0.0001, WD=0.01, Label Smoothing=0.1
+Augmentation: False, Temperature: 0.1
+/tmp/ipykernel_36/2495923419.py:453: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+/tmp/ipykernel_36/2495923419.py:556: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch [1/100] Loss: 3.0949 | Train Acc: 58.75% | Val Acc: 91.10% | LR: 0.000100
+Epoch [10/100] Loss: 0.7889 | Train Acc: 100.00% | Val Acc: 100.00% | LR: 0.000098
+Epoch [20/100] Loss: 0.7818 | Train Acc: 100.00% | Val Acc: 100.00% | LR: 0.000091
+Early stopping at epoch 25
+Training complete! Best validation accuracy: 100.00%
+Training time: 5332.33 seconds
+
+Evaluating on test set...
+Testing:   0%|          | 0/63 [00:00<?, ?it/s]/tmp/ipykernel_36/2495923419.py:586: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Testing: 100%|██████████| 63/63 [01:04<00:00,  1.03s/it]
+✓ Completed: Overall Acc: 92.85% | Time: 5398.28s
+
+All results saved to comprehensive_lora_results.json
+
+====================================================================================================
+EXPERIMENT SUMMARY
+====================================================================================================
+Config                                                       Epochs   Best Val Acc Test Acc   Time (s)  
+----------------------------------------------------------------------------------------------------
+exp_000_20shot_cross_entropy_augFalse_default                25       100.00       92.85      5398.3    
+====================================================================================================
+Successful experiments: 1/1
+
+All experiments completed!

@@ -59,6 +59,7 @@ class Dataset_Custom(Dataset):
         elif self.features == 'S':
             df_data = df_raw[[self.target]]
         
+        # This line stores the feature names
         self.feature_names = list(df_data.columns)
 
         if self.scale:

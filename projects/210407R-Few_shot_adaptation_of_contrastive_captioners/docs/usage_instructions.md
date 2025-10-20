@@ -1,3 +1,2 @@
 # Student Usage Instructions
-
-[Instructions will be loaded from template]
+use the kaggle notebooks
