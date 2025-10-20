@@ -1,0 +1,2 @@
+Experiment,Accuracy,Validation Loss
+FP16 Mixed Precision,0.91352,0.27352070808410645
