@@ -41,8 +41,8 @@ python scripts/train_vocoder.py \
 
 - **Batch size**: 16
 - **Learning rate**: 2e-4 (with exponential decay of 0.999 per epoch)
-- **Optimizer**: AdamW (β1=0.9, β2=0.999, weight_decay=1e-6)
-- **Loss weights**: λ_time=1.0, λ_mel=45.0, λ_stft=1.0
+- **Optimizer**: AdamW (β1=0.9, β2=0.999, weight_decay=1e-4)
+- **Loss weights**: λ_time=1.0, λ_mel=10.0, λ_stft=1.0
 - **Segment length**: 16,000 samples (~0.73s at 22050 Hz)
 - **Gradient clipping**: 1.0
 
@@ -148,7 +148,7 @@ python scripts/train_vocoder.py --resume checkpoints/istft_vocoder/checkpoint_50
 
 ### Loss Arguments
 - `--lambda_time`: Weight for time-domain loss (default: 1.0)
-- `--lambda_mel`: Weight for mel-spectrogram loss (default: 45.0)
+- `--lambda_mel`: Weight for mel-spectrogram loss (default: 10.0)
 - `--lambda_stft`: Weight for STFT loss (default: 1.0)
 
 ### Logging Arguments
@@ -227,7 +227,7 @@ python scripts/train_vocoder.py \
     --learning_rate 2e-4 \
     --lr_decay 0.999 \
     --lambda_time 1.0 \
-    --lambda_mel 45.0 \
+    --lambda_mel 10.0 \
     --lambda_stft 1.0 \
     --checkpoint_dir checkpoints/istft_vocoder \
     --log_dir logs/istft_vocoder \
