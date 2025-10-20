@@ -1,82 +1,16 @@
-# Literature Review: Small LLMs:Efficient Models
+## II. RELATED WORK
+The challenge of deploying large PLMs has spurred significant research in model compression. We categorize relevant work into knowledge distillation, pruning, quantization, and combined approaches.
 
-**Student:** 210257F
-**Research Area:** Small LLMs:Efficient Models
-**Date:** 2025-09-01
+### A. Knowledge Distillation (KD)
+KD trains a compact student model using supervision from a larger teacher [4]. For transformers, various forms of supervision have been explored. Output-level KD matches the student’s output distribution (logits or softmax probabilities) to the teacher’s [3]. Feature-level KD minimizes the distance between intermediate hidden states or attention maps of the student and teacher [6], [12]. DistilBERT [3] effectively used a combination during pre-training. TinyBERT [6] applied multi-layer supervision during task-specific fine-tuning.
 
-## Abstract
+A distinct category is Relation-level KD, pioneered by MiniLM [7]. Instead of matching absolute feature values, it distills the relationships within the self-attention mechanism, specifically the scaled dot-product distributions between query, key, and value vectors. MiniLMv2 [10] extended this to multi-head self-attention relations (e.g., Q-Q, K-K, V-V similarity matrices), offering greater flexibility as it doesn’t require the student and teacher to have the same hidden dimension or head count. We adopt MiniLMv2 in Stage 1 due to this flexibility and its focus on capturing core self-attention behavior. Recent extensions include combining feature and relation KD [13] and distilling reasoning steps via preference matching [14].
 
-[Provide a brief summary of your literature review - what areas you covered and key findings]
+### B. Pruning
+Pruning removes less important parameters to reduce model size and computation. **Unstructured pruning** eliminates individual weights, leading to sparse models that often require specialized hardware or libraries for efficient inference. **Structured pruning** removes entire groups of parameters, such as attention heads [8], FFN neurons/layers, or embedding dimensions, resulting in smaller, dense models compatible with standard hardware. Common criteria for identifying prunable structures include parameter magnitude, gradient magnitude, or activation analysis. We employ magnitude-based structured pruning of attention heads in Stage 2, a well-established and effective technique.
 
-## 1. Introduction
+### C. Quantization
+Quantization reduces the numerical precision of model weights and, optionally, activations, typically from FP32 to INT8 [5] or even lower bit-widths (e.g., INT4). This drastically reduces the memory footprint (up to 4× for INT8) and can accelerate computation on hardware with native low-precision support. **Post-Training Quantization (PTQ)** applies quantization after training. **Dynamic PTQ** quantizes only weights offline, while activations are quantized/dequantized on-the-fly. **Static PTQ** uses a calibration dataset to determine activation statistics, allowing both weights and activations to be processed using integer arithmetic, potentially offering greater speedups but requiring calibration [9]. **Quantization-Aware Training (QAT)** simulates the quantization process during fine-tuning, inserting "fake quantization" nodes into the computation graph [15]. QAT typically achieves higher accuracy than PTQ, especially at very low bit-widths, but requires retraining. We use dynamic PTQ in Stage 3 for its implementation simplicity and no requirement for retraining or calibration data. Our specific application proves highly aggressive, also removing parameters implicitly, likely through FFN layer manipulation during the quantization process.
 
-[Introduce the research area and scope of your literature review]
-
-## 2. Search Methodology
-
-### Search Terms Used
-- [List key terms and phrases used]
-- [Include synonyms and variations]
-
-### Databases Searched
-- [ ] IEEE Xplore
-- [ ] ACM Digital Library
-- [ ] Google Scholar
-- [ ] ArXiv
-- [ ] Other: ___________
-
-### Time Period
-[e.g., 2018-2024, focusing on recent developments]
-
-## 3. Key Areas of Research
-
-### 3.1 [Topic Area 1]
-[Discuss the main research directions in this area]
-
-**Key Papers:**
-- [Author, Year] - [Brief summary of contribution]
-- [Author, Year] - [Brief summary of contribution]
-
-### 3.2 [Topic Area 2]
-[Continue with other relevant areas]
-
-## 4. Research Gaps and Opportunities
-
-[Identify gaps in current research that your project could address]
-
-### Gap 1: [Description]
-**Why it matters:** [Explanation]
-**How your project addresses it:** [Your approach]
-
-### Gap 2: [Description]
-**Why it matters:** [Explanation]
-**How your project addresses it:** [Your approach]
-
-## 5. Theoretical Framework
-
-[Describe the theoretical foundation for your research]
-
-## 6. Methodology Insights
-
-[What methodologies are commonly used? Which seem most promising for your work?]
-
-## 7. Conclusion
-
-[Summarize key findings and how they inform your research direction]
-
-## References
-
-[Use academic citation format - APA, IEEE, etc.]
-
-1. [Reference 1]
-2. [Reference 2]
-3. [Reference 3]
-...
-
----
-
-**Notes:**
-- Aim for 15-20 high-quality references minimum
-- Focus on recent work (last 5 years) unless citing seminal papers
-- Include a mix of conference papers, journal articles, and technical reports
-- Keep updating this document as you discover new relevant work
+### D. Combined Approaches
+Given that each technique targets different aspects of model redundancy, combining them holds promise for maximal compression. CompressBERT explored various combinations of KD, pruning, and quantization for BERT. CoFi jointly prunes layers, heads, and FFN dimensions. Works like [18] explored pruning followed by distillation. However, systematic studies detailing the stage-wise contribution, particularly including actual size/latency measurements on standard hardware like CPUs, are less common. EdgeMIN contributes by providing a clear sequential pipeline (KD → Head Pruning → Aggressive PTQ/FFN Pruning) with a detailed ablation study focused on practical efficiency metrics.
