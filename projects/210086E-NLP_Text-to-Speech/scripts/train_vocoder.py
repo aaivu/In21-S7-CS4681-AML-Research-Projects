@@ -240,26 +240,64 @@ class VocoderTrainer:
         
         # Log audio samples
         if self.global_step % (self.config['val_interval'] * 5) == 0:
-            self._log_audio_samples(mel[:4], audio[:4], audio_pred[:4])
+            self._log_audio_samples()
         
         return avg_loss, avg_mcd
     
-    def _log_audio_samples(self, mel, audio_gt, audio_pred):
-        """Log audio samples to tensorboard."""
-        for i in range(min(4, mel.shape[0])):
-            # Save audio
-            self.writer.add_audio(
-                f'audio/gt_{i}',
-                audio_gt[i].cpu().unsqueeze(0),
-                self.global_step,
-                sample_rate=22050
-            )
-            self.writer.add_audio(
-                f'audio/pred_{i}',
-                audio_pred[i].cpu().unsqueeze(0),
-                self.global_step,
-                sample_rate=22050
-            )
+    def _log_audio_samples(self):
+        """Log longer audio samples to tensorboard for better evaluation."""
+        self.model.eval()
+        
+        # Get configurable sample length (default 5 seconds)
+        audio_log_duration = self.config.get('audio_log_duration', 5.0)
+        sample_length = int(audio_log_duration * 22050)  # Convert seconds to samples at 22050 Hz
+        num_samples = 2  # Log 2 samples to keep it manageable
+        
+        print(f"\nLogging {num_samples} audio samples ({audio_log_duration}s each) to TensorBoard...")
+        
+        with torch.no_grad():
+            for i, (mel, audio) in enumerate(self.val_loader):
+                if i >= num_samples:
+                    break
+                
+                mel = mel.to(self.device)
+                audio = audio.to(self.device)
+                
+                # Take first item from batch
+                mel_sample = mel[0:1]  # (1, n_mels, T)
+                audio_sample = audio[0:1]  # (1, samples)
+                
+                # If audio is shorter than 5 seconds, use what we have
+                # If longer, take first 5 seconds
+                if audio_sample.shape[1] > sample_length:
+                    audio_sample = audio_sample[:, :sample_length]
+                    # Adjust mel to match
+                    mel_frames = sample_length // 256  # hop_length = 256
+                    mel_sample = mel_sample[:, :, :mel_frames]
+                
+                # Generate audio from mel
+                audio_pred = self.model(mel_sample)
+                
+                # Ensure same length
+                min_len = min(audio_sample.shape[1], audio_pred.shape[1])
+                audio_sample = audio_sample[:, :min_len]
+                audio_pred = audio_pred[:, :min_len]
+                
+                # Log to tensorboard
+                self.writer.add_audio(
+                    f'audio/gt_{i}',
+                    audio_sample.cpu(),
+                    self.global_step,
+                    sample_rate=22050
+                )
+                self.writer.add_audio(
+                    f'audio/pred_{i}',
+                    audio_pred.cpu(),
+                    self.global_step,
+                    sample_rate=22050
+                )
+        
+        self.model.train()
     
     def save_checkpoint(self, filename: str):
         """Save model checkpoint."""
@@ -380,6 +418,8 @@ def main():
     # Other arguments
     parser.add_argument('--num_workers', type=int, default=4)
     parser.add_argument('--segment_length', type=int, default=16000)
+    parser.add_argument('--audio_log_duration', type=float, default=5.0,
+                        help='Duration in seconds for audio samples logged to TensorBoard (default: 5.0)')
     parser.add_argument('--device', type=str, default='cuda' if torch.cuda.is_available() else 'cpu')
     parser.add_argument('--resume', type=str, default=None, help='Path to checkpoint to resume from')
     
