@@ -1,0 +1,9 @@
+{
+    "01": "LR = 1e-4, no decay",
+    "02": "Dropout removed",
+    "03": "Squeeze-and-Excitation (SE)",
+    "04": "Modified convolution layer",
+    "05": "SE with limited unfreeze",
+    "06": "Extra convolution layer",
+    "07": "LR = 1e-6, linear decay"
+}

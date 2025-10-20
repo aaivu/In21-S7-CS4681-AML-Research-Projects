@@ -1,0 +1,8 @@
+numpy==2.3.3
+opencv_contrib_python==4.12.0.88
+sam_2==1.0
+segment_anything==1.0
+torch==2.3.1
+torch==2.8.0+cu126
+numpy==2.3.3
+psutil==7.0.0
