@@ -4,13 +4,9 @@
 **Research Area:** NLP: Retrieval-Augmented Generation (RAG)  
 **Date:** 2025-10-20
 
----
-
 ## 1. Overview
 
 This research proposes an Agentic LightRAG framework that enhances traditional Retrieval-Augmented Generation systems through multi-agent orchestration inspired by human cognitive processes. The methodology combines query decomposition, specialized retrieval agents operating at multiple abstraction levels, graph-based knowledge indexing, and intelligent answer synthesis. The framework is designed to address limitations of naive RAG systems when handling complex, multi-hop, and ambiguous queries by introducing planning, decomposition, and iterative refinement mechanisms. The project follows a structured 10-week implementation timeline from weeks 5-14, progressing from architectural design through component integration to comprehensive evaluation and analysis.
-
----
 
 ## 2. Research Design
 
@@ -26,7 +22,6 @@ The research employs an empirical, comparative methodology grounded in the desig
 
 **Mixed-Method Analysis**: Both quantitative metrics and qualitative analysis are employed. Quantitative results provide performance comparisons, while qualitative analysis through case studies examines system behavior, reasoning quality, and failure modes.
 
----
 
 ## 3. Data Collection
 
@@ -70,7 +65,6 @@ The research employs an empirical, comparative methodology grounded in the desig
 
 **Metadata Enrichment**: Questions are preprocessed to identify query type (direct, decomposable, sequential) based on linguistic patterns and constituent analysis. Ground-truth supporting document information is extracted for evaluation purposes.
 
----
 
 ## 4. Model Architecture
 
@@ -86,7 +80,6 @@ The Agentic LightRAG framework comprises four specialized agent components opera
 
 **Coordination Layer**: A state management and scheduling component managing inter-agent communication, maintaining the reasoning trace, implementing iteration termination protocols, and coordinating resource allocation across agents. Implemented using a queue-based message passing architecture with temporal state snapshots.
 
----
 
 ## 5. Experimental Setup
 
@@ -136,7 +129,7 @@ The Agentic LightRAG framework comprises four specialized agent components opera
 - OpenAI for LLM and emdebbing models
 - pytest for unit testing
 
----
+
 
 ## 6. Implementation Plan
 
@@ -148,7 +141,6 @@ The Agentic LightRAG framework comprises four specialized agent components opera
 | Phase 4: Answer Synthesis & Testing (Weeks 11-12) | Implement Answer Synthesis Agent with information fusion and answer generation; Conduct initial experiments on 50-100 HotpotQA test questions; Perform iterative debugging and performance tuning; Generate preliminary results | 2 weeks | Answer synthesis module with verification; Initial experimental results on test subset; Debugging report with identified issues; Performance tuning recommendations |
 | Phase 5: Evaluation & Reporting (Weeks 13-14) | Complete full evaluation on complete test set (200 queries); Comprehensive performance analysis against baselines; Qualitative analysis of system behavior and failure modes; Write final project report with findings and insights | 2 weeks | Complete evaluation results with statistical analysis; Comparative performance analysis; Case studies of complex queries; Final project report with conclusions and future work |
 
----
 
 ## 7. Risk Analysis
 
@@ -187,8 +179,6 @@ The Agentic LightRAG framework comprises four specialized agent components opera
 - **Probability**: Low
 - **Impact**: Medium - affects development velocity
 - **Mitigation Strategies**: Use established message formats (JSON); implement comprehensive logging; create clear protocol documentation; implement unit tests for protocol handling
-
----
 
 ## 8. Expected Outcomes
 
