@@ -1,66 +1,47 @@
-# Research Proposal: AI Efficiency:Dataset Efficiency
+# Research Proposal: AI Efficiency - Dataset Efficiency
 
-**Student:** 210207E
-**Research Area:** AI Efficiency:Dataset Efficiency
-**Date:** 2025-09-01
+**Student:** J. HARISMENAN (210207E)
+**Research Area:** AI Efficiency: Dataset Efficiency (Specifically, Embedding Normalization in Large Transformers)
+**GitHub:** @Janarthanan-Harismenan
+**Email:** janarthanan.21@cse.mrt.ac.lk
 
-## Abstract
+## 1. Project Objectives
 
-[Write a brief abstract of your research proposal (150-200 words)]
+This project aims to conduct a rigorous empirical evaluation of embedding normalization techniques in GPT-3–style decoder-only Pre-LayerNorm Transformers. The study focuses on adding a single normalization layer (LayerNorm or RMSNorm) immediately following the token embedding and positional embedding lookup.
 
-## 1. Introduction
+The overarching objectives include:
 
-[Introduce your research topic and its significance]
+*   **Quantitative Assessment:** Measure the impact of embedding normalization on macro zero- and few-shot accuracy across a comprehensive suite of language tasks under strictly controlled, equal-compute training conditions.
+*   **Stability Analysis:** Investigate whether embedding normalization improves training stability, particularly in settings showing early divergence or instability.
+*   **Trade-off Evaluation:** Characterize the trade-offs between potential stability improvements and possible regressions in accuracy or calibration, guiding decisions on whether embedding normalization is justified.
+*   **Best Practice Guidance:** Produce actionable recommendations regarding embedding normalization use in large Transformer training pipelines supported by reproducible, statistically robust empirical evidence.
 
-## 2. Problem Statement
+## 2. Scope and Deliverables
 
-[Clearly define the research problem you aim to solve]
+The project is bounded by the following key architectural and training choices:
 
-## 3. Literature Review Summary
+### Baseline Model and Setup
+*   **Architecture:** GPT-3–style, decoder-only Transformer using Pre-LayerNorm architecture.
+*   **Objective:** Trained on next-token prediction.
+*   **Embeddings:** Learned token and absolute positional embeddings; tied input/output embeddings.
+*   **Optimization:** AdamW optimizer with warmup and cosine decay schedule.
+*   **Controls:** Fixed tokenizer, data pipeline, model configurations, hyperparameters, and training token budgets (e.g., 50 billion tokens).
 
-[Provide a brief summary of relevant literature and identify gaps]
+### Experimental Variants
+*   **Embedding Normalization Variants:** Introduce a single normalization layer (LayerNorm or RMSNorm) applied immediately after the embedding lookup and positional addition, before the first Transformer block. All other architectural and training settings remain identical to the baseline.
 
-## 4. Research Objectives
+### Evaluation Protocol
+*   **Frameworks:** Use LM-Eval or T0-Eval frameworks with fixed prompts.
+*   **Metrics:** Zero- and few-shot evaluation metrics, including macro accuracy, perplexity, and calibration scores.
 
-### Primary Objective
-[Main goal of your research]
+### Deliverables
+1.  Well-documented training logs and configurations for reproducibility.
+2.  Statistical analysis reports including effect sizes, confidence intervals, and multiple hypothesis corrections.
+3.  Diagnostic visualizations detailing embedding norm behavior, gradient statistics, and inference calibration.
+4.  A conference-ready research paper summarizing methodology, results, and practical recommendations.
 
-### Secondary Objectives
-- [Objective 1]
-- [Objective 2]
-- [Objective 3]
+## 3. Hypotheses
 
-## 5. Methodology
-
-[Describe your proposed methodology and approach]
-
-## 6. Expected Outcomes
-
-[What do you expect to achieve?]
-
-## 7. Timeline
-
-| Week | Task |
-|------|------|
-| 1-2  | Literature Review |
-| 3-4  | Methodology Development |
-| 5-8  | Implementation |
-| 9-12 | Experimentation |
-| 13-15| Analysis and Writing |
-| 16   | Final Submission |
-
-## 8. Resources Required
-
-[List required resources, datasets, tools, etc.]
-
-## References
-
-[Add references in academic format]
-
----
-
-**Submission Instructions:**
-1. Complete all sections above
-2. Commit your changes to the repository
-3. Create an issue with the label "milestone" and "research-proposal"
-4. Tag your supervisors in the issue for review
+*   **H0 (Null):** Embedding normalization does not affect zero-/few-shot macro accuracy when training is stable without it.
+*   **H1a (Risk Hypothesis):** Embedding normalization decreases zero-/few-shot accuracy despite smoothing or stabilizing training dynamics [referencing Le Scao et al., 2022].
+*   **H1b (Conditional Benefit):** If baseline training shows instability or early divergence, embedding normalization may increase stability but at the potential expense of some downstream performance, necessitating a stability-accuracy tradeoff analysis.
