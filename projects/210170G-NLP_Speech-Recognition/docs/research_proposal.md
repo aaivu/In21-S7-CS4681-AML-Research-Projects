@@ -106,8 +106,8 @@ NVIDIA P100 GPU (16 GB) environment on Kaggle.
 | 3–4  | Methodology Development |
 | 5–8  | Implementation (ICSL & RVQ) |
 | 9–12 | Experimentation and Evaluation |
-| 13–15| Analysis and Report Writing |
-| 16   | Final Submission |
+| 13–14| Analysis and Report Writing |
+| 14   | Final Submission |
 
 ---
 
