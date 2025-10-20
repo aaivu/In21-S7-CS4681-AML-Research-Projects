@@ -1,0 +1,4 @@
+Model,Size (MB),Parameters,Compression,Latency (ms),Throughput (s/s),Speedup,Accuracy (%)
+Teacher (Fine-tuned),255.42,66955010,1.00x,24.43,321.66,1.00x,90.94
+Distilled Student (Fine-tuned),127.27,33360770,2.01x,15.41,506.55,1.57x,92.09
+Quantized (PTQ),127.27,33360770,2.01x,16.68,482.52,1.50x,49.08

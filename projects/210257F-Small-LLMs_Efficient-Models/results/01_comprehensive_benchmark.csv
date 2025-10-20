@@ -1,0 +1,4 @@
+Model,Size (MB),Parameters,Latency (ms),Throughput (s/s),Accuracy (%)
+Teacher (DistilBERT),255.42,66955010,15.56,297.41,50.92
+Distilled,127.27,33360770,16.27,527.96,49.08
+Quantized (PTQ),127.27,33360770,16.71,540.99,49.08
