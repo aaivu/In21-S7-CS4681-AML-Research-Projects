@@ -1,82 +1,37 @@
-# Literature Review: AI Efficiency:Dataset Efficiency
+# Literature Review: Embedding Normalization in Transformers
 
-**Student:** 210207E
-**Research Area:** AI Efficiency:Dataset Efficiency
-**Date:** 2025-09-01
+## Direct Evidence on Embedding Normalization
 
-## Abstract
+A controlled ablation study by Le Scao et al. [1] at the ~1.3 billion parameter scale specifically addressed embedding normalization. They demonstrated that adding a single normalization layer immediately post embedding lookup significantly **reduces zero-shot generalization accuracy** under matched computation and evaluation conditions. Their primary recommendation is to avoid embedding normalization by default unless it is required to stabilize an unstable baseline training run.
 
-[Provide a brief summary of your literature review - what areas you covered and key findings]
+## Cross-Implementation Transferability
 
-## 1. Introduction
+Normalization and similar architectural micro-tweaks often exhibit poor transferability across different codebases and tasks when all other factors are held constant [5]. This highlights the necessity of reassessing embedding normalization explicitly within the project's specific GPT-3–style implementation and training setup, rather than assuming generalization from prior positive or negative findings.
 
-[Introduce the research area and scope of your literature review]
+## Related Normalization Studies Within Transformer Blocks
 
-## 2. Search Methodology
+*   **BLOOM Project:** Ablations on LayerNorm versus RMSNorm performed *inside* Transformer blocks suggested that the choice of normalization influences stability and throughput, and these effects can be scale-dependent (1.3B–6.7B parameters) [2]. However, these results do not directly isolate the impact of normalization immediately post-embeddings.
+*   **Teuken7B:** This multilingual study explored RMSNorm vs LayerNorm variants and other stabilizers in a 7B parameter setting. While providing insights into stability and throughput trade-offs, it also does not specifically isolate the effect of embedding normalization layers [4].
 
-### Search Terms Used
-- [List key terms and phrases used]
-- [Include synonyms and variations]
+## Methodological and Evaluation Discipline
 
-### Databases Searched
-- [ ] IEEE Xplore
-- [ ] ACM Digital Library
-- [ ] Google Scholar
-- [ ] ArXiv
-- [ ] Other: ___________
+Standardized evaluation frameworks like LM-Eval and T0-Eval [3] emphasize meticulous control over prompt templates, fixed evaluation commits, and matched compute baselines. These practices are crucial for reliably detecting subtle effects, such as those caused by normalization-related micro-changes, which typically result in small effect sizes.
 
-### Time Period
-[e.g., 2018-2024, focusing on recent developments]
+## Large-Scale Training Best Practices
 
-## 3. Key Areas of Research
+*   **Gopher and Scaling Laws:** Large-scale efforts (e.g., Gopher [6]) detail reproducible baseline setups, including data curation and robust optimizer recipes. Chinchilla's compute-optimal scaling laws [7] underscore the **dominant importance of precise token budget matching** for fair comparison, ensuring that observed performance differences are attributable to the architectural change (embedding normalization) rather than variations in data scale or training duration.
 
-### 3.1 [Topic Area 1]
-[Discuss the main research directions in this area]
+## Synthesis
 
-**Key Papers:**
-- [Author, Year] - [Brief summary of contribution]
-- [Author, Year] - [Brief summary of contribution]
-
-### 3.2 [Topic Area 2]
-[Continue with other relevant areas]
-
-## 4. Research Gaps and Opportunities
-
-[Identify gaps in current research that your project could address]
-
-### Gap 1: [Description]
-**Why it matters:** [Explanation]
-**How your project addresses it:** [Your approach]
-
-### Gap 2: [Description]
-**Why it matters:** [Explanation]
-**How your project addresses it:** [Your approach]
-
-## 5. Theoretical Framework
-
-[Describe the theoretical foundation for your research]
-
-## 6. Methodology Insights
-
-[What methodologies are commonly used? Which seem most promising for your work?]
-
-## 7. Conclusion
-
-[Summarize key findings and how they inform your research direction]
-
-## References
-
-[Use academic citation format - APA, IEEE, etc.]
-
-1. [Reference 1]
-2. [Reference 2]
-3. [Reference 3]
-...
+The existing literature, particularly the findings of Le Scao et al. [1], suggests a conservative approach: embedding normalization is more likely to be detrimental to zero-/few-shot performance for a stable GPT-3–style training process at large scale. This study is designed to rigorously validate this stance and establish conditional best-practice guidance based on matched, statistically robust experiments.
 
 ---
+**References**
 
-**Notes:**
-- Aim for 15-20 high-quality references minimum
-- Focus on recent work (last 5 years) unless citing seminal papers
-- Include a mix of conference papers, journal articles, and technical reports
-- Keep updating this document as you discover new relevant work
+[1] Le Scao et al., “What Language Model to Train if You Have One Million GPU Hours?” (controlled ablations; embedding-norm hurt zero-shot; rigorous matched protocol).
+[2] BLOOM (176B paper; ablations on normalization variants, scale-dependent effects).
+[3] Wang et al., “What Architecture and Pretraining Objective Work Best for Zero-Shot Generalization?” (compute-matched comparisons; LM-Eval/T0-Eval discipline).
+[4] Teuken7B, multilingual study on normalization micro-changes including RMSNorm.
+[5] Narang et al., “Do Transformer Modifications Transfer Across Implementations and Applications?” (effects of normalization rarely transfer without retuning).
+[6] Gopher training and evaluation protocol, reproducibility focus.
+[7] Chinchilla, compute-optimal scaling laws; necessity of token-budget matching for fair comparison.
