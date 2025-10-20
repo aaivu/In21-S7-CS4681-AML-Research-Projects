@@ -1,3 +1,4 @@
+import math
 import torch
 import torch.cuda
 import torch.nn.functional as F
@@ -476,3 +477,53 @@ def pose_spherical(theta : float, phi : float, radius : float, offset : Optional
     if offset is not None:
         c2w[:3, 3] += offset
     return c2w
+
+# helper: cosine lr factory
+def get_cosine_lr_func(lr_init, lr_final, T_max, warmup_steps=0, eta_min=0.0):
+    """Return a function f(step) that gives the learning rate.
+    - lr_init: initial learning rate (peak)
+    - lr_final: user-provided 'final' LR 
+    - T_max: number of steps to complete one cosine cycle (>=1)
+    - warmup_steps: number of linear warmup steps from 0 -> lr_init
+    - eta_min: minimum LR reached by cosine (overrides lr_final if specified)
+
+    """
+    if T_max <= 0:
+        T_max = 1
+    def lr_func(step: int):
+        if step <= 0:
+            return lr_init
+        # warmup
+        if warmup_steps > 0 and step < warmup_steps:
+            return lr_init * (float(step) / float(max(1, warmup_steps)))
+        t = step - warmup_steps
+        t = min(t, T_max)
+        cos_out = 0.5 * (1.0 + math.cos(math.pi * float(t) / float(max(1, T_max))))
+        return float(eta_min + (lr_init - eta_min) * cos_out)
+    return lr_func
+
+def get_cyclic_lr_func(base_lr, max_lr, step_size, mode="triangular", gamma=1.0):
+    """
+    Return a function f(step) that gives cyclic learning rate.
+    - base_lr: lower bound
+    - max_lr: upper bound
+    - step_size: number of steps per half-cycle
+    - mode: 'triangular', 'triangular2', or 'exp_range'
+    - gamma: decay factor for 'exp_range'
+    """
+    def lr_func(step: int):
+        if step < 0:
+            return base_lr
+        cycle = math.floor(1 + step / (2 * step_size))
+        x = abs(step / step_size - 2 * cycle + 1)
+        scale_fn = 1.0
+        if mode == "triangular":
+            scale_fn = 1.0
+        elif mode == "triangular2":
+            scale_fn = 1.0 / (2.0 ** (cycle - 1))
+        elif mode == "exp_range":
+            scale_fn = gamma ** step
+        lr = base_lr + (max_lr - base_lr) * max(0, (1 - x)) * scale_fn
+        return lr
+    return lr_func
+
