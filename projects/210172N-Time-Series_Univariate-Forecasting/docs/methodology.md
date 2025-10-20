@@ -227,18 +227,35 @@ A standardized software environment is used:
 
 ## 6. Implementation Plan
 
+### Implementation Structure
+
+The project is organized into a modular, production-ready codebase located in the `src/` directory:
+
+**Core Modules:**
+- `config/`: Configuration management system (M4Config, StandardConfig)
+- `models/`: PatchTST architecture with ONNX-compatible implementation
+- `data/`: Data loaders for M4 and standard datasets
+- `training/`: Training pipeline with early stopping and checkpointing
+- `evaluation/`: Metrics (sMAPE, MASE, OWA) and evaluator
+- `optimization/`: ONNX export and INT8 quantization
+- `inference/`: Unified predictor for PyTorch/ONNX models
+- `utils/`: Helper functions, logging, and checkpoint management
+
+**Example Usage:**
+Ready-to-use example scripts are provided in `src/examples/` for both M4 and standard datasets.
+
 ### Phase 1: Foundation & Baseline Evaluation
 
-1.  **Environment and Data Setup:** Configure the environment and implement the M4 data loader, including RevIN and a batching strategy to handle variable-length series.
-2.  **Baseline Model Implementation:** Implement the PatchTST model in PyTorch, applying M4-specific adaptations.
-3.  **Training and Benchmarking:** Train the adapted model on the full M4 Monthly dataset. Establish the baseline OWA score and measure the initial latency and size of the PyTorch model.
+1.  **Environment and Data Setup:** Configure the environment and implement the M4 data loader (implemented in `src/data/m4_dataset.py`), including RevIN and a batching strategy to handle variable-length series.
+2.  **Baseline Model Implementation:** Implement the PatchTST model in PyTorch (implemented in `src/models/patchtst.py`), applying M4-specific adaptations.
+3.  **Training and Benchmarking:** Train the adapted model on the full M4 Monthly dataset using the production training pipeline (`src/training/trainer.py`). Establish the baseline OWA score and measure the initial latency and size of the PyTorch model.
 
 ### Phase 2: Model Adaptation and Optimization
 
-1.  **Structural Adaptation:** Execute grid searches for look-back window, patch configurations, and model size variations. Select the best performing, most efficient configuration based on validation OWA.
-2.  **ONNX Conversion:** Export the final, trained PyTorch model to the ONNX format. This is critical for platform-agnostic deployment and enables graph-level optimizations.
-3.  **Post-Training Quantization:** Apply post-training dynamic quantization to the ONNX model, converting the FP32 weights to INT8. This is expected to achieve significant model compression and inference speedup.
-4.  **Benchmarking:** Measure the OWA, latency (on CPU), and size (MB) for both the ONNX FP32 and ONNX INT8 models.
+1.  **Structural Adaptation:** Execute grid searches for look-back window, patch configurations, and model size variations using the configuration system (`src/config/m4_config.py`). Select the best performing, most efficient configuration based on validation OWA.
+2.  **ONNX Conversion:** Export the final, trained PyTorch model to the ONNX format using `src/optimization/onnx_export.py`. This is critical for platform-agnostic deployment and enables graph-level optimizations.
+3.  **Post-Training Quantization:** Apply post-training dynamic quantization to the ONNX model using `src/optimization/quantization.py`, converting the FP32 weights to INT8. This is expected to achieve significant model compression and inference speedup.
+4.  **Benchmarking:** Measure the OWA, latency (on CPU), and size (MB) for both the ONNX FP32 and ONNX INT8 models using the unified evaluator (`src/evaluation/evaluator.py`) and predictor (`src/inference/predictor.py`).
 
 ### Phase 3: Final Analysis and Reporting
 
@@ -275,9 +292,17 @@ A standardized software environment is used:
 
 ### Qualitative Outcomes
 
-1.  **Implementation Artifacts:** A clean, documented PatchTST codebase adapted for the M4 benchmark, including fully functional scripts for the PyTorch $\rightarrow$ ONNX $\rightarrow$ Quantized INT8 optimization pipeline.
+1.  **Implementation Artifacts:** A production-ready, modular PatchTST codebase (`src/`) adapted for the M4 benchmark, including:
+    - Fully documented API with type hints and comprehensive docstrings
+    - Ready-to-use example scripts (`src/examples/`)
+    - Complete optimization pipeline (PyTorch → ONNX FP32 → INT8)
+    - Unified configuration system for reproducible experiments
 2.  **Research Insights:** A clear quantification of the efficiency gains achievable when deploying modern Transformer-based forecasting models, specifically tailored for the characteristics of the M4 competition.
-3.  **Reproducible Research:** A complete code repository with documented configurations to allow for full reproduction of the results.
+3.  **Reproducible Research:** A complete code repository with:
+    - Documented configurations (`src/config/`)
+    - Checkpoint management system (`src/utils/checkpoint.py`)
+    - Comprehensive usage instructions (`docs/usage_instructions.md`)
+    - Example end-to-end training scripts
 
 ## 9. Validation & Quality Assurance
 

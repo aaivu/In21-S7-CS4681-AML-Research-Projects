@@ -1,0 +1,42 @@
+===============================================================================================
+RESULTS: WEATHER (pred_len=96)
+===============================================================================================
+Model                MSE          MAE          Latency (ms)    Size (MB)
+-----------------------------------------------------------------------------------------------
+PyTorch (GPU)        1838.6869    13.9091      85.08           3.48
+ONNX_FP32 (GPU)      1838.6869    13.9091      106.70          3.58
+ONNX_INT8 (CPU)      1827.6387    13.8586      3032.36         1.07
+-----------------------------------------------------------------------------------------------
+Compression: 3.33x | Accuracy Impact: -0.36% MAE
+===============================================================================================
+
+Dataset: Weather
+Prediction Length: 96
+Configuration:
+  - Sequence Length: 336
+  - Patch Length: 16
+  - Stride: 8
+  - Model Dimension: 128
+  - Encoder Layers: 3
+  - Attention Heads: 16
+
+Performance Summary:
+  - Best Accuracy: PyTorch (GPU) - MAE: 13.9091
+  - Best Latency: PyTorch (GPU) - 85.08 ms/batch
+  - Best Compression: ONNX_INT8 - 3.33x smaller than FP32
+  - Accuracy Impact: -0.36% MAE (INT8 actually improved slightly)
+
+Model Sizes:
+  - PyTorch: 3.48 MB
+  - ONNX FP32: 3.58 MB
+  - ONNX INT8: 1.07 MB (3.33x compression)
+
+Inference Latency (ms/batch):
+  - PyTorch (GPU): 85.08 ms
+  - ONNX FP32 (GPU): 106.70 ms
+  - ONNX INT8 (CPU): 3032.36 ms
+
+Notes:
+  - INT8 quantization achieved 3.33x compression
+  - Minimal accuracy degradation (-0.36% MAE improvement)
+  - GPU inference significantly faster than CPU for this model size
