@@ -55,5 +55,9 @@ python evaluation.py \
   --resume ./checkpoints_cifar/S3-T_finetuned_epoch20.pth
 
 ## Additional Fine-Tuned Checkpoints
-You can also download fine-tuned AutoFormerV2 checkpoints [link](https://drive.google.com/drive/folders/1x3E2cOVodWLr6iXMSveomtAf-onqGAy6?usp=sharing)
+You can also download fine-tuned AutoFormerV2 [checkpoints](https://drive.google.com/drive/folders/1x3E2cOVodWLr6iXMSveomtAf-onqGAy6?usp=sharing)
+
+## Acknowledgements
+
+The codes get from [AutoFormerV2](https://github.com/microsoft/Cream/tree/main/AutoFormerV2) and edited.
 
