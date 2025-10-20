@@ -1,0 +1,2 @@
+- The dataset used in this study is publicly available on [Google Cloud Buckets](https://console.cloud.google.com/storage/browser/dm_graphcast)
+- [This](https://storage.googleapis.com/dm_graphcast/graphcast/dataset/source-era5_date-2022-01-01_res-1.0_levels-13_steps-01.nc) is the example dataset which was used to assess the performance of the ensemble aggregations and to perform sensitivity analysis.
