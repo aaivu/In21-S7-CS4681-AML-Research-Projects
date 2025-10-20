@@ -48,7 +48,6 @@ This subset preserves data quality while emphasizing computational constraints r
 2. Normalized sampling rate to 16 kHz.  
 3. Converted all audio to mono channel format.  
 4. Applied masking and feature extraction per Wav2Vec2 protocol.  
-5. Split dataset into training and validation folds for consistency.
 
 ---
 
@@ -63,4 +62,75 @@ The core model is based on **Facebook’s Wav2Vec2.0 Base architecture**, enhanc
 
 2. **Residual Vector Quantization (RVQ):**  
    - Integrated during fine-tuning.  
-   - Seq
+   - Sequentially encodes residual errors through multiple quantizers.  
+   - Produces refined latent representations that enable faster convergence and better adaptation with limited data.
+
+The **final fine-tuning layer** employs **Connectionist Temporal Classification (CTC) loss** for sequence-to-text mapping without frame-level alignment.
+
+---
+
+## 5. Experimental Setup
+
+### 5.1 Evaluation Metrics
+
+- **Contrastive Loss:** For pretraining performance assessment.  
+- **CTC Loss:** For fine-tuning optimization and alignment quality.  
+- **Word Error Rate (WER):** For end-to-end speech recognition accuracy.  
+- **Convergence Speed:** Number of steps required to reach stable loss.
+
+### 5.2 Baseline Models
+
+1. **Baseline Wav2Vec2.0** — Standard pretraining and fine-tuning pipeline.  
+2. **ICSL-enhanced Wav2Vec2.0** — Adds inter-codebook regularization during pretraining.  
+3. **RVQ-enhanced Wav2Vec2.0** — Integrates residual quantization during fine-tuning.  
+4. **ICSL + RVQ combined model** — Evaluates cumulative performance gains.
+
+### 5.3 Hardware/Software Requirements
+
+- **Hardware:** NVIDIA P100 GPU (16 GB VRAM)  
+- **Frameworks:** PyTorch, Hugging Face Transformers  
+- **Environment:** Kaggle GPU runtime  
+- **Libraries:** NumPy, Librosa, Transformers, TorchAudio  
+- **Training Configuration:**
+  - Learning Rate: `1e-4`  
+  - Batch Size: 8–16  
+  - Optimizer: AdamW  
+  - Scheduler: Linear decay with warm-up  
+
+---
+
+## 6. Implementation Plan
+
+| Phase | Tasks | Duration | Deliverables |
+|-------|-------|----------|--------------|
+| **Phase 1** | Data preprocessing (filtering, normalization, feature extraction) | 2 weeks | Clean and preprocessed dataset |
+| **Phase 2** | Model implementation (ICSL and RVQ integration) | 3 weeks | Functional Wav2Vec2-based model |
+| **Phase 3** | Experiments (training, fine-tuning, evaluation) | 2 weeks | Training and validation results |
+| **Phase 4** | Analysis and documentation | 1 week | Final report with performance comparison |
+
+---
+
+## 7. Risk Analysis
+
+| Risk | Impact | Mitigation Strategy |
+|------|---------|----------------------|
+| GPU memory limitation | High | Use gradient accumulation and mixed-precision training |
+| Overfitting due to limited data | Medium | Apply regularization and early stopping |
+| Long training times | Medium | Reduce codebook count and batch size where feasible |
+| Convergence instability | Low | Use warm-up scheduling and adaptive learning rates |
+
+---
+
+## 8. Expected Outcomes
+
+- Improved **pretraining efficiency** via ICSL through diverse codebook learning.  
+- Enhanced **fine-tuning adaptability** with RVQ under data-scarce conditions.  
+- Demonstrated reduction in **training time** and **contrastive/CTC loss**.  
+- Achieved competitive or superior **WER performance** compared to baseline models.  
+- Provided practical insights into **efficient low-resource ASR design** using SSL frameworks.
+
+---
+
+**Note:** This methodology will be iteratively refined as new results and observations emerge during implementation and experimentation.
+
+---
