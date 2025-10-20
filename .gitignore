@@ -198,3 +198,6 @@ logs/
 # Model files (uncomment if models are too large)
 # *.model
 # *.bin
+
+# Large model checkpoint files
+projects/210049U-NLP_ionSpeech-Enhancement/src/pretrained_models/sepformer-wsj02mix/*.ckpt
