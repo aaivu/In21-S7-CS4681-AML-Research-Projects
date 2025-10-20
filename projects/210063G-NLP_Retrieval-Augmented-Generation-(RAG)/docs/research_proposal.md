@@ -137,13 +137,11 @@ The research employs a systematic, iterative design science methodology combinin
 
 | Week | Task |
 |------|------|
-| 1-4  | Complete foundational literature review and research design (completed in parallel) |
 | 5-6  | Finalize agentic LightRAG architecture design; Set up development environment; Configure data preprocessing and indexing infrastructure |
 | 7-8  | Implement Query Decomposition Agent and Low-Level/High-Level Retrieval Agents; Unit testing and validation |
 | 9-10 | Integrate agents with graph-based knowledge index; Develop inter-agent communication protocols; Implement state management layer |
 | 11-12| Implement Answer Synthesis Agent; Conduct initial experiments on 100-150 test questions; Debugging and performance tuning |
 | 13-14| Complete final evaluation on full test set (200 queries); Comprehensive result analysis; Case studies and failure analysis |
-| 15-16| Write final project report; Polish documentation; Prepare presentation materials; Final submission |
 
 
 
