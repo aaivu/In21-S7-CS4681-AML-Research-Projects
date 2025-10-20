@@ -20,14 +20,14 @@
 ├── data/                        # Datasets and data files
 ├── experiments/                 # Experiment scripts and configs
 ├── results/                     # Experimental results
-└── requirements.txt             # Project dependencies
+└── env.yml                      # Project dependencies
 ```
 
 ## Getting Started
 
 1. **Complete Research Proposal:** Fill out `docs/research_proposal.md`
 2. **Literature Review:** Document your literature review in `docs/literature_review.md`
-3. **Set Up Environment:** Add your dependencies to `requirements.txt`
+3. **Set Up Environment:** Add your dependencies to `env.yml`
 4. **Start Coding:** Begin implementation in the `src/` folder
 5. **Track Progress:** Use GitHub Issues to report weekly progress
 
