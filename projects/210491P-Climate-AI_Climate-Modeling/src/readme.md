@@ -3,4 +3,4 @@
 - Upload the notebook to the Google Colab environment and run.
 - Use GPU runtime from faster execution.
 - All the experiments and results are included in this notebook provided under **"section 5"**.
-- Dataset and per-trained model are downloaded from the [Google Cloud Bucket](https://www.google.com/url?q=https%3A%2F%2Fconsole.cloud.google.com%2Fstorage%2Fbrowser%2Fdm_graphcast) during the execution.
+- Dataset and pre-trained model are downloaded from the [Google Cloud Bucket](https://www.google.com/url?q=https%3A%2F%2Fconsole.cloud.google.com%2Fstorage%2Fbrowser%2Fdm_graphcast) during the execution.
