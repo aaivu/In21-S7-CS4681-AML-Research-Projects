@@ -15,6 +15,37 @@ try {
     exit 1
 }
 
+# Step 0: Install Dependencies
+Write-Host ""
+Write-Host "Step 0: Installing/Updating Dependencies..." -ForegroundColor Yellow
+Write-Host "----------------------------------------" -ForegroundColor Yellow
+
+# Check if requirements.txt exists
+$requirementsPath = "..\requirements.txt"
+if (Test-Path $requirementsPath) {
+    Write-Host "Installing packages from requirements.txt..." -ForegroundColor Cyan
+    python -m pip install -r $requirementsPath
+    
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "✗ Package installation failed. Please check requirements.txt" -ForegroundColor Red
+        exit $LASTEXITCODE
+    }
+    
+    Write-Host "✓ Dependencies installed successfully!" -ForegroundColor Green
+} else {
+    Write-Host "⚠ requirements.txt not found at $requirementsPath" -ForegroundColor Yellow
+    Write-Host "Installing essential packages manually..." -ForegroundColor Cyan
+    
+    python -m pip install speechbrain torch torchaudio soundfile pystoi pesq mir-eval librosa scipy
+    
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "✗ Package installation failed" -ForegroundColor Red
+        exit $LASTEXITCODE
+    }
+    
+    Write-Host "✓ Essential packages installed!" -ForegroundColor Green
+}
+
 # Step 1: Run SepFormer Separation + Denoising
 Write-Host ""
 Write-Host "Step 1: Running SepFormer Separation + Denoising..." -ForegroundColor Yellow
