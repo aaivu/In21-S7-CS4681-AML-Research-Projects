@@ -26,8 +26,8 @@ The process uses open-source Python libraries commonly available in machine lear
 - **Google Drive (Colab)** — to store the processed datasets persistently.  
 
 All dependencies can be installed with:
-```bash
 pip install transformers datasets torchaudio torchcodec
+
 Steps Performed
 1. Mounting Google Drive
 The first step connects the Colab environment to Google Drive so that all processed data can be saved permanently.
