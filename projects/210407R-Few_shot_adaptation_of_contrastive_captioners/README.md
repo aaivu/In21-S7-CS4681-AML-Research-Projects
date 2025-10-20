@@ -24,8 +24,10 @@ This research presents a comprehensive empirical study on few-shot adaptation of
 
 ```bash
 # Clone the repository
-git clone https://github.com/luckylukezzz/210407R-Few-Shot-CoCa.git
-cd 210407R-Few-Shot-CoCa
+git clone https://github.com/aaivu/In21-S7-CS4681-AML-Research-Projects
+cd projects/210407R-Few_shot_adaptation_of_contrastive_captioners
+
+```
 
 
 ### 3. Review Documentation
@@ -45,8 +47,6 @@ cd 210407R-Few-Shot-CoCa
 - **Matplotlib, Seaborn** - Visualization
 - **peft** - Parameter-efficient fine-tuning library
 - **pyyaml** - Configuration management
-
-See `requirements.txt` for complete list and versions.
 
 ## Methodology Summary
 
@@ -181,4 +181,3 @@ For questions or issues, contact:
 
 **Last Updated:** October 2025  
 **Status:** Active Development  
-**Regular commits and clear documentation are essential for project success!**
