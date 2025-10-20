@@ -116,7 +116,7 @@ NVIDIA P100 GPU (16 GB) environment on Kaggle.
 - **Datasets:** LibriSpeech (10-hour clean subset)  
 - **Hardware:** 1 × NVIDIA P100 GPU (16 GB)  
 - **Software:** PyTorch, Transformers (Hugging Face), Librosa, NumPy  
-- **Development Environment:** Kaggle / Google Colab Pro  
+- **Development Environment:** Kaggle / Google Colab
 - **Documentation:** GitHub repository for version control and reproducibility  
 
 ---
@@ -132,12 +132,3 @@ NVIDIA P100 GPU (16 GB) environment on Kaggle.
 7. Babu, A., et al. (2021). *XLS-R: Cross-lingual speech representation learning at scale.*  
 8. Panayotov, V., et al. (2015). *LibriSpeech: An ASR corpus based on public domain audio books.*
 
----
-
-**Submission Instructions:**
-1. Complete all sections above  
-2. Commit your changes to the repository  
-3. Create an issue with the labels **“milestone”** and **“research-proposal”**  
-4. Tag your supervisors in the issue for review  
-
----
