@@ -1,0 +1,356 @@
+creating data loader...
+load data **************************************************
+hello loading text data.
+hello loading e2e-tgt.
+loading dataset from simple e2e dataset
+loading form the TRAIN set
+[['The', 'Vaults', 'pub', 'near', 'CafÃ', '©', 'Adriatic', 'has', 'a', '5', 'star', 'rating', '.', 'Prices', 'start', 'at', 'Â£', '30', '.', '\n'], ['Close', 'to', 'CafÃ', '©', 'Brazil', ',', 'The', 'Cambridge', 'Blue', 'pub', 'serves', 'delicious', 'Tuscan', 'Beef', 'for', 'the', 'cheap', 'price', 'of', 'Â£', '10.50', '.', 'Delicious', 'Pub', 'food', '.', '\n']]
+2975 822
+save the vocab to diffusion_models/diff_e2e-tgt_block_rand16_transformer_lr0.0001_0.0_2000_sqrt_Lsimple_h128_s2_d0.1_sd102_test_xstart_rounding/vocab.json
+initializing the random embeddings Embedding(822, 16)
+save the random encoder to diffusion_models/diff_e2e-tgt_block_rand16_transformer_lr0.0001_0.0_2000_sqrt_Lsimple_h128_s2_d0.1_sd102_test_xstart_rounding/random_emb.torch
+[[0, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 16, 22, 1], [0, 23, 24, 8, 9, 25, 26, 4, 27, 28, 6, 29, 30, 2, 2, 31, 32, 33, 34, 35, 20, 2, 16, 2, 36, 37, 16, 22, 1]]
+padding mode is block
+8
+loading from diffusion_models/diff_e2e-tgt_block_rand16_transformer_lr0.0001_0.0_2000_sqrt_Lsimple_h128_s2_d0.1_sd102_test_xstart_rounding/vocab.json
+822
+loading from diffusion_models/diff_e2e-tgt_block_rand16_transformer_lr0.0001_0.0_2000_sqrt_Lsimple_h128_s2_d0.1_sd102_test_xstart_rounding/vocab.json
+822
+Embedding(822, 16) False
+training...
+c:\users\asus tuf\downloads\diffusion-lm\improved-diffusion\improved_diffusion\rounding.py:47: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  model.load_state_dict(torch.load(path_save))
+------------------------
+| grad_norm | 1.55     |
+| loss      | 1.77     |
+| loss_q0   | 1.72     |
+| loss_q1   | 1.8      |
+| loss_q2   | 1.76     |
+| loss_q3   | 1.78     |
+| mse       | 1.02     |
+| mse_q0    | 1.01     |
+| mse_q1    | 1.03     |
+| mse_q2    | 1.02     |
+| mse_q3    | 1.03     |
+| samples   | 64       |
+| step      | 0        |
+------------------------
+hello loading text data.
+loading initialized random embeddings.
+hello loading e2e-tgt.
+loading dataset from simple e2e dataset
+loading form the VALID set
+[['There', 'is', 'a', 'place', 'in', 'the', 'city', 'centre', ',', 'Alimentum', ',', 'that', 'is', 'not', 'family', '-', 'friendly', '.', '\n'], ['In', 'the', 'city', 'centre', 'there', 'is', 'a', 'venue', 'name', 'Alimentum', ',', 'this', 'is', 'not', 'a', 'family', '-', 'friendly', 'venue', '.', '\n']]
+[[0, 177, 39, 12, 115, 66, 32, 108, 109, 26, 153, 26, 48, 39, 105, 49, 106, 50, 16, 22, 1], [0, 107, 32, 108, 109, 217, 39, 12, 379, 363, 153, 26, 89, 39, 105, 12, 49, 106, 50, 379, 16, 22, 1]]
+padding mode is block
+8
+eval on validation set
+---------------------------
+| eval_loss    | 2.25     |
+| eval_loss_q0 | 2.21     |
+| eval_loss_q1 | 2.27     |
+| eval_loss_q2 | 2.26     |
+| eval_loss_q3 | 2.27     |
+| eval_mse     | 1.51     |
+| eval_mse_q0  | 1.49     |
+| eval_mse_q1  | 1.52     |
+| eval_mse_q2  | 1.51     |
+| eval_mse_q3  | 1.53     |
+---------------------------
+saving model 0...
+writing to diffusion_models/diff_e2e-tgt_block_rand16_transformer_lr0.0001_0.0_2000_sqrt_Lsimple_h128_s2_d0.1_sd102_test_xstart_rounding\model000000.pt
+writing to diffusion_models/diff_e2e-tgt_block_rand16_transformer_lr0.0001_0.0_2000_sqrt_Lsimple_h128_s2_d0.1_sd102_test_xstart_rounding\model000000.pt
+saving model 0.9999...
+writing to diffusion_models/diff_e2e-tgt_block_rand16_transformer_lr0.0001_0.0_2000_sqrt_Lsimple_h128_s2_d0.1_sd102_test_xstart_rounding\ema_0.9999_000000.pt
+writing to diffusion_models/diff_e2e-tgt_block_rand16_transformer_lr0.0001_0.0_2000_sqrt_Lsimple_h128_s2_d0.1_sd102_test_xstart_rounding\ema_0.9999_000000.pt
+------------------------
+| grad_norm | 0.771    |
+| loss      | 1.41     |
+| loss_q0   | 1.18     |
+| loss_q1   | 1.35     |
+| loss_q2   | 1.48     |
+| loss_q3   | 1.63     |
+| mse       | 0.69     |
+| mse_q0    | 0.452    |
+| mse_q1    | 0.626    |
+| mse_q2    | 0.768    |
+| mse_q3    | 0.904    |
+| samples   | 3.26e+03 |
+| step      | 50       |
+------------------------
+------------------------
+| grad_norm | 0.398    |
+| loss      | 1.27     |
+| loss_q0   | 0.973    |
+| loss_q1   | 1.2      |
+| loss_q2   | 1.39     |
+| loss_q3   | 1.54     |
+| mse       | 0.583    |
+| mse_q0    | 0.284    |
+| mse_q1    | 0.514    |
+| mse_q2    | 0.697    |
+| mse_q3    | 0.853    |
+| samples   | 6.46e+03 |
+| step      | 100      |
+------------------------
+------------------------
+| grad_norm | 0.389    |
+| loss      | 1.24     |
+| loss_q0   | 0.921    |
+| loss_q1   | 1.15     |
+| loss_q2   | 1.34     |
+| loss_q3   | 1.52     |
+| mse       | 0.573    |
+| mse_q0    | 0.26     |
+| mse_q1    | 0.486    |
+| mse_q2    | 0.683    |
+| mse_q3    | 0.848    |
+| samples   | 9.66e+03 |
+| step      | 150      |
+------------------------
+------------------------
+| grad_norm | 0.382    |
+| loss      | 1.2      |
+| loss_q0   | 0.872    |
+| loss_q1   | 1.11     |
+| loss_q2   | 1.32     |
+| loss_q3   | 1.49     |
+| mse       | 0.561    |
+| mse_q0    | 0.237    |
+| mse_q1    | 0.464    |
+| mse_q2    | 0.676    |
+| mse_q3    | 0.849    |
+| samples   | 1.29e+04 |
+| step      | 200      |
+------------------------
+------------------------
+| grad_norm | 0.366    |
+| loss      | 1.16     |
+| loss_q0   | 0.834    |
+| loss_q1   | 1.08     |
+| loss_q2   | 1.29     |
+| loss_q3   | 1.46     |
+| mse       | 0.551    |
+| mse_q0    | 0.223    |
+| mse_q1    | 0.464    |
+| mse_q2    | 0.671    |
+| mse_q3    | 0.851    |
+| samples   | 1.61e+04 |
+| step      | 250      |
+------------------------
+------------------------
+| grad_norm | 0.374    |
+| loss      | 1.15     |
+| loss_q0   | 0.822    |
+| loss_q1   | 1.04     |
+| loss_q2   | 1.26     |
+| loss_q3   | 1.44     |
+| mse       | 0.553    |
+| mse_q0    | 0.222    |
+| mse_q1    | 0.448    |
+| mse_q2    | 0.67     |
+| mse_q3    | 0.85     |
+| samples   | 1.93e+04 |
+| step      | 300      |
+------------------------
+------------------------
+| grad_norm | 0.36     |
+| loss      | 1.12     |
+| loss_q0   | 0.784    |
+| loss_q1   | 1.02     |
+| loss_q2   | 1.24     |
+| loss_q3   | 1.43     |
+| mse       | 0.541    |
+| mse_q0    | 0.21     |
+| mse_q1    | 0.44     |
+| mse_q2    | 0.664    |
+| mse_q3    | 0.851    |
+| samples   | 2.25e+04 |
+| step      | 350      |
+------------------------
+------------------------
+| grad_norm | 0.343    |
+| loss      | 1.09     |
+| loss_q0   | 0.756    |
+| loss_q1   | 0.991    |
+| loss_q2   | 1.23     |
+| loss_q3   | 1.41     |
+| mse       | 0.533    |
+| mse_q0    | 0.198    |
+| mse_q1    | 0.434    |
+| mse_q2    | 0.668    |
+| mse_q3    | 0.851    |
+| samples   | 2.57e+04 |
+| step      | 400      |
+------------------------
+------------------------
+| grad_norm | 0.36     |
+| loss      | 1.07     |
+| loss_q0   | 0.734    |
+| loss_q1   | 0.974    |
+| loss_q2   | 1.2      |
+| loss_q3   | 1.4      |
+| mse       | 0.529    |
+| mse_q0    | 0.189    |
+| mse_q1    | 0.43     |
+| mse_q2    | 0.664    |
+| mse_q3    | 0.852    |
+| samples   | 2.89e+04 |
+| step      | 450      |
+------------------------
+------------------------
+| grad_norm | 0.343    |
+| loss      | 1.05     |
+| loss_q0   | 0.709    |
+| loss_q1   | 0.956    |
+| loss_q2   | 1.19     |
+| loss_q3   | 1.38     |
+| mse       | 0.524    |
+| mse_q0    | 0.184    |
+| mse_q1    | 0.429    |
+| mse_q2    | 0.659    |
+| mse_q3    | 0.852    |
+| samples   | 3.21e+04 |
+| step      | 500      |
+------------------------
+------------------------
+| grad_norm | 0.338    |
+| loss      | 1.05     |
+| loss_q0   | 0.702    |
+| loss_q1   | 0.943    |
+| loss_q2   | 1.18     |
+| loss_q3   | 1.38     |
+| mse       | 0.529    |
+| mse_q0    | 0.181    |
+| mse_q1    | 0.425    |
+| mse_q2    | 0.665    |
+| mse_q3    | 0.854    |
+| samples   | 3.53e+04 |
+| step      | 550      |
+------------------------
+------------------------
+| grad_norm | 0.349    |
+| loss      | 1.03     |
+| loss_q0   | 0.684    |
+| loss_q1   | 0.922    |
+| loss_q2   | 1.16     |
+| loss_q3   | 1.36     |
+| mse       | 0.523    |
+| mse_q0    | 0.176    |
+| mse_q1    | 0.419    |
+| mse_q2    | 0.652    |
+| mse_q3    | 0.855    |
+| samples   | 3.85e+04 |
+| step      | 600      |
+------------------------
+------------------------
+| grad_norm | 0.324    |
+| loss      | 1.02     |
+| loss_q0   | 0.664    |
+| loss_q1   | 0.912    |
+| loss_q2   | 1.15     |
+| loss_q3   | 1.35     |
+| mse       | 0.524    |
+| mse_q0    | 0.17     |
+| mse_q1    | 0.42     |
+| mse_q2    | 0.657    |
+| mse_q3    | 0.854    |
+| samples   | 4.17e+04 |
+| step      | 650      |
+------------------------
+------------------------
+| grad_norm | 0.321    |
+| loss      | 1.01     |
+| loss_q0   | 0.657    |
+| loss_q1   | 0.909    |
+| loss_q2   | 1.15     |
+| loss_q3   | 1.34     |
+| mse       | 0.518    |
+| mse_q0    | 0.169    |
+| mse_q1    | 0.42     |
+| mse_q2    | 0.654    |
+| mse_q3    | 0.854    |
+| samples   | 4.49e+04 |
+| step      | 700      |
+------------------------
+------------------------
+| grad_norm | 0.327    |
+| loss      | 1        |
+| loss_q0   | 0.644    |
+| loss_q1   | 0.891    |
+| loss_q2   | 1.13     |
+| loss_q3   | 1.33     |
+| mse       | 0.523    |
+| mse_q0    | 0.162    |
+| mse_q1    | 0.412    |
+| mse_q2    | 0.652    |
+| mse_q3    | 0.852    |
+| samples   | 4.81e+04 |
+| step      | 750      |
+------------------------
+------------------------
+| grad_norm | 0.316    |
+| loss      | 0.988    |
+| loss_q0   | 0.642    |
+| loss_q1   | 0.877    |
+| loss_q2   | 1.12     |
+| loss_q3   | 1.32     |
+| mse       | 0.512    |
+| mse_q0    | 0.163    |
+| mse_q1    | 0.398    |
+| mse_q2    | 0.648    |
+| mse_q3    | 0.85     |
+| samples   | 5.13e+04 |
+| step      | 800      |
+------------------------
+------------------------
+| grad_norm | 0.317    |
+| loss      | 0.982    |
+| loss_q0   | 0.63     |
+| loss_q1   | 0.879    |
+| loss_q2   | 1.11     |
+| loss_q3   | 1.32     |
+| mse       | 0.511    |
+| mse_q0    | 0.161    |
+| mse_q1    | 0.403    |
+| mse_q2    | 0.645    |
+| mse_q3    | 0.851    |
+| samples   | 5.45e+04 |
+| step      | 850      |
+------------------------
+------------------------
+| grad_norm | 0.304    |
+| loss      | 0.976    |
+| loss_q0   | 0.624    |
+| loss_q1   | 0.862    |
+| loss_q2   | 1.11     |
+| loss_q3   | 1.32     |
+| mse       | 0.512    |
+| mse_q0    | 0.158    |
+| mse_q1    | 0.399    |
+| mse_q2    | 0.647    |
+| mse_q3    | 0.852    |
+| samples   | 5.77e+04 |
+| step      | 900      |
+------------------------
+------------------------
+| grad_norm | 0.302    |
+| loss      | 0.975    |
+| loss_q0   | 0.632    |
+| loss_q1   | 0.862    |
+| loss_q2   | 1.11     |
+| loss_q3   | 1.31     |
+| mse       | 0.508    |
+| mse_q0    | 0.164    |
+| mse_q1    | 0.393    |
+| mse_q2    | 0.642    |
+| mse_q3    | 0.847    |
+| samples   | 6.09e+04 |
+| step      | 950      |
+------------------------
+saving model 0...
+writing to diffusion_models/diff_e2e-tgt_block_rand16_transformer_lr0.0001_0.0_2000_sqrt_Lsimple_h128_s2_d0.1_sd102_test_xstart_rounding\model001000.pt
+writing to diffusion_models/diff_e2e-tgt_block_rand16_transformer_lr0.0001_0.0_2000_sqrt_Lsimple_h128_s2_d0.1_sd102_test_xstart_rounding\model001000.pt
+saving model 0.9999...
+writing to diffusion_models/diff_e2e-tgt_block_rand16_transformer_lr0.0001_0.0_2000_sqrt_Lsimple_h128_s2_d0.1_sd102_test_xstart_rounding\ema_0.9999_001000.pt
+writing to diffusion_models/diff_e2e-tgt_block_rand16_transformer_lr0.0001_0.0_2000_sqrt_Lsimple_h128_s2_d0.1_sd102_test_xstart_rounding\ema_0.9999_001000.pt
