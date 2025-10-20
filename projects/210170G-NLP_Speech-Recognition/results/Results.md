@@ -17,7 +17,8 @@ Lower values indicate better alignment between latent and quantized representati
 - Increasing codebooks **without ICSL** degraded performance, confirming the issue of inter-codebook redundancy.
 
 ### Contrastive Loss Curves
-![ICSL Contrastive Loss](ICSL_Contrastive_Loss.png)
+<img width="687" height="482" alt="image" src="https://github.com/user-attachments/assets/98d4690d-260b-40b6-84ec-f9cb343dc3ed" />
+
 
 ---
 
