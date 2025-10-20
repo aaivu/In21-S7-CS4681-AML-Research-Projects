@@ -19,7 +19,7 @@ import math
 import argparse
 import cv2
 from util.dataset import datasets
-from util.util import Timing, get_expon_lr_func, generate_dirs_equirect, viridis_cmap
+from util.util import Timing, get_expon_lr_func, generate_dirs_equirect, viridis_cmap,get_cosine_lr_func,get_cyclic_lr_func
 from util import config_util
 import time
 import lpips
@@ -257,6 +257,33 @@ group.add_argument('--gaussian_std', type=float, default=0.01, help='Standard de
 group.add_argument('--gaussian_sigma', type=float, default=0.1, help='Initial sigma for density if using Gaussian')
 group.add_argument('--gaussian_sigma_bg', type=float, default=0.1, help='Initial sigma for background density if using Gaussian')
 
+# --- cyclic learning rate options -------------------------------------------------
+group = parser.add_argument_group("cyclic_lr")
+group.add_argument('--use_cyclic_lr', action='store_true', default=False,
+                   help='If set, use cyclic learning rate schedule instead of exponential/cosine')
+group.add_argument('--cyclic_base_lr', type=float, default=1e-4,
+                   help='Lower bound of the cyclic learning rate')
+group.add_argument('--cyclic_max_lr', type=float, default=1e-2,
+                   help='Upper bound of the cyclic learning rate')
+group.add_argument('--cyclic_step_size', type=int, default=2000,
+                   help='Number of iterations per half cycle (so full cycle = 2 * step_size)')
+group.add_argument('--cyclic_mode', choices=["triangular", "triangular2", "exp_range"], default="triangular",
+                   help='Cyclic mode: triangular, triangular2, or exp_range')
+group.add_argument('--cyclic_gamma', type=float, default=1.0,
+                   help='Scaling factor for exp_range mode')
+
+# ------- cosine annealing options -------------------------------------------------
+group = parser.add_argument_group("cosine_annealing")
+group.add_argument('--use_cosine_annealing', action='store_true', default=False,
+help='If set, use cosine annealing schedule (instead of exponential) for ALL LRs')
+group.add_argument('--cosine_T_max', type=int, default=250000,
+help='Number of steps for the cosine cycle (T_max). If 0, cosine will behave like constant after warmup')
+group.add_argument('--cosine_eta_min', type=float, default=0.0,
+help='Minimum learning rate reached by cosine annealing')
+group.add_argument('--cosine_warmup_steps', type=int, default=0,
+help='Linear warmup steps from 0 to initial lr before cosine annealing starts')
+
+
 
 args = parser.parse_args()
 config_util.maybe_merge_config_file(args)
@@ -372,16 +399,71 @@ resample_cameras = [
     ]
 ckpt_path = path.join(args.train_dir, 'ckpt.npz')
 
-lr_sigma_func = get_expon_lr_func(args.lr_sigma, args.lr_sigma_final, args.lr_sigma_delay_steps,
-                                  args.lr_sigma_delay_mult, args.lr_sigma_decay_steps)
-lr_sh_func = get_expon_lr_func(args.lr_sh, args.lr_sh_final, args.lr_sh_delay_steps,
-                               args.lr_sh_delay_mult, args.lr_sh_decay_steps)
-lr_basis_func = get_expon_lr_func(args.lr_basis, args.lr_basis_final, args.lr_basis_delay_steps,
-                               args.lr_basis_delay_mult, args.lr_basis_decay_steps)
-lr_sigma_bg_func = get_expon_lr_func(args.lr_sigma_bg, args.lr_sigma_bg_final, args.lr_sigma_bg_delay_steps,
-                               args.lr_sigma_bg_delay_mult, args.lr_sigma_bg_decay_steps)
-lr_color_bg_func = get_expon_lr_func(args.lr_color_bg, args.lr_color_bg_final, args.lr_color_bg_delay_steps,
-                               args.lr_color_bg_delay_mult, args.lr_color_bg_decay_steps)
+if args.use_cosine_annealing:
+# Use cosine for all lrs. warmup and eta_min can be controlled via the new args.
+    lr_sigma_func = get_cosine_lr_func(args.lr_sigma, args.lr_sigma_final,
+    T_max=args.cosine_T_max,
+    warmup_steps=args.cosine_warmup_steps,
+    eta_min=args.cosine_eta_min)
+
+
+    lr_sh_func = get_cosine_lr_func(args.lr_sh, args.lr_sh_final,
+    T_max=args.cosine_T_max,
+    warmup_steps=args.cosine_warmup_steps,
+    eta_min=args.cosine_eta_min)
+
+
+    lr_basis_func = get_cosine_lr_func(args.lr_basis, args.lr_basis_final,
+    T_max=args.cosine_T_max,
+    warmup_steps=args.cosine_warmup_steps,
+    eta_min=args.cosine_eta_min)
+
+
+    lr_sigma_bg_func = get_cosine_lr_func(args.lr_sigma_bg, args.lr_sigma_bg_final,
+    T_max=args.cosine_T_max,
+    warmup_steps=args.cosine_warmup_steps,
+    eta_min=args.cosine_eta_min)
+
+
+    lr_color_bg_func = get_cosine_lr_func(args.lr_color_bg, args.lr_color_bg_final,
+    T_max=args.cosine_T_max,
+    warmup_steps=args.cosine_warmup_steps,
+    eta_min=args.cosine_eta_min)
+
+elif args.use_cyclic_lr:
+    # Use cyclic learning rate for all params
+    lr_sigma_func = get_cyclic_lr_func(
+        args.cyclic_base_lr, args.cyclic_max_lr, args.cyclic_step_size,
+        mode=args.cyclic_mode, gamma=args.cyclic_gamma)
+
+    lr_sh_func = get_cyclic_lr_func(
+        args.cyclic_base_lr, args.cyclic_max_lr, args.cyclic_step_size,
+        mode=args.cyclic_mode, gamma=args.cyclic_gamma)
+
+    lr_basis_func = get_cyclic_lr_func(
+        args.cyclic_base_lr, args.cyclic_max_lr, args.cyclic_step_size,
+        mode=args.cyclic_mode, gamma=args.cyclic_gamma)
+
+    lr_sigma_bg_func = get_cyclic_lr_func(
+        args.cyclic_base_lr, args.cyclic_max_lr, args.cyclic_step_size,
+        mode=args.cyclic_mode, gamma=args.cyclic_gamma)
+
+    lr_color_bg_func = get_cyclic_lr_func(
+        args.cyclic_base_lr, args.cyclic_max_lr, args.cyclic_step_size,
+        mode=args.cyclic_mode, gamma=args.cyclic_gamma)
+
+else:
+    lr_sigma_func = get_expon_lr_func(args.lr_sigma, args.lr_sigma_final, args.lr_sigma_delay_steps,
+                                    args.lr_sigma_delay_mult, args.lr_sigma_decay_steps)
+    lr_sh_func = get_expon_lr_func(args.lr_sh, args.lr_sh_final, args.lr_sh_delay_steps,
+                                args.lr_sh_delay_mult, args.lr_sh_decay_steps)
+    lr_basis_func = get_expon_lr_func(args.lr_basis, args.lr_basis_final, args.lr_basis_delay_steps,
+                                args.lr_basis_delay_mult, args.lr_basis_decay_steps)
+    lr_sigma_bg_func = get_expon_lr_func(args.lr_sigma_bg, args.lr_sigma_bg_final, args.lr_sigma_bg_delay_steps,
+                                args.lr_sigma_bg_delay_mult, args.lr_sigma_bg_decay_steps)
+    lr_color_bg_func = get_expon_lr_func(args.lr_color_bg, args.lr_color_bg_final, args.lr_color_bg_delay_steps,
+                                args.lr_color_bg_delay_mult, args.lr_color_bg_decay_steps)
+    
 lr_sigma_factor = 1.0
 lr_sh_factor = 1.0
 lr_basis_factor = 1.0
