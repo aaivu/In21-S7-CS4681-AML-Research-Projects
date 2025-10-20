@@ -1,0 +1,4 @@
+Logging to logdir
+creating model and diffusion...
+the parameter count is 87129749
+saving the hyperparameters to logdir/training_args.json
