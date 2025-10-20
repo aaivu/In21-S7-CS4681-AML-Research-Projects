@@ -283,6 +283,27 @@ help='Minimum learning rate reached by cosine annealing')
 group.add_argument('--cosine_warmup_steps', type=int, default=0,
 help='Linear warmup steps from 0 to initial lr before cosine annealing starts')
 
+# Progressive TV and sparsity scheduling
+group = parser.add_argument_group("progressive_tv")
+group.add_argument('--use_progressive_tv', action='store_true', default=False,
+                   help='Enable exponential progressive TV and sparsity decay')
+
+group.add_argument('--progressive_tv_start', type=float, default=1e-3,
+                   help='Initial lambda_tv value for progressive decay')
+group.add_argument('--progressive_tv_end', type=float, default=1e-5,
+                   help='Final lambda_tv value for progressive decay')
+
+group.add_argument('--progressive_tv_sh_start', type=float, default=1e-3,
+                   help='Initial lambda_tv_sh value for progressive decay')
+group.add_argument('--progressive_tv_sh_end', type=float, default=1e-6,
+                   help='Final lambda_tv_sh value for progressive decay')
+
+group.add_argument('--progressive_sparsity_start', type=float, default=0.01,
+                   help='Initial sparsity fraction for TV regularization')
+group.add_argument('--progressive_sparsity_end', type=float, default=0.001,
+                   help='Final sparsity fraction for TV regularization')
+
+
 
 
 args = parser.parse_args()
@@ -679,21 +700,70 @@ while True:
             #          sparsity_file.write(f"{gstep_id} {nz}\n")
 
             # Apply TV/Sparsity regularizers
-            if args.lambda_tv > 0.0:
-                #  with Timing("tv_inpl"):
-                grid.inplace_tv_grad(grid.density_data.grad,
-                        scaling=args.lambda_tv,
-                        sparse_frac=args.tv_sparsity,
+            if args.use_progressive_tv:
+                def progressive_tv(gstep_id, lambda_tv_start, lambda_tv_end, n_iters=args.n_iters):
+                    # Exponential decay: strong at start, weak at end
+                    return lambda_tv_end + (lambda_tv_start - lambda_tv_end) * math.exp(-5.0 * gstep_id / n_iters)
+
+                def progressive_sparsity(gstep_id, sparsity_start, sparsity_end, n_iters=args.n_iters):
+                    return sparsity_end + (sparsity_start - sparsity_end) * math.exp(-5.0 * gstep_id / n_iters)
+
+                # --- Density TV ---
+                if args.lambda_tv > 0.0:
+                    lambda_tv_now = progressive_tv(
+                        gstep_id,
+                        lambda_tv_start=args.progressive_tv_start,
+                        lambda_tv_end=args.progressive_tv_end
+                    )
+                    tv_sparsity_now = progressive_sparsity(
+                        gstep_id,
+                        sparsity_start=args.progressive_sparsity_start,
+                        sparsity_end=args.progressive_sparsity_end
+                    )
+                    grid.inplace_tv_grad(
+                        grid.density_data.grad,
+                        scaling=lambda_tv_now,
+                        sparse_frac=tv_sparsity_now,
                         logalpha=args.tv_logalpha,
                         ndc_coeffs=dset.ndc_coeffs,
-                        contiguous=args.tv_contiguous)
-            if args.lambda_tv_sh > 0.0:
-                #  with Timing("tv_color_inpl"):
-                grid.inplace_tv_color_grad(grid.sh_data.grad,
-                        scaling=args.lambda_tv_sh,
-                        sparse_frac=args.tv_sh_sparsity,
+                        contiguous=args.tv_contiguous
+                    )
+
+                # --- SH TV ---
+                if args.lambda_tv_sh > 0.0:
+                    lambda_tv_sh_now = progressive_tv(
+                        gstep_id,
+                        lambda_tv_start=args.progressive_tv_sh_start,
+                        lambda_tv_end=args.progressive_tv_sh_end
+                    )
+                    tv_sh_sparsity_now = progressive_sparsity(
+                        gstep_id,
+                        sparsity_start=args.tv_sh_sparsity,
+                        sparsity_end=1e-4  # can also make configurable if needed
+                    )
+                    grid.inplace_tv_color_grad(
+                        grid.sh_data.grad,
+                        scaling=lambda_tv_sh_now,
+                        sparse_frac=tv_sh_sparsity_now,
                         ndc_coeffs=dset.ndc_coeffs,
-                        contiguous=args.tv_contiguous)
+                        contiguous=args.tv_contiguous
+                    )
+            else:
+                if args.lambda_tv > 0.0:
+                    #  with Timing("tv_inpl"):
+                    grid.inplace_tv_grad(grid.density_data.grad,
+                            scaling=args.lambda_tv,
+                            sparse_frac=args.tv_sparsity,
+                            logalpha=args.tv_logalpha,
+                            ndc_coeffs=dset.ndc_coeffs,
+                            contiguous=args.tv_contiguous)
+                if args.lambda_tv_sh > 0.0:
+                    #  with Timing("tv_color_inpl"):
+                    grid.inplace_tv_color_grad(grid.sh_data.grad,
+                            scaling=args.lambda_tv_sh,
+                            sparse_frac=args.tv_sh_sparsity,
+                            ndc_coeffs=dset.ndc_coeffs,
+                            contiguous=args.tv_contiguous)
             if args.lambda_tv_lumisphere > 0.0:
                 grid.inplace_tv_lumisphere_grad(grid.sh_data.grad,
                         scaling=args.lambda_tv_lumisphere,
