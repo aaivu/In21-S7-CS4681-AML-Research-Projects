@@ -10,7 +10,7 @@ Lower values indicate better alignment between latent and quantized representati
 | With ICSL (8 Codebooks)     | 4.6120 |
 | Without ICSL (8 Codebooks)  | 4.6178 |
 | With ICSL (2 Codebooks)     | 4.6133 |
-| Without ICSL (2 Codebooks)  | 4.6135 |
+| Without ICSL (2 Codebooks)  | 4.6141 |
 
 **Observation:**  
 - The configuration with **ICSL and 8 codebooks** achieved the lowest loss, demonstrating that inter-codebook regularization improves representation diversity and convergence stability.  
@@ -29,8 +29,8 @@ Below are summarized CTC loss results reported in the paper.
 | RVQ Levels | CTC Loss |
 |-------------|-----------|
 | 1 | 4.59 |
-| 2 | 4.22 |
-| 4 | 3.95 |
+| 2 | 4.07 |
+| 4 | 3.87 |
 | 8 | 3.85 |
 | 16 | 3.99 |
 
