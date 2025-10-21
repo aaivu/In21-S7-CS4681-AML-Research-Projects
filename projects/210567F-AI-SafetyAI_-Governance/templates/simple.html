@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafetyAlignNLP - Simple Web Interface</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        textarea, button { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
+        textarea { height: 100px; }
+        button { background: #007bff; color: white; border: none; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .response { margin-top: 20px; padding: 15px; border-radius: 5px; }
+        .safe { background: #d4edda; border: 1px solid #c3e6cb; }
+        .blocked { background: #f8d7da; border: 1px solid #f5c6cb; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-top: 20px; }
+        .stat-card { background: #f8f9fa; padding: 15px; border-radius: 5px; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🛡️ SafetyAlignNLP</h1>
+        <p>Simple Safe AI Query Processing</p>
+    </div>
+
+    <form id="queryForm">
+        <div class="form-group">
+            <label for="query">Enter your query:</label>
+            <textarea id="query" name="query" placeholder="Type your question or request here..." required></textarea>
+        </div>
+        <button type="submit">Process Query</button>
+    </form>
+
+    <div id="response" style="display: none;"></div>
+
+    <div class="stats">
+        <div class="stat-card">
+            <div id="totalProcessed">0</div>
+            <div>Total Processed</div>
+        </div>
+        <div class="stat-card">
+            <div id="totalBlocked">0</div>
+            <div>Blocked</div>
+        </div>
+        <div class="stat-card">
+            <div id="safetyRate">100%</div>
+            <div>Safety Rate</div>
+        </div>
+        <div class="stat-card">
+            <div id="biasCorrections">0</div>
+            <div>Bias Corrections</div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('queryForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const query = document.getElementById('query').value;
+            const responseDiv = document.getElementById('response');
+            
+            try {
+                const response = await fetch('/api/query', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query: query })
+                });
+                
+                const result = await response.json();
+                
+                responseDiv.style.display = 'block';
+                responseDiv.className = 'response ' + (result.status === 'blocked' ? 'blocked' : 'safe');
+                responseDiv.innerHTML = `
+                    <strong>Status:</strong> ${result.status.toUpperCase()}<br>
+                    <strong>Harm Score:</strong> ${result.harm_score.toFixed(3)}<br>
+                    <strong>Processing Time:</strong> ${result.processing_time.toFixed(3)}s<br>
+                    ${result.response ? '<br><strong>Response:</strong> ' + result.response : ''}
+                    <br><strong>Message:</strong> ${result.message}
+                `;
+                
+                updateStats();
+                
+            } catch (error) {
+                responseDiv.style.display = 'block';
+                responseDiv.className = 'response blocked';
+                responseDiv.innerHTML = '<strong>Error:</strong> ' + error.message;
+            }
+        });
+
+        async function updateStats() {
+            try {
+                const response = await fetch('/api/safety-stats');
+                const stats = await response.json();
+                
+                document.getElementById('totalProcessed').textContent = stats.total_processed;
+                document.getElementById('totalBlocked').textContent = stats.total_blocked;
+                document.getElementById('safetyRate').textContent = (stats.safety_rate * 100).toFixed(1) + '%';
+                document.getElementById('biasCorrections').textContent = stats.bias_corrections;
+            } catch (error) {
+                console.error('Failed to update stats:', error);
+            }
+        }
+
+        // Update stats on page load
+        updateStats();
+    </script>
+</body>
+</html>
