@@ -34,10 +34,10 @@
 
 ## Milestones
 
-- [ ] **Week 4:** Research Proposal Submission
-- [ ] **Week 5:** Literature Review Completion
-- [ ] **Week 8:** Methodology Implementation
-- [ ] **Week 12:** Final Evaluation
+- [x] **Week 4:** Research Proposal Submission
+- [x] **Week 5:** Literature Review Completion
+- [x] **Week 8:** Methodology Implementation
+- [x] **Week 12:** Final Evaluation
 
 ## Progress Tracking
 
