@@ -29,7 +29,7 @@ This research follows a **supervised learning approach** with the following desi
 
 ### 2.2 Research Framework
 
-![Model Architecture](../assets/model_architecture.png)
+<img src="../assets/model_architecture.png" alt="Model Architecture" width="600"/>
 
 **Architecture Overview:**
 
