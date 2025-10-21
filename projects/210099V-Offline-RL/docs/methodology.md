@@ -85,11 +85,8 @@ We compare an **Offline QR-DQN (distributional critic)** against standard offlin
 - Efficiency: wall-clock time, updates/sec.
 
 ### 5.2 Baseline Models
-- **BC (Behavior Cloning):** supervised policy on (s,a).  
-- **Naïve Offline DQN/QR-DQN (1-step):** no conservatism, to expose extrapolation error.  
-- **CQL-DQN (discrete):** strong offline discrete baseline.  
-- **BCQ (discrete)** or **IQL (discrete variant):** if time permits.  
-- **Our model:** Offline QR-DQN + n-step + mild CQL + BC anchor.
+- **QR-DQN**.  
+- **Our model:** QR-DQN + n-step.
 
 ### 5.3 Hardware/Software Requirements
 - **Hardware:** 1× NVIDIA GPU (≥8 GB VRAM) for MinAtar; ≥16 GB VRAM for Atari shards; CPU RAM ≥32 GB; SSD ≥50 GB (Atari).  
