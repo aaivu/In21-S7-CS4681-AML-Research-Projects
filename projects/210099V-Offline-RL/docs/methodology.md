@@ -33,12 +33,11 @@ We compare an **Offline QR-DQN (distributional critic)** against standard offlin
 ### 3.1 Data Sources
 - **MinAtar Offline (Breakout, Pong)** – logged transitions from pre-collected policies (random → medium → expert mixtures).  
 - **RL Unplugged (Atari) shards (optional)** – e.g., Pong/Breakout runs for scalability checks.  
-- **(If needed)** Custom CartPole offline datasets collected once from scripted ε-greedy policies (no training-time interaction).
+- **CartPole** offline datasets collected once from scripted ε-greedy policies.
 
 ### 3.2 Data Description
 - **Observation spaces:**  
   - MinAtar: low-dim grid (e.g., 10×10×C)  
-  - Atari: 84×84 grayscale with frame-stacking (×4) if used  
 - **Action spaces:** discrete (env-dependent)  
 - **Dataset composition:** multiple trajectories with episode boundaries, rewards, and terminals.  
   Datasets stratified into train/valid/test by trajectory (no leakage).  
@@ -67,7 +66,11 @@ We compare an **Offline QR-DQN (distributional critic)** against standard offlin
 - **BC anchor (discrete):** cross-entropy between policy logits and behavior action (weight β) to keep policy near data support.  
 
 **Total loss:**
-\[ \mathcal{L} = \mathcal{L}_{\text{QR}} + \alpha\mathcal{L}_{\text{CQL}} + \beta\mathcal{L}_{\text{BC}} \]
+
+$$
+\mathcal{L} = \mathcal{L}_{\text{QR}} + \alpha \mathcal{L}_{\text{CQL}} + \beta \mathcal{L}_{\text{BC}}
+$$
+
 
 **Ablations:** n∈{1,3,5}; α∈{0.0,0.1,0.2}; β∈{0.0,0.1}.  
 **Optimizer:** Adam (lr=5e-4), grad-norm clip 10.  
@@ -123,4 +126,4 @@ We compare an **Offline QR-DQN (distributional critic)** against standard offlin
 - **Primary:** Demonstrate that n-step (n≈3) within Offline QR-DQN plus light conservatism yields consistent gains over 1-step and approaches CQL-DQN on MinAtar.  
 - **Secondary:** Sensitivity analysis clarifying interactions between n, α (CQL weight), β (BC anchor), and target-update cadence.  
 - **Artifacts:** Clean offline datasets/splits, training/eval scripts, configuration files, and plots suitable for paper inclusion.  
-- **Broader impact:** A minimal, reproducible recipe for offline distributional Q-learning in discrete-action domains that can extend to risk-aware evaluation (e.g., CVaR over learned quantiles).
+- **Broader impact:** A minimal, reproducible recipe for offline distributional Q-learning in discrete-action domains that can extend to risk-aware evaluation (e.g: CVaR over learned quantiles).
