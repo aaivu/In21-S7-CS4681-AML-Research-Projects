@@ -28,6 +28,5 @@ Four distinct fine-tuning configurations were systematically compared to evaluat
 ### Training and Evaluation
 
 * **Model:** The experiments use the BLIP model with a **ViT-B/16** vision backbone.
-* **Baseline Training:** The baseline was fine-tuned for **two epochs** using the AdamW optimizer, a learning rate of $8\times10^{-5}$, and a batch size of 50, run on 2×NVIDIA A100 GPUs.
 * **Experiment Training:** All other configurations (Synthetic-only, Hybrid, Multi-caption) were fine-tuned using identical optimizer parameters, batch size, and learning rate as the baseline.
 * **Evaluation Metrics:** All models were evaluated on the COCO validation and test splits using the standard suite of captioning metrics: **BLEU**, **METEOR**, **ROUGE-L**, **CIDEr**, and **SPICE**.
