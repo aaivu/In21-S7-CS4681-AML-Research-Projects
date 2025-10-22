@@ -33,8 +33,4 @@ torchaudio
 pyctcdecode
 kenlm
 jiwer
-numpy
-pandas
-tqdm
-scikit-learn
 soundfile
