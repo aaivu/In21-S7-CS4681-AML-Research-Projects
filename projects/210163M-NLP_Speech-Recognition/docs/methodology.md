@@ -1,59 +1,91 @@
-# Methodology: NLP:Speech Recognition
+# Methodology: NLP: Speech Recognition
 
-**Student:** 210163M
-**Research Area:** NLP:Speech Recognition
-**Date:** 2025-09-01
+**Student:** 210163M  
+**Research Area:** NLP: Speech Recognition  
+**Date:** 2025-09-20  
 
 ## 1. Overview
 
-[Provide a brief overview of your methodology]
+The primary goal of this research is to **outperform the baseline WeNet end-to-end ASR system using WavLM as a standalone self-supervised speech model**. The study evaluates WavLM’s ability to achieve lower WER, improved noise robustness, and efficient inference compared to WeNet, without modifying or integrating into WeNet’s architecture.
 
 ## 2. Research Design
 
-[Describe your overall research approach]
+The research follows a **comparative experimental design**:
+
+1. Establish baseline ASR performance using WeNet on standard benchmarks.  
+2. Fine-tune and evaluate WavLM on the same datasets.  
+3. Apply enhancement strategies directly to WavLM, such as selective layer fine-tuning, data augmentation, and knowledge distillation.  
+4. Perform systematic evaluation and ablation studies.  
+5. Optimize WavLM hyperparameters and compression techniques for real-time deployment.  
+
+This design emphasizes **direct comparison** between WavLM and WeNet to quantify performance improvements.
 
 ## 3. Data Collection
 
 ### 3.1 Data Sources
-[List your data sources]
+- **LibriSpeech**: English read speech benchmark. 
+- **Optional**: VoxPopuli, GigaSpeech for domain diversity.
 
 ### 3.2 Data Description
-[Describe your datasets]
+- **LibriSpeech**: ~1,000 hours, split into train/dev/test sets.
 
 ### 3.3 Data Preprocessing
-[Explain preprocessing steps]
+- Audio normalization and resampling to 16 kHz.  
+- Feature extraction: WavLM handles raw waveform input, but optional preprocessing includes trimming and augmentation.  
+- Data augmentation: noise addition, speed perturbation, and SpecAugment.
 
 ## 4. Model Architecture
 
-[Describe your proposed model/algorithm]
+- **Baseline Model**: Standard WeNet U2++ architecture with log-Mel filterbanks.  
+- **Proposed Model**: WavLM pre-trained self-supervised model, optionally fine-tuned on task-specific datasets:  
+  - Selective layer fine-tuning for efficiency.  
+  - Knowledge distillation to smaller models for faster inference.  
+  - Optional adaptation for noisy or multi-speaker conditions.
 
 ## 5. Experimental Setup
 
 ### 5.1 Evaluation Metrics
-[List evaluation metrics you'll use]
+- **Word Error Rate (WER)** – primary ASR accuracy metric.  
+- **Character Error Rate (CER)** – primary ASR accuracy metric.  
+- **Memory Usage** – GPU/CPU peak usage.  
+- **Latency** – inference time for real-time evaluation.
 
 ### 5.2 Baseline Models
-[Describe baseline comparisons]
+- **WeNet Baseline** – original U2++ ASR system.  
+- **WavLM Standalone** – self-supervised model with fine-tuning applied.
 
 ### 5.3 Hardware/Software Requirements
-[List computational requirements]
+- GPU: NVIDIA A100 / V100.  
+- Frameworks: PyTorch, HuggingFace Transformers or WavLM repository.  
+- Libraries: NumPy, SciPy, torchaudio.  
+- OS: Ubuntu 22.04 LTS or equivalent Linux.
 
 ## 6. Implementation Plan
 
 | Phase | Tasks | Duration | Deliverables |
 |-------|-------|----------|--------------|
-| Phase 1 | Data preprocessing | 2 weeks | Clean dataset |
-| Phase 2 | Model implementation | 3 weeks | Working model |
-| Phase 3 | Experiments | 2 weeks | Results |
-| Phase 4 | Analysis | 1 week | Final report |
+| Phase 1 | WeNet Baseline Evaluation | 1 week | Verified WER, latency, memory usage |
+| Phase 2 | WavLM Fine-Tuning | 2 weeks | Fine-tuned model checkpoints |
+| Phase 3 | Experimental Comparison | 2 weeks | Performance comparison tables and analysis |
+| Phase 4 | Ablation Studies & Optimization | 2 weeks | Layer selection, augmentation, knowledge distillation results |
+| Phase 5 | Advanced Optimization | 1 week | Hyperparameter tuning, model compression for deployment |
 
 ## 7. Risk Analysis
 
-[Identify potential risks and mitigation strategies]
+| Risk | Impact | Mitigation |
+|------|--------|-----------|
+| GPU memory constraints | High | Mixed precision training, gradient checkpointing |
+| Overfitting | Medium | Data augmentation, regularization, early stopping |
+| Inference latency | Medium | Model compression, selective layer usage |
+| Dataset bias | Medium | Evaluate on multiple datasets (LibriSpeech + noisy corpora) |
 
 ## 8. Expected Outcomes
 
-[Describe expected results and contributions]
+- **Outperform baseline WeNet** in WER and other ASR metrics.  
+- Demonstrate WavLM’s robustness to noise and multi-speaker scenarios.  
+- Achieve efficient inference with reduced memory footprint.  
+- Provide insights into selective fine-tuning, data augmentation, and knowledge distillation strategies.  
+- Contribute to research on standalone self-supervised speech models for production-ready ASR.
 
 ---
 
