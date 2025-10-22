@@ -12,7 +12,7 @@ load_dotenv()
 class AgentConfig(BaseModel):
     """Configuration for individual agents."""
     name: str
-    model_name: str = "gpt-3.5-turbo"
+    model_name: str = "gemini-2.0-flash-exp"
     temperature: float = Field(default=0.7, ge=0.0, le=2.0)
     max_tokens: int = Field(default=1000, gt=0)
     system_prompt: str = ""
@@ -29,7 +29,7 @@ class Config(BaseModel):
     """Main configuration class for the multi-agent system."""
     
     # API Keys
-    openai_api_key: Optional[str] = Field(default_factory=lambda: os.getenv("OPENAI_API_KEY"))
+    gemini_api_key: Optional[str] = Field(default_factory=lambda: os.getenv("GEMINI_2_5_PRO_FLASH_API_KEY"))
     huggingface_api_key: Optional[str] = Field(default_factory=lambda: os.getenv("HUGGINGFACE_API_KEY"))
     
     # Data settings

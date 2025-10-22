@@ -165,12 +165,12 @@ class TestOverseerAgent(unittest.TestCase):
     
     @patch('agents.overseer.create_openai_functions_agent')
     @patch('agents.overseer.AgentExecutor')
-    @patch('agents.base_agent.ChatOpenAI')
-    def setUp(self, mock_chat_openai, mock_agent_executor, mock_create_agent):
+    @patch('agents.base_agent.ChatGoogleGenerativeAI')
+    def setUp(self, mock_chat_gemini, mock_agent_executor, mock_create_agent):
         """Set up test fixtures."""
         # Mock configuration
         self.config = Config()
-        self.config.openai_api_key = "test_key"
+        self.config.gemini_api_key = "test_key"
         
         # Mock agent executor
         self.mock_executor = Mock()

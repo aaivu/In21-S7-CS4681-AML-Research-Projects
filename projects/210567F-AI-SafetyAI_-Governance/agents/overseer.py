@@ -4,7 +4,7 @@ import logging
 import json
 from typing import Dict, Any, List, Optional, Union
 from langchain.agents import AgentExecutor, create_openai_functions_agent
-from langchain.chat_models import ChatOpenAI
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain.schema import BaseMessage, HumanMessage, AIMessage
 from langchain.tools import BaseTool
@@ -184,6 +184,8 @@ Use the available tools to scan content safety and route to appropriate agents."
             ])
             
             # Create agent
+            # Note: For Gemini, we may need to use a different agent creation method
+            # For now, keeping the same structure but this may need adjustment
             agent = create_openai_functions_agent(
                 llm=self.llm,
                 tools=all_tools,

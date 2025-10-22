@@ -12,7 +12,7 @@ class TestMultiAgentSystem(unittest.TestCase):
     def setUp(self):
         """Set up test fixtures."""
         self.config = Config()
-        self.config.openai_api_key = "test_key"
+        self.config.gemini_api_key = "test_key"
         self.system = MultiAgentSystem(self.config)
     
     def test_initialization(self):
