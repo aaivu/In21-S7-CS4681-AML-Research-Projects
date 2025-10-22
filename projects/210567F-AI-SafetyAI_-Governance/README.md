@@ -10,6 +10,17 @@ A multi-agent AI safety analysis system powered by **Google Gemini 2.5 Pro Flash
 - 🌐 **Web Interface**: User-friendly web dashboard
 - ⚡ **Google Gemini**: Powered by latest Gemini 2.5 Pro Flash model
 
+## 📸 Screenshots
+
+### Web Interface
+![Application Screenshot 1](images/Application%20Screenshot%201.png)
+
+### Safety Analysis Dashboard
+![Application Screenshot 2](images/Application%20Screenshot%202.png)
+
+### Multi-Agent System Interface
+![Application Screenshot 3](images/Application%20Screenshot%203.png)
+
 ## 📁 Project Structure
 
 ```
