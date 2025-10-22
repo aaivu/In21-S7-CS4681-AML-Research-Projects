@@ -1,0 +1,230 @@
+experiment:
+  name: "baseline_nnformer_brats2021"
+  description: "Baseline nnFormer for establishing performance reference"
+  version: "1.0"
+  author: "Lakshan Madusanka"
+  date_created: "2025-10-22"
+
+# Task Configuration
+task:
+  task_id: 120
+  task_name: "Task120_BraTS2021"
+  dataset: "BraTS2021"
+  num_classes: 4 # Background, ET, TC, WT
+  input_channels: 4 # T1, T1ce, T2, FLAIR
+
+# Model Architecture
+model:
+  name: "nnFormer"
+  network: "3d_fullres"
+
+  # Embedding Configuration
+  embedding_dim: 96 # Base embedding dimension
+  patch_size: [1, 4, 4] # [depth, height, width]
+
+  # Encoder Configuration
+  depths: [2, 2, 2, 2] # Number of Swin Transformer blocks per stage
+  num_heads: [3, 6, 12, 24] # Attention heads per stage
+  window_sizes:
+    - [3, 5, 5] # Stage 1
+    - [3, 5, 5] # Stage 2
+    - [7, 10, 10] # Stage 3
+    - [3, 5, 5] # Stage 4
+
+  # Feature Dimensions per stage
+  # Stage 1: 96, Stage 2: 192, Stage 3: 384, Stage 4: 768
+
+  # Decoder Configuration
+  decoder_depths: [2, 2, 2]
+  decoder_window_sizes:
+    - [3, 5, 5]
+    - [3, 5, 5]
+    - [7, 10, 10]
+
+  # Other Model Parameters
+  mlp_ratio: 4.0
+  qkv_bias: true
+  qk_scale: null
+  drop_rate: 0.0
+  attn_drop_rate: 0.0
+  drop_path_rate: 0.0
+  norm_layer: "LayerNorm"
+
+  # Deep Supervision
+  deep_supervision: true
+  deep_supervision_scales: [0.5, 0.25, 0.125]
+
+  # Enhancement Flags (ALL FALSE for baseline)
+  enhancements:
+    use_cross_attention: false
+    use_adaptive_fusion: false
+    use_progressive_training: false
+
+# Training Configuration
+training:
+  # Trainer
+  trainer: "nnFormerTrainerV2_nnformer_tumor"
+  plans: "nnFormerPlansv2.1"
+
+  # Cross-Validation
+  fold: 0 # Change for different folds: 0, 1, 2, 3, 4
+  num_folds: 5
+
+  # Training Duration
+  max_num_epochs: 1000
+  num_batches_per_epoch: 250
+
+  # Batch Configuration
+  batch_size: 2
+  patch_size: [64, 128, 128] # [depth, height, width]
+
+  # Optimizer
+  optimizer: "SGD"
+  initial_lr: 0.01
+  momentum: 0.99
+  weight_decay: 3e-5
+  nesterov: false
+
+  # Learning Rate Schedule
+  lr_scheduler: "poly"
+  lr_scheduler_params:
+    power: 0.9
+
+  # Loss Function
+  loss:
+    type: "DC_and_CE_loss" # Dice + Cross-Entropy
+    dice_weight: 1.0
+    ce_weight: 1.0
+    ignore_label: null
+    smooth: 1.0
+
+  # Data Augmentation (from batchgenerators)
+  data_aug:
+    do_elastic: true
+    elastic_deform_alpha: [0, 900]
+    elastic_deform_sigma: [9, 13]
+
+    do_rotation: true
+    rotation_x: [-0.26, 0.26] # ~15 degrees
+    rotation_y: [-0.26, 0.26]
+    rotation_z: [-0.26, 0.26]
+
+    do_scale: true
+    scale_range: [0.7, 1.4]
+
+    do_mirror: true
+    mirror_axes: [0, 1, 2]
+
+    do_gamma: true
+    gamma_range: [0.7, 1.5]
+    gamma_retain_stats: true
+
+    do_brightness: false
+
+    do_additive_brightness: false
+
+  # Validation
+  val_eval_criterion_alpha: 0.9 # Use running average
+  num_val_batches_per_epoch: 50
+  save_interval: 25 # Save checkpoint every N epochs
+
+  # Checkpointing
+  save_latest_only: false
+  save_best: true
+  save_final_checkpoint: true
+
+  # Multi-GPU
+  distributed: false
+  use_amp: false # Automatic Mixed Precision
+
+  # Reproducibility
+  deterministic: false # Set to false for speed
+  random_seed: 42
+
+# Inference Configuration
+inference:
+  # Model Selection
+  checkpoint: "model_best" # or "model_final_checkpoint"
+
+  # Test-Time Augmentation
+  use_tta: false # Set to true for marginal improvement
+  tta_flips: [[0], [1], [2], [0, 1], [0, 2], [1, 2], [0, 1, 2]]
+
+  # Sliding Window
+  step_size: 0.5 # Overlap
+
+  # Post-processing
+  do_mirroring: true
+  mirror_axes: [0, 1, 2]
+
+  # Multi-GPU Inference
+  num_processes: 1
+
+# Evaluation Metrics
+evaluation:
+  metrics:
+    - "Dice"
+    - "HD95" # 95th percentile Hausdorff Distance
+    - "Sensitivity"
+    - "Specificity"
+
+  # BraTS-specific regions
+  regions:
+    - name: "ET" # Enhancing Tumor
+      label: 4
+    - name: "TC" # Tumor Core (ET + NET)
+      labels: [1, 4]
+    - name: "WT" # Whole Tumor (ET + NET + ED)
+      labels: [1, 2, 4]
+
+  # Statistical Tests
+  statistical_tests:
+    - "paired_ttest"
+    - "wilcoxon"
+  significance_level: 0.05
+
+# Paths (relative to nnFormer root)
+paths:
+  raw_data: "$nnFormer_raw_data_base/Task120_BraTS2021"
+  preprocessed: "$nnFormer_preprocessed/Task120_BraTS2021"
+  results: "$RESULTS_FOLDER/nnFormer/3d_fullres/Task120_BraTS2021/nnFormerTrainerV2_nnformer_tumor__nnFormerPlansv2.1"
+
+# Hardware Configuration
+hardware:
+  gpu_id: 0
+  num_threads: 8 # For data loading
+
+  # Memory Management
+  pin_memory: true
+  non_blocking: true
+
+  # Expected Requirements
+  min_gpu_memory_gb: 12
+  recommended_gpu_memory_gb: 16
+  expected_training_time_days: 6
+
+# Logging
+logging:
+  log_file: "training_log.txt"
+  tensorboard: true
+  save_plots: true
+  plot_interval: 25 # epochs
+
+  # What to log
+  log_train_loss: true
+  log_val_metrics: true
+  log_lr: true
+  log_epoch_time: true
+
+# Expected Results (for reference)
+expected_results:
+  dice_et: 0.703
+  dice_tc: 0.761
+  dice_wt: 0.863
+  hd95_et: 24.3
+  hd95_tc: 18.7
+  hd95_wt: 16.5
+
+  notes: |
+    These are expected mean results across 5-fold cross-validation.
+    Individual fold results may vary by ±2-3%.
