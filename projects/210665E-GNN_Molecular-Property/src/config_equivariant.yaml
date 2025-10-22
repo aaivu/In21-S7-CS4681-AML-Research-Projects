@@ -1,0 +1,47 @@
+# Configuration for E(3)-equivariant DimeNet++
+
+# Model architecture
+emb_size: 128
+out_emb_size: 256
+int_emb_size: 64
+basis_emb_size: 8
+num_blocks: 4
+num_spherical: 7
+num_radial: 6
+l_max: 1  # Maximum l value for irreducible representations
+
+# Cutoff and basis functions
+cutoff: 5.0
+envelope_exponent: 5
+
+# Residual layers
+num_before_skip: 1
+num_after_skip: 2
+num_dense_output: 3
+
+# Output
+num_targets: 12
+predict_forces: false  # Set to true to predict forces
+extensive: true
+output_init: 'zeros'
+
+# Training
+learning_rate: 1e-3
+decay_rate: 0.5
+decay_steps: 100000
+batch_size: 32
+epochs: 1000
+patience: 50
+validation_split: 0.1
+
+# Data
+data_path: 'data/qm9_eV.npz'
+
+# Output directories
+checkpoint_dir: './checkpoints'
+output_dir: './outputs'
+
+# Force prediction (if enabled)
+force_weight: 1.0  # Weight for force loss term
+
+
