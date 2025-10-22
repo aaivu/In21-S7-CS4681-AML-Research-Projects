@@ -114,7 +114,7 @@ def main():
 
     out_dir = "./medtok"
     pubmed_dir = "./data/normalize/pubmed.jsonl"
-    wiki_dir = "./data/normalize/pubmed.jsonl"
+    wiki_dir = "./data/normalize/wiki.jsonl"
     min_pubmed_count = 5
     top_k = 2000 
     base_model = "distilbert/distilbert-base-uncased"
@@ -179,3 +179,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
