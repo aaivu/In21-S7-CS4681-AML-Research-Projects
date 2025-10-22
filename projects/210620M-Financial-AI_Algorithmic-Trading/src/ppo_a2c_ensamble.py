@@ -1,5 +1,3 @@
-# ensemble.py
-import numpy as np
 import pandas as pd
 from stable_baselines3 import PPO, A2C
 from stable_baselines3.common.vec_env import DummyVecEnv
