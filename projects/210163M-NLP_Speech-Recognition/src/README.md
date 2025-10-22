@@ -1,8 +1,8 @@
-# Student Usage Instructions
+# WavLM CTC experiments
 
 This folder contains the training, evaluation, and decoding scripts used for the project.
 
-## Files in src folder
+## Files
 - `config.py` — default model and path constants
 - `dataset_loader.py` — utilities to load Librispeech via HF datasets or manifest CSVs
 - `preprocess.py` — preprocess and save a processed dataset (optional)
@@ -20,12 +20,16 @@ pip install -r ../requirements.txt
 
 2. (Optional) Preprocess and save processed dataset:
 ```bash
-python src/preprocess.py --model_name microsoft/wavlm-large --split train.clean.100 --output_path ../data/processed/train_clean_100
+python preprocess.py \
+  --model_name microsoft/wavlm-large \
+  --split train.clean.100 \
+  --output_path ../data/processed/train_clean_100 \
+  --batch 8
 ```
 
 3. Train (example — Experiment 2 config):
 ```bash
-python src/train_ctc.py \
+python train_ctc.py \
   --model_name microsoft/wavlm-large \
   --processor_name facebook/wav2vec2-base-960h \
   --output_dir ../results/experiment_2 \
@@ -45,12 +49,12 @@ Training logs and final metrics are printed to the terminal and saved under ../r
 
 4. Evaluate:
 ```bash
-python src/eval.py --model_dir ../results/experiment_2
+python eval.py --model_dir ../results/experiment_2
 ```
 
 5. Decode with KenLM (make sure kenlm model at ../models/4gram.arpa exists):
 ```bash
-python src/decode_with_kenlm.py \
+python decode_with_kenlm.py \
   --model_dir ../results/experiment_3 \
   --kenlm_path ../models/4gram.arpa \
   --split test.clean \
