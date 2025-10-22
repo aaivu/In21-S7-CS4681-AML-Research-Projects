@@ -1,4 +1,3 @@
-# data_acquisition.py
 import yfinance as yf
 import pandas as pd
 import ta
@@ -13,10 +12,9 @@ def get_stock_data(ticker='AAPL', start='2010-01-01', end='2023-01-01', save_pat
     data['day'] = np.arange(len(data))
     data.rename(columns={'Close':'close','Open':'open','High':'high','Low':'low','Volume':'volume'}, inplace=True)
 
-    # Ensure 1D series
     close_series = data['close'].astype(float).squeeze()
 
-    # Indicators
+    # Indicators extracted from FinRL library
     data['macd'] = ta.trend.MACD(close_series).macd()
     data['rsi_30'] = ta.momentum.RSIIndicator(close_series, window=30).rsi()
     bb = ta.volatility.BollingerBands(close_series)
