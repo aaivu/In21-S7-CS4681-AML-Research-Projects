@@ -1,58 +1,75 @@
-# Research Proposal: Testing Embedding Normalization for Stability and Performance in GPT-Style Transformers
+# Research Proposal: AI Efficiency:Embedding Normalization
+**Student:** 210207E 
+**Research Area:** AI Efficiency:Dataset Efficiency 
 
-**Student Index Number:** 210207E
-**Student Name:** J. Harismenan
-**Course:** CS4681 - Advanced Machine Learning Project Assignment
-**Date:** [Assuming Week 4 of the timeline, e.g., Sept 2025]
+## Abstract
 
-## 1. Project Objective and Scope
+This project proposes a rigorous ablation study to evaluate **Embedding Normalization** (LayerNorm or RMSNorm) within the GPT-style Pre-LayerNorm (Pre-LN) Transformer architecture. While large-scale studies caution against this technique due to performance regression, its effect at smaller, controlled scales remains unverified. Using a custom 1.6 million parameter model trained on the Shakespeare dataset for a fixed 300 iterations, we will measure the impact of post-embedding normalization on core metrics: Validation Perplexity (PPL) and training stability (Total Gradient Norm). The goal is to conclusively characterize the stability-accuracy trade-off, providing data-driven guidance on whether embedding normalization should be reserved exclusively for stabilizing unstable training runs, even at non-billion-parameter scales.
 
-The primary objective is to conduct a rigorous, controlled evaluation of **Embedding Normalization**—the introduction of a single normalization layer (LayerNorm or RMSNorm) immediately following the combined token and positional embedding—in a GPT-3-style, decoder-only Pre-LayerNorm (Pre-LN) Transformer architecture.
+## 1. Introduction
 
-The core question is: Does this architectural enhancement improve training stability and/or final model performance in a resource-constrained, but highly controlled, setting?
+The Pre-LayerNorm Transformer, essential for scaling LLMs like GPT-3, provides high training stability. However, the initial feature representation—the sum of token and positional embeddings—is a subtle area prone to optimization. This research focuses on the targeted architectural enhancement of inserting a single normalization layer (LN or RMS) directly after this combined embedding. This addresses a critical, yet unverified, point of instability at the very start of the network, with the potential to improve early learning dynamics or, conversely, constrain representational power.
 
-### Objectives:
-1.  **Quantitative Assessment:** Measure the impact of embedding normalization on the primary metric (Perplexity) and a proxy for zero-shot accuracy (Mock Macro Accuracy) under strictly controlled, equal-compute training conditions.
-2.  **Stability Analysis:** Investigate whether LayerNorm (LN) and RMSNorm (RMS) variants improve training stability compared to the un-normalized Baseline, using Total Gradient Norm as the stability metric.
-3.  **Trade-off Characterization:** Characterize the stability-accuracy trade-off to provide guidance on when embedding normalization is justified.
-4.  **Best Practice Guidance:** Formulate actionable recommendations for its use in Pre-LN Transformer training pipelines.
+## 2. Problem Statement
 
-## 2. Baseline Model and Variants
+The established best practice, based on large-scale LLM studies, is to **avoid embedding normalization** by default due to a observed reduction in zero-shot generalization accuracy. However, due to the non-transferability of micro-architectural findings across different scales and implementations, it is unknown whether this finding holds true for a resource-constrained, **stable, small-scale GPT-style model** (1.6M parameters). The research problem is to quantitatively test this assumption and definitively characterize the **stability-accuracy trade-off** in this specific, common architectural context.
 
-The experiment will use a custom-implemented, small-scale GPT-style architecture, often referenced as a 'nanoGPT', to enable multi-seed ablation studies which are computationally infeasible on the original GPT-3 scale.
+## 3. Literature Review Summary
 
-| Component | Setting (Initial/Mid-Evaluation) | Setting (Final/Target) |
-| :--- | :--- | :--- |
-| **Architecture** | Pre-LN Transformer (GPT-3 style) | Pre-LN Transformer (GPT-3 style) |
-| **Model Size** | 0.8 million parameters | **1.6 million parameters** |
-| **Configuration** | 8 layers, 128 dim, 8 heads, 128 context length | 8 layers, 128 dim, 8 heads, 128 context length |
-| **Dataset** | Character-level Shakespeare (1.1 million characters) | Character-level Shakespeare (1.1 million characters) |
-| **Training Budget** | 150 iterations, 3 random seeds | **300 iterations**, **5 distinct random seeds** |
+The literature provides strong, yet indirect, evidence that embedding normalization is detrimental at large scales (Le Scao et al. [1]). Studies on LayerNorm vs. RMSNorm have focused mostly on application *inside* Transformer blocks (BLOOM [2], Teuken7B [4]), leaving a clear gap on their comparative effect at the embedding layer. Methodological rigor is guided by industry best practices (Chinchilla [7], Gopher [6]) which mandate fixed compute budgets and multi-seed validation, justifying the need for this custom-scale study (Narang et al. [5]).
 
-### Experimental Variants:
-1.  **Variant A (Baseline):** No normalization after embedding. $X_{input} = E_{tok}(t) + E_{pos}(p) \rightarrow \text{Transformer Block}_1$
-2.  **Variant B (LayerNorm):** Standard LayerNorm (LN) immediately post-embedding. $X_{input} = \text{LayerNorm}(E_{tok}(t) + E_{pos}(p)) \rightarrow \text{Transformer Block}_1$
-3.  **Variant C (RMSNorm):** RMSNorm (RMS) immediately post-embedding. $X_{input} = \text{RMSNorm}(E_{tok}(t) + E_{pos}(p)) \rightarrow \text{Transformer Block}_1$
+## 4. Research Objectives
 
-## 3. Key Metrics
+### Primary Objective
+To conclusively determine and characterize the **stability-accuracy trade-off** resulting from the introduction of LayerNorm or RMSNorm post-embedding normalization in a 1.6M parameter, Pre-LN GPT-style Transformer.
 
-| Metric Category | Metric Name | Purpose |
-| :--- | :--- | :--- |
-| **Primary Performance** | Validation Perplexity (PPL) | Core measure of language model quality (Lower is better). |
-| **Stability** | Final Total Gradient Norm | Measures how settled the model is at the end of training (Lower is better). |
-| **Secondary Performance** | Mock Macro Accuracy | Proxy for zero-shot generalization. |
-| **Diagnostic** | Mean Embedding Norm | Confirms the normalization layers are functioning as intended. |
+### Secondary Objectives
+1.  **Quantitative Assessment:** Measure the difference in mean Validation Perplexity (PPL) between the normalized variants and the un-normalized Baseline over 300 iterations across five seeds.
+2.  **Stability Analysis:** Quantify the stability benefit by comparing the **Final Total Gradient Norm** of the normalized variants against the Baseline.
+3.  **Best Practice Guidance:** Formulate actionable recommendations on the default use of embedding normalization for GPT-style architectures at small scales.
 
-## 4. Initial Hypothesis (Based on Literature Review)
+## 5. Methodology
 
-**Risk Hypothesis ($H_{1a}$):** Following large-scale studies (e.g., Le Scao et al.), it is expected that embedding normalization will be **detrimental to zero-/few-shot performance** (higher PPL) even if it provides stability benefits (lower Grad Norm) for a stable Baseline. The focus will be on quantifying this potential **stability-accuracy trade-off**.
+The approach is a comparative ablation study:
+*   **Model:** Custom 1.6M parameter GPT-style model (8 layers, 128 dim, Pre-LN).
+*   **Variants:** Baseline (None), LayerNorm, and RMSNorm applied post-token+positional embedding.
+*   **Dataset:** Character-level Shakespeare (1.1M characters).
+*   **Controls:** Fixed 300-iteration training budget, identical hyperparameters, and validation across five random seeds.
+*   **Metrics:** Validation Perplexity (PPL, $\downarrow$), Final Total Gradient Norm ($\downarrow$), and Mean Embedding Norm (Diagnostic).
 
-## 5. Deliverables
+## 6. Expected Outcomes
 
-*   Project timeline and methodology outline (Progress Evaluation).
-*   Short paper submission with preliminary results (Mid-Evaluation).
-*   Complete research paper (6-8 pages, conference format).
-*   Code implementation, including training logs and configurations.
-*   Statistical analysis reports (means, standard deviations, confidence intervals).
+The project is expected to yield one of two outcomes, either of which constitutes a significant contribution:
 
----
+1.  **Validation of Caution (Most Likely):** The normalization layers will significantly improve stability (lower Grad Norm) but cause a statistically significant regression in PPL compared to the Baseline, thus validating the stability-accuracy trade-off and reinforcing the caution against this technique.
+2.  **Conditional Benefit (Less Likely):** One of the normalized variants (likely LN) will show a measurable PPL gain without catastrophic instability, providing the first robust evidence for embedding normalization's utility at this scale.
+
+The final contribution will be a conference-ready paper with definitive, statistically robust empirical evidence for a specific architectural context.
+
+## 7. Timeline
+
+| Week | Task |
+| :--- | :--- |
+| 1-4 | Literature Review & Research Proposal Submission |
+| 5-6 | Methodology Development & Baseline Model Implementation |
+| 7-8 | Variant Implementation & **Mid-Evaluation Submission** (3-seed, 150-iter preliminary results) |
+| 9-11 | **Final Experimentation** (Completion of all 5-seed, 300-iter runs) |
+| 12-14 | Statistical Analysis, Plot Generation, and Final Paper Writing |
+| 15-16 | Final Submission (Paper, Code, Submission Proof) |
+
+## 8. Resources Required
+
+*   **Hardware:** Access to a single GPU instance (e.g., NVIDIA T4 or A100 equivalent for faster runs).
+*   **Software:** Python, PyTorch (GPU version), NumPy, Pandas, Matplotlib.
+*   **Dataset:** Character-level Shakespeare dataset (publicly available).
+*   **Tools:** GitHub for version control, Jupyter/Kaggle for reproducible experimentation.
+
+## References
+
+[1] T. Le Scao et al., “What Language Model to Train if You Have One Million GPU Hours?,” *Findings of EMNLP*, 2022. [Online]. Available: https://arxiv.org/abs/2210.15424.
+[2] BigScience Workshop, “BLOOM: A 176B-Parameter Open-Access Multilingual Language Model,” 2022. [Online]. Available: https://arxiv.org/abs/2211.05100.
+[3] A. Wang et al., “What Architecture and Pretraining Objective Work Best for Zero-Shot Generalization?,” 2022. [Online]. Available: https://arxiv.org/abs/2210.15424.
+[4] Teuken7B authors, “Teuken7B: Multilingual Study on Normalization Micro-Changes including RMSNorm,” 2023-2024. [Online]. Available: https://arxiv.org/abs/1910.07467.
+[5] S. Narang et al., “Do Transformer Modifications Transfer Across Implementations and Applications?,” 2021-2022 Technical Report. [Online]. Available: https://arxiv.org/abs/2210.15424.
+[6] J. Rae et al., “Scaling Language Models: Methods, Analysis & Insights from Training Gopher,” 2021. [Online]. Available: https://arxiv.org/abs/2112.11446.
+[7] J. Hoffmann et al., “Training Compute-Optimal Large Language Models,” 2022. [Online]. Available: https://arxiv.org/abs/2203.15556.
