@@ -95,9 +95,3 @@ Experiments will be conducted using the **WSJ0-2mix dataset**, evaluating perfor
 5. Y. Zhang et al., “Multi-stage speech separation with iterative refinement,” *IEEE ICASSP*, 2020.  
 
 ---
-
-**Submission Instructions:**
-1. Complete all sections above  
-2. Commit your changes to the repository  
-3. Create an issue with the label **“milestone”** and **“research-proposal”**  
-4. Tag your supervisors in the issue for review  
