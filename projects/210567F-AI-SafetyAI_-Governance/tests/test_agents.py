@@ -20,16 +20,16 @@ class TestBaseAgent(unittest.TestCase):
         
         self.test_agent = TestAgent(
             name="test_agent",
-            model_name="gpt-3.5-turbo",
+            model_name="gemini-2.0-flash-exp",
             temperature=0.5,
             system_prompt="Test prompt"
         )
     
-    @patch('agents.base_agent.ChatOpenAI')
-    def test_initialization(self, mock_chat_openai):
+    @patch('agents.base_agent.ChatGoogleGenerativeAI')
+    def test_initialization(self, mock_chat_gemini):
         """Test BaseAgent initialization."""
         self.assertEqual(self.test_agent.name, "test_agent")
-        self.assertEqual(self.test_agent.model_name, "gpt-3.5-turbo")
+        self.assertEqual(self.test_agent.model_name, "gemini-2.0-flash-exp")
         self.assertEqual(self.test_agent.temperature, 0.5)
         self.assertEqual(self.test_agent.system_prompt, "Test prompt")
         self.assertEqual(len(self.test_agent.conversation_history), 0)
@@ -65,15 +65,15 @@ class TestBaseAgent(unittest.TestCase):
         """Test agent info retrieval."""
         info = self.test_agent.get_info()
         self.assertEqual(info["name"], "test_agent")
-        self.assertEqual(info["model_name"], "gpt-3.5-turbo")
+        self.assertEqual(info["model_name"], "gemini-2.0-flash-exp")
         self.assertEqual(info["temperature"], 0.5)
 
 
 class TestSafetyAgent(unittest.TestCase):
     """Test cases for SafetyAgent class."""
     
-    @patch('agents.base_agent.ChatOpenAI')
-    def setUp(self, mock_chat_openai):
+    @patch('agents.base_agent.ChatGoogleGenerativeAI')
+    def setUp(self, mock_chat_gemini):
         """Set up test fixtures."""
         self.safety_agent = SafetyAgent()
     
@@ -132,8 +132,8 @@ class TestSafetyAgent(unittest.TestCase):
 class TestAnalysisAgent(unittest.TestCase):
     """Test cases for AnalysisAgent class."""
     
-    @patch('agents.base_agent.ChatOpenAI')
-    def setUp(self, mock_chat_openai):
+    @patch('agents.base_agent.ChatGoogleGenerativeAI')
+    def setUp(self, mock_chat_gemini):
         """Set up test fixtures."""
         self.analysis_agent = AnalysisAgent()
     
@@ -174,8 +174,8 @@ class TestAnalysisAgent(unittest.TestCase):
 class TestCoordinatorAgent(unittest.TestCase):
     """Test cases for CoordinatorAgent class."""
     
-    @patch('agents.base_agent.ChatOpenAI')
-    def setUp(self, mock_chat_openai):
+    @patch('agents.base_agent.ChatGoogleGenerativeAI')
+    def setUp(self, mock_chat_gemini):
         """Set up test fixtures."""
         self.coordinator = CoordinatorAgent()
         

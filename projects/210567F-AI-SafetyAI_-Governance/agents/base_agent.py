@@ -4,8 +4,8 @@ from abc import ABC, abstractmethod
 from typing import Any, Dict, List, Optional
 import logging
 from langchain.schema import BaseMessage, HumanMessage, SystemMessage
-from langchain.chat_models import ChatOpenAI
-from langchain.callbacks import get_openai_callback
+from langchain_google_genai import ChatGoogleGenerativeAI
+import google.generativeai as genai
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +16,7 @@ class BaseAgent(ABC):
     def __init__(
         self,
         name: str,
-        model_name: str = "gpt-3.5-turbo",
+        model_name: str = "gemini-2.0-flash-exp",
         temperature: float = 0.7,
         max_tokens: int = 1000,
         system_prompt: str = "",
@@ -30,11 +30,14 @@ class BaseAgent(ABC):
         self.system_prompt = system_prompt
         
         # Initialize the language model
-        self.llm = ChatOpenAI(
-            model_name=model_name,
+        if api_key:
+            genai.configure(api_key=api_key)
+        
+        self.llm = ChatGoogleGenerativeAI(
+            model=model_name,
             temperature=temperature,
-            max_tokens=max_tokens,
-            openai_api_key=api_key
+            max_output_tokens=max_tokens,
+            google_api_key=api_key
         )
         
         self.conversation_history: List[BaseMessage] = []
@@ -85,12 +88,13 @@ class BaseAgent(ABC):
         try:
             messages = self._prepare_messages(user_input, include_history)
             
+            # Note: Gemini doesn't have the same callback mechanism as OpenAI
+            # Token usage tracking would need to be implemented differently
+            response = self.llm(messages)
+            
             if track_usage:
-                with get_openai_callback() as cb:
-                    response = self.llm(messages)
-                    self._track_token_usage(cb)
-            else:
-                response = self.llm(messages)
+                # For now, we'll just log that tracking was requested
+                logger.debug(f"Token usage tracking requested for {self.name} but not implemented for Gemini")
             
             response_content = response.content
             

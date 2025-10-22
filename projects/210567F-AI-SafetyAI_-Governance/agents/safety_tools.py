@@ -95,8 +95,8 @@ define flow illegal_content_check
         return """
 models:
   - type: main
-    engine: openai
-    model: gpt-3.5-turbo
+    engine: google
+    model: gemini-2.0-flash-exp
 
 rails:
   input:
@@ -202,12 +202,12 @@ rails:
     
     def _scan_with_prompts(self, text: str, scan_type: str) -> Dict[str, Any]:
         """Scan text using prompt-based safety checking."""
-        from langchain.chat_models import ChatOpenAI
+        from langchain_google_genai import ChatGoogleGenerativeAI
         from langchain.schema import HumanMessage
         
         try:
             # Initialize LLM for safety checking
-            llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0.1)
+            llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash-exp", temperature=0.1)
             
             # Get appropriate prompt
             prompt_template = self.safety_prompts.get(scan_type, self.safety_prompts["comprehensive"])

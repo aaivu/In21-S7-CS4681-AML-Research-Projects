@@ -62,7 +62,7 @@ class MultiAgentSystem:
                 temperature=self.config.safety_agent.temperature,
                 max_tokens=self.config.safety_agent.max_tokens,
                 system_prompt=self.config.safety_agent.system_prompt,
-                api_key=self.config.openai_api_key
+                api_key=self.config.gemini_api_key
             )
             
             # Initialize Analysis Agent
@@ -72,7 +72,7 @@ class MultiAgentSystem:
                 temperature=self.config.analysis_agent.temperature,
                 max_tokens=self.config.analysis_agent.max_tokens,
                 system_prompt=self.config.analysis_agent.system_prompt,
-                api_key=self.config.openai_api_key
+                api_key=self.config.gemini_api_key
             )
             
             # Initialize Coordinator Agent
@@ -82,7 +82,7 @@ class MultiAgentSystem:
                 temperature=self.config.coordinator_agent.temperature,
                 max_tokens=self.config.coordinator_agent.max_tokens,
                 system_prompt=self.config.coordinator_agent.system_prompt,
-                api_key=self.config.openai_api_key
+                api_key=self.config.gemini_api_key
             )
             
             # Register agents with coordinator
@@ -142,8 +142,8 @@ define flow
         return """
 models:
   - type: main
-    engine: openai
-    model: gpt-3.5-turbo
+    engine: google
+    model: gemini-2.0-flash-exp
 
 rails:
   input:
