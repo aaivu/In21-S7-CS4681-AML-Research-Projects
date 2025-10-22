@@ -1,0 +1,9 @@
+finrl==0.3.8
+gymnasium==1.1.1
+numpy==1.26.4
+optuna==4.5.0
+pandas==2.2.3
+stable_baselines3==2.7.0
+ta==0.11.0
+torch==2.8.0+cu129
+yfinance==0.2.58
