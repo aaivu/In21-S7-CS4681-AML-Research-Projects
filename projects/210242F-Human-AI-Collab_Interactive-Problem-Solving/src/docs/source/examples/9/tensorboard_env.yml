@@ -1,0 +1,10 @@
+name: TensorboardTestEnv
+channels:
+  - defaults
+  - pytorch
+dependencies:
+  - pip=23.3
+  - python=3.9.18
+  - pytorch=1.4.0
+  - pip:
+    - tensorboard==2.2.1

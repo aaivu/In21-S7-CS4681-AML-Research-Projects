@@ -1,0 +1,5 @@
+name: iris-env
+dependencies:
+  - pip=23.3
+  - python=3.9.18
+  - scikit-learn
