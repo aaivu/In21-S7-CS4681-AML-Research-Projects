@@ -14,7 +14,7 @@ The files in this directory correspond to the three custom experimental configur
 
 * **`human_generated(1to1).json`**
     * **Experiment:** Hybrid (1:1).
-    * **Description:** A mixed dataset of ~113k pairs, containing 50% human-annotated captions and 50% synthetic captions. Each image has only one caption (either human or synthetic).
+    * **Description:** A mixed dataset of ~113k pairs, containing 50% human-annotated captions and 50% synthetic captions.
 
 * **`human_generated(2x).json`**
     * **Experiment:** Multi-caption.
