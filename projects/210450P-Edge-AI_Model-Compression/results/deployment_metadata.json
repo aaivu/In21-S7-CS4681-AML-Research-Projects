@@ -1,0 +1,30 @@
+{
+  "Baseline": {
+    "model_file": "efficientnetv2_b0_baseline.tflite",
+    "size_kb": 27859.4921875,
+    "compression_ratio": 0,
+    "inference_time_ms": 25.51102876663208,
+    "deployment_ready": true
+  },
+  "Dynamic Range": {
+    "model_file": "efficientnetv2_b0_dynamic.tflite",
+    "size_kb": 7692.046875,
+    "compression_ratio": 72.38985253847783,
+    "inference_time_ms": 32.04935884475708,
+    "deployment_ready": true
+  },
+  "Float16": {
+    "model_file": "efficientnetv2_b0_fp16.tflite",
+    "size_kb": 13995.0078125,
+    "compression_ratio": 49.765746919180096,
+    "inference_time_ms": 25.616607189178467,
+    "deployment_ready": true
+  },
+  "Integer (Int8)": {
+    "model_file": "efficientnetv2_b0_int8.tflite",
+    "size_kb": 8227.234375,
+    "compression_ratio": 70.46882865046838,
+    "inference_time_ms": 27.534881114959717,
+    "deployment_ready": true
+  }
+}
