@@ -32,15 +32,31 @@ Graph classification aims to predict the label of an entire graph, such as ident
 
 ## 3. Key Areas of Research
 
-### 3.1 Graph Neural Networks for Graph Classification
-[Discuss the main research directions in this area]
+### 3.1 Few-Shot Learning on Graphs (FSLG)
+This area addresses the challenge of generalizing graph classification models from limited labeled examples (a handful per class) to new classes or tasks, which is critical in domains like drug discovery and bioinformatics where label acquisition is costly. FSLG methods aim to transfer knowledge from base classes to new ones through meta-learning or transfer learning  
+
+The main research directions in FSLG include:
+- Metric-based approaches (e.g., Prototypical Networks) that compare query embeddings to class prototypes.
+- Optimization-based models (e.g., MAML, Meta-GNN) that learn initialization parameters for rapid gradient-based adaptation.
+- Hybrid methods that combine self-supervised pre-training (like GraphMAE) with meta-fine-tuning for fast adaptation.
+- Task-adaptive modules such as conditional embeddings and MixUp-based augmentations to enrich representations.
 
 **Key Papers:**
-- [Author, Year] - [Brief summary of contribution]
-- [Author, Year] - [Brief summary of contribution]
+- Crisostomi et al. (2022) - Demonstrated that episodic fine-tuning with GIN-based graph encoders outperforms vanilla transfer learning for few-shot graph classification.
+- Yu et al. (2024) - Provided an IEEE survey highlighting meta-learning (MAML, Prototypical Networks), pre-training (autoencoding, contrastive learning), and prompt-based techniques as orthogonal strategies for label and structure scarcity.
 
-### 3.2 [Topic Area 2]
-[Continue with other relevant areas]
+### 3.2 Graph Masked Autoencoders and Self-Supervised Pre-training (GraphMAE/SSL)  
+
+This area focuses on learning transferable graph representations without explicit supervision using self-supervised learning (SSL). Specifically, Graph Masked Autoencoders (GraphMAE) pre-train Graph Neural Networks (GNNs) by randomly masking a portion of node features and then training an encoder/decoder to reconstruct the original features.
+
+Key aspects and contributions:
+- Architecture: GraphMAE often uses a GIN encoder and a GIN-based decoder.
+- Objective: It utilizes a scaled cosine error (SCE) loss for reconstruction, which down-weights easy examples, unlike contrastive methods.
+- Role in FSL: The pre-trained GraphMAE representations can be effectively adapted to downstream tasks like few-shot graph classification through episodic fine-tuning.
+- Hybridization: Combining the masked reconstruction loss with discriminative or contrastive objectives is a trend to improve few-shot generalization.
+
+Key Papers:
+- Hou et al. (2022) - GraphMAE: Self-Supervised Masked Graph Autoencoders  - Demonstrated strong transfer learning results in graph classification, outperforming previous self-supervised baselines using GIN backbones on datasets like MUTAG, PROTEINS, and COLLAB.
 
 ## 4. Research Gaps and Opportunities
 
