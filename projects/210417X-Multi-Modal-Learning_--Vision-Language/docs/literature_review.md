@@ -74,8 +74,6 @@ This review highlights the evolution of vision-language models, identifying nois
 
 ## References
 
-## References
-
 1. Goyal, Y., Khot, T., Summers-Stay, D., Batra, D., and Parikh, D., “Making the V in VQA matter: Elevating the role of image understanding in visual question answering,” in *Proc. IEEE Conf. Comput. Vis. Pattern Recognit. (CVPR)*, 2017, pp. 6904–6913.
 2. Tan, H. and Bansal, M., “LXMERT: Learning cross-modality encoder representations from transformers,” in *Proc. Conf. Empirical Methods Natural Lang. Process. (EMNLP)*, 2019, pp. 5099–5110.
 3. Lu, J., Batra, D., Parikh, D., and Lee, S., “ViLBERT: Pretraining task-agnostic visiolinguistic representations for vision-and-language tasks,” in *Proc. Adv. Neural Inf. Process. Syst. (NeurIPS)*, 2019, pp. 13–23.
