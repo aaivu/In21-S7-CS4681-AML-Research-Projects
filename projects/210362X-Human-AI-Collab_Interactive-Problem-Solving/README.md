@@ -1,11 +1,11 @@
-# Human-AI Collab:Interactive Problem Solving - 210362X
+# Hindsight Experience Replay - 210362X
 
 ## Student Information
 
 - **Index Number:** 210362X
-- **Research Area:** Human-AI Collab:Interactive Problem Solving
+- **Research Area:** Hindsight Experience Replay
 - **GitHub Username:** @pinsara-aasith
-- **Email:** subavarshanaa.21@cse.mrt.ac.lk
+- **Email:** pinsara.21@cse.mrt.ac.lk
 
 ## Project Structure
 ```
