@@ -1,6 +1,6 @@
 **Student:** 210306G
 **Research Area:** Autonomous Systems:Motion Prediction
-**Date:** 2025-09-01
+**Date:** 2025-10-23
 
 # Literature Review: Exploring Fine-Tuning Enhancements for MolCLR
 
@@ -124,6 +124,3 @@ MolCLR remains a robust and well-optimized framework for self-supervised molecul
 20. Jin et al. (2020) – *Hierarchical Generation of Molecular Graphs Using Structural Motifs.*  
 21. Do et al. (2019) – *Graph Transformation Policy Network for Chemical Reaction Prediction.*  
 22. Wu et al. (2018) – *MoleculeNet: A Benchmark for Molecular Machine Learning.*
-- Focus on recent work (last 5 years) unless citing seminal papers
-- Include a mix of conference papers, journal articles, and technical reports
-- Keep updating this document as you discover new relevant work
