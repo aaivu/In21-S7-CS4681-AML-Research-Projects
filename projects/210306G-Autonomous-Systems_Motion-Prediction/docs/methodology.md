@@ -49,14 +49,14 @@ Python 3.7 with torch==1.7.1+cu110
 
 ## 6. Implementation Plan
 
-| Phase | Tasks | Duration | Deliverables |
-|-------|-------|----------|--------------|
-| Phase 1 | Literature Review (Starts: 8/11/2025) | 12 days | |
-| Phase 2 | Progress Evaluation (Starts: 8/20/2025) | 5 days | |
-| Phase 3 | Baseline Setup (Starts: 8/22/2025) | 12 days | Baseline model setup |
-| Phase 4 | Enhancement Implementation (Starts: 9/1/2025) | 30 days | Implemented enhancements |
-| Phase 5 | Mid Evaluation - Short Paper (Starts: 9/15/2025) | 4 days | Short Paper |
-| Phase 6 | Final Paper (Starts: 10/1/2025) | 6 days | Final Paper |
+| Phase | Tasks | Duration |
+|-------|-------|----------|
+| Phase 1 | Literature Review (Starts: 8/11/2025) | 12 days |
+| Phase 2 | Progress Evaluation (Starts: 8/20/2025) | 5 days |
+| Phase 3 | Baseline Setup (Starts: 8/22/2025) | 12 days |
+| Phase 4 | Enhancement Implementation (Starts: 9/1/2025) | 30 days |
+| Phase 5 | Mid Evaluation - Short Paper (Starts: 9/15/2025) | 4 days |
+| Phase 6 | Final Paper (Starts: 10/1/2025) | 6 days |
 
 ## 7. Risk Analysis
 
