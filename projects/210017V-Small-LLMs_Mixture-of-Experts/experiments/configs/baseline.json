@@ -1,0 +1,18 @@
+{
+  "use_moe": true,
+  "mode": "baseline",
+  "data_dir": "./data/wikitext",
+  "output_dir": "./results",
+  "embed_size": 256,
+  "hidden_size": 256,
+  "num_layers": 2,
+  "num_experts": 8,
+  "expert_hidden": 256,
+  "batch_size": 16,
+  "seq_len": 32,
+  "epochs": 8,
+  "lr": 0.0001,
+  "aux_coef": 0.001,
+  "clip": 0.25,
+  "device": "cuda"
+}

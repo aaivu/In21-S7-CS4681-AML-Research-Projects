@@ -32,6 +32,8 @@ class Config:
         self.learning_rate = 0.0005
         self.loss = 'mse'
         self.lradj = 'type1'
+        self.multi_scale = False
+        self.adaptive = True
         
         # GPU
         self.use_gpu = False

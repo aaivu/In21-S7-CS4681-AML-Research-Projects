@@ -5,7 +5,7 @@
 - **Index Number:** 210429K
 - **Research Area:** Time Series Classification
 - **GitHub Username:** @ManethNin
-- **Email:** subavarshanaa.21@cse.mrt.ac.lk
+- **Email:** maneth.21@cse.mrt.ac.lk
 
 ## Project Structure
 ```

@@ -1,0 +1,36 @@
+batch_size: 32                  # batch size                                                      # 32
+epochs: 100                     # total number of epochs                                          # 100
+eval_every_n_epochs: 1          # validation frequency                                            # 1
+fine_tune_from: pretrained_gin  # sub directory of pre-trained model in ./ckpt                    # pretrained_gin
+log_every_n_steps: 50           # print training log frequency                                    # 50
+fp16_precision: False           # float precision 16 (i.e. True/False)                            # False
+init_lr: 0.0005                 # initial learning rate for the prediction head                   # 0.0005
+init_base_lr: 0.0001            # initial learning rate for the base GNN encoder                  # 0.0001
+weight_decay: 1e-6              # weight decay of Adam                                            # 1e-6
+gpu: cuda:0                     # training GPU                                                    # cuda:0
+task_name: BBBP                 # name of fine-tuning benchmark, inlcuding                        # BBBP
+                                # classifications: BBBP/BACE/ClinTox/Tox21/HIV/SIDER/MUV
+                                # regressions: FreeSolv/ESOL/Lipo/qm7/qm8/qm9
+
+model_type: gin                 # GNN backbone (i.e., gin/gcn)                                    # gin
+model: 
+  num_layer: 5                  # number of graph conv layers                                     # 5
+  emb_dim: 300                  # embedding dimension in graph conv layers                        # 300
+  feat_dim: 512                 # output feature dimention                                        # 512
+  drop_ratio: 0.3               # dropout ratio                                                   # 0.3
+  pool: transformer             # readout pooling (i.e., mean/max/add/transformer                 # mean
+
+dataset:
+  num_workers: 0                # dataloader number of workers                                    # 0
+  valid_size: 0.1               # ratio of validation data                                        # 0.1
+  test_size: 0.1                # ratio of test data                                              # 0.1
+  splitting: scaffold           # data splitting (i.e., random/scaffold)                          # scaffold
+
+
+base_weight_decay: 1e-8
+optimizer: adamw                # adam/adamw
+scheduler: None                 # CosineAnnealingLR/CosineAnnealingWarmRestarts/None
+early_stopping:
+  enable: False
+  patience: 10
+  min_delta: 0.000001

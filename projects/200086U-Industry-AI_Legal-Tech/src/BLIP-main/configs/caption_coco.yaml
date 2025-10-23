@@ -1,33 +1,32 @@
-image_root: '/export/share/datasets/vision/coco/images/'
-ann_root: 'annotation'
-coco_gt_root: 'annotation/coco_gt'
+image_root: /mnt/current/datasets/coco2017
+ann_root: /mnt/current/datasets/coco2017/annotations
+coco_gt_root: /mnt/current/datasets/coco2017/annotations/coco_gt
 
-# set pretrained as a file path or an url
-pretrained: 'https://storage.googleapis.com/sfr-vision-language-research/BLIP/models/model_base_caption_capfilt_large.pth'
+pretrained: /mnt/current/ckpts/model_base_capfilt_large.pth
 
-# size of vit model; base or large
-vit: 'base'
-vit_grad_ckpt: False
+vit: base
+vit_grad_ckpt: true
 vit_ckpt_layer: 0
-batch_size: 32
-init_lr: 1e-5
 
-# vit: 'large'
-# vit_grad_ckpt: True
-# vit_ckpt_layer: 5
-# batch_size: 16
-# init_lr: 2e-6
-
-image_size: 384
-
-# generation configs
-max_length: 20  
-min_length: 5
-num_beams: 3
-prompt: 'a picture of '
-
-# optimizer
+# training setup
+batch_size: 50           # per GPU (2 GPUs -> effective 96)
+init_lr: 8e-5            # scaled for effective 128 (conservative + stable)
 weight_decay: 0.05
 min_lr: 0
-max_epoch: 5
+max_epoch: 2
+num_workers: 12
+max_txt_len: 20          # cap decoder seq length to save memory
+image_size: 384          # if still OOM, drop to 320
 
+# generation configs (eval-time only)
+max_length: 20
+min_length: 5
+num_beams: 3
+prompt: ""
+
+# dataset splits (Karpathy)
+train_file: [/mnt/current/datasets/coco2017/annotations/coco_karpathy_train_2pct.json]
+val_file:   [/mnt/current/datasets/coco2017/annotations/coco_karpathy_val.json]
+test_file:  [/mnt/current/datasets/coco2017/annotations/coco_karpathy_test.json]
+
+output_dir: /mnt/current/outputs/

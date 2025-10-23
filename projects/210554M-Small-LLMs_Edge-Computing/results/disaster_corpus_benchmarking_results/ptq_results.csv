@@ -1,0 +1,2 @@
+Model,Size (GB),Perplexity,Latency (ms/token)
+Qwen2.5-0.5B (PTQ-8bit),0.59,27.41,214.51

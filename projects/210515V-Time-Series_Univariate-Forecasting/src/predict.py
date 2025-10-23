@@ -4,7 +4,8 @@ import pandas as pd
 import torch
 from scipy import stats
 import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
+from collections import defaultdict
+
 from config import Config
 from train import Trainer
 from data_loader import data_provider
@@ -14,7 +15,7 @@ def predict_with_uncertainty():
     # Load configuration
     args = Config()
     
-    # Load the test data to get ground truth and scaler
+    # Load the test data to get ground truth, scaler, and feature names
     test_data, test_loader = data_provider(args, flag='test')
     
     # Load the original data to get the correct dates
@@ -28,452 +29,131 @@ def predict_with_uncertainty():
     
     # Store predictions and attributions from each model in the ensemble
     ensemble_preds = []
-    ensemble_attributions = []
+    # Use defaultdict to easily aggregate attribution scores
+    ensemble_ig_scores = defaultdict(list)
+    ensemble_perm_scores = defaultdict(list)
+
+    # Get feature names from the dataset object
+    feature_names = test_data.feature_names
+    target_feature_idx = feature_names.index(args.target)
     
     print("Loading ensemble models and making predictions...")
+    all_inputs = None # To store inputs for attribution analysis
+
     for i in range(args.n_ensemble):
         setting = f'{args.model_id}_sl{args.seq_len}_pl{args.pred_len}_ensemble_{i}'
         print(f">>> Predicting with model {i+1}: {setting} <<<")
         
         trainer = Trainer(args, setting)
         
-        # Get predictions
-        preds = trainer.predict(load_model=True)
+        # Get predictions and the inputs that generated them
+        preds, inputs = trainer.predict(load_model=True)
         ensemble_preds.append(preds)
         
-        # Get temporal attribution after prediction
-        if hasattr(trainer.model, 'get_attribution_analysis'):
-            attribution = trainer.model.get_attribution_analysis()
-            if attribution:  # Only append if we got valid attribution results
-                ensemble_attributions.append(attribution)
-            else:
-                print(f"Warning: Model {i+1} returned empty attribution analysis")
-        else:
-            print(f"Warning: Model {i+1} does not support temporal attribution analysis")
-    
-    print("\nAggregating ensemble predictions and temporal attributions...")
-    # Stack predictions along a new axis to have (n_ensemble, n_samples, pred_len, n_features)
+        if all_inputs is None:
+            all_inputs = inputs
+
+        # Get feature attribution for the first batch of test data for demonstration
+        print(f"--- Calculating feature attribution for model {i+1} ---")
+        first_batch_x, first_batch_y, _, _ = next(iter(test_loader))
+        first_batch_x = first_batch_x.float().to(trainer.device)
+        first_batch_y = first_batch_y.float().to(trainer.device)
+
+        attribution = trainer.model.feature_attribution(first_batch_x, first_batch_y, feature_names, target_feature_idx)
+        
+        # Aggregate scores
+        for name, score in attribution['integrated_gradients'].items():
+            ensemble_ig_scores[name].append(score)
+        for name, score in attribution['permutation_importance'].items():
+            ensemble_perm_scores[name].append(score)
+
+    print("\nAggregating ensemble predictions...")
     ensemble_preds = np.stack(ensemble_preds)
     
-    # Calculate mean and standard deviation across the ensemble dimension
     mean_preds = np.mean(ensemble_preds, axis=0)
     std_preds = np.std(ensemble_preds, axis=0)
     
-    # Get dimensions from mean_preds
     n_samples, pred_len, n_features = mean_preds.shape
     
-    # Process temporal attributions
-    print("\nProcessing temporal attribution analysis...")
-    attribution_results = []
-    
-    # Skip attribution analysis if no models support it
-    if not ensemble_attributions:
-        print("No models in the ensemble support temporal attribution analysis")
-        ensemble_has_attribution = False
-    else:
-        ensemble_has_attribution = True
-        
-    # For each test sample
-    for sample_idx in range(n_samples):
-        sample_attribution = {
-            'daily': {},
-            'weekly': {},
-            'monthly': {},
-            'regime_change': False,
-            'regime_change_point': None
-        }
-        
-        # Average attributions across ensemble
-        for ensemble_attr in ensemble_attributions:
-            if not ensemble_attr:  # Skip if attribution is empty
-                continue
-                
-            try:
-                # Daily scores
-                if 'daily' in ensemble_attr:
-                    for day, score in ensemble_attr['daily'].items():
-                        if day not in sample_attribution['daily']:
-                            sample_attribution['daily'][day] = []
-                        sample_attribution['daily'][day].append(score)
-                
-                # Weekly scores
-                if 'weekly' in ensemble_attr:
-                    for week, score in ensemble_attr['weekly'].items():
-                        if week not in sample_attribution['weekly']:
-                            sample_attribution['weekly'][week] = []
-                        sample_attribution['weekly'][week].append(score)
-                
-                # Monthly scores
-                if 'monthly' in ensemble_attr:
-                    for month, score in ensemble_attr['monthly'].items():
-                        if month not in sample_attribution['monthly']:
-                            sample_attribution['monthly'][month] = []
-                        sample_attribution['monthly'][month].append(score)
-                
-                # Regime change
-                if 'regime_change' in ensemble_attr:
-                    sample_attribution['regime_change'] = sample_attribution['regime_change'] or ensemble_attr['regime_change']['detected']
-                    if ensemble_attr['regime_change']['detected']:
-                        sample_attribution['regime_change_point'] = ensemble_attr['regime_change']['point']
-            except Exception as e:
-                print(f"Warning: Error processing attribution for sample {sample_idx}: {str(e)}")
-        
-        # Average the scores
-        sample_attribution['daily'] = {k: np.mean(v) for k, v in sample_attribution['daily'].items()}
-        sample_attribution['weekly'] = {k: np.mean(v) for k, v in sample_attribution['weekly'].items()}
-        sample_attribution['monthly'] = {k: np.mean(v) for k, v in sample_attribution['monthly'].items()}
-        
-        attribution_results.append(sample_attribution)
-
-    # --- FIX STARTS HERE ---
-    # Reshape data for the scaler, which expects a 2D array
-    n_samples, pred_len, n_features = mean_preds.shape
+    # --- Inverse scale the results ---
     mean_preds_reshaped = mean_preds.reshape(-1, n_features)
     trues_reshaped = trues.reshape(-1, n_features)
+    mean_preds_inv = test_data.inverse_transform(mean_preds_reshaped).reshape(n_samples, pred_len, n_features)
+    trues_inv = test_data.inverse_transform(trues_reshaped).reshape(n_samples, pred_len, n_features)
 
-    # Inverse scale the results
-    mean_preds_inv_reshaped = test_data.inverse_transform(mean_preds_reshaped)
-    trues_inv_reshaped = test_data.inverse_transform(trues_reshaped)
-
-    # Reshape back to the original 3D shape
-    mean_preds_inv = mean_preds_inv_reshaped.reshape(n_samples, pred_len, n_features)
-    trues_inv = trues_inv_reshaped.reshape(n_samples, pred_len, n_features)
-    
-    # Calculate metrics on the mean prediction (ALL test samples and timesteps)
+    # --- Calculate overall metrics ---
     mae, mse, rmse, mape, mspe, rse, corr = metric(mean_preds_inv, trues_inv)
-    
     print(f"\n" + "="*80)
     print(" " * 25 + "OVERALL ENSEMBLE METRICS")
     print("="*80)
-    print(f"Test Samples: {n_samples}")
-    print(f"Prediction Length: {pred_len}")
-    print(f"Total Predictions: {n_samples * pred_len}")
-    print(f"Number of Features: {n_features}")
+    print(f"MAE: {mae:.6f}, MSE: {mse:.6f}, RMSE: {rmse:.6f}, MAPE: {mape:.4f}%, CORR: {corr:.6f}")
+    print("="*80)
+    
+    # --- Feature Attribution Analysis ---
+    print("\n" + "="*80)
+    print(" " * 22 + "FEATURE ATTRIBUTION ANALYSIS (Sample 0)")
+    print("="*80)
+    print("This analysis shows which input features were most influential for the prediction.")
+    
+    # Average the scores across the ensemble
+    avg_ig_scores = {name: np.mean(scores) for name, scores in ensemble_ig_scores.items()}
+    avg_perm_scores = {name: np.mean(scores) for name, scores in ensemble_perm_scores.items()}
+
+    # Create a DataFrame for nice printing
+    attr_df = pd.DataFrame({
+        'Feature': feature_names,
+        'Integrated Gradients': [avg_ig_scores.get(name, 0) for name in feature_names],
+        'Permutation Importance': [avg_perm_scores.get(name, 0) for name in feature_names]
+    })
+    attr_df = attr_df.sort_values(by='Permutation Importance', ascending=False).reset_index(drop=True)
+    
+    print(attr_df.to_string())
     print("-"*80)
-    print(f"MAE (Mean Absolute Error):     {mae:.6f}")
-    print(f"MSE (Mean Squared Error):      {mse:.6f}")
-    print(f"RMSE (Root Mean Squared Error): {rmse:.6f}")
-    print(f"MAPE (Mean Absolute Percentage Error): {mape:.4f}%")
-    print(f"MSPE (Mean Squared Percentage Error):  {mspe:.6f}")
-    print(f"RSE (Root Squared Error):      {rse:.6f}")
-    print(f"CORR (Correlation):            {corr:.6f}")
+    print("Interpretation:")
+    print(" - Integrated Gradients: Shows feature contribution. Positive = pushes prediction up, Negative = pushes down. Magnitude = importance.")
+    print(" - Permutation Importance: Shows model reliance on a feature. Higher value means the feature is more important for accuracy.")
     print("="*80)
-    
-    # Calculate feature-specific metrics for the target feature (OT)
-    feature_idx = 7  # OT is the last column (index 7)
-    target_true_all = trues_inv[:, :, feature_idx]  # All samples, all timesteps
-    target_pred_all = mean_preds_inv[:, :, feature_idx]  # All samples, all timesteps
-    
-    # Feature-specific metrics
-    feature_mae = np.mean(np.abs(target_pred_all - target_true_all))
-    feature_mse = np.mean((target_pred_all - target_true_all) ** 2)
-    feature_rmse = np.sqrt(feature_mse)
-    
-    # Calculate MAPE avoiding division by zero
-    feature_mape = np.mean(np.abs((target_pred_all - target_true_all) / (target_true_all + 1e-8))) * 100
-    
-    # Calculate R-squared
-    ss_res = np.sum((target_true_all - target_pred_all) ** 2)
-    ss_tot = np.sum((target_true_all - np.mean(target_true_all)) ** 2)
-    feature_r2 = 1 - (ss_res / ss_tot) if ss_tot != 0 else 0
-    
-    print(f"\n" + "="*80)
-    print(f" " * 20 + f"TARGET FEATURE ({args.target}) METRICS")
-    print("="*80)
-    print(f"Total {args.target} predictions: {target_pred_all.size}")
-    print("-"*80)
-    print(f"MAE:  {feature_mae:.6f}")
-    print(f"MSE:  {feature_mse:.6f}")
-    print(f"RMSE: {feature_rmse:.6f}")
-    print(f"MAPE: {feature_mape:.4f}%")
-    print(f"R²:   {feature_r2:.6f}")
-    print("="*80)
+
+    # --- Sample Prediction Visualization ---
+    sample_idx = 0
+    target_true_sample = trues_inv[sample_idx, :, target_feature_idx]
+    target_pred_sample = mean_preds_inv[sample_idx, :, target_feature_idx]
     
     # Calculate confidence interval
     z_score = stats.norm.ppf(1 - (1 - args.confidence_level) / 2)
-    
-    # The standard deviation must also be scaled back using the scaler's `scale_` attribute
     std_preds_inv = std_preds * test_data.scaler.scale_
-
-    # Display a sample prediction with uncertainty for the first sample and first feature
-    sample_idx = 0
-    feature_idx = 7  # OT is the last column (index 7)
+    sample_std = std_preds_inv[sample_idx, :, target_feature_idx]
+    lower_bound = target_pred_sample - z_score * sample_std
+    upper_bound = target_pred_sample + z_score * sample_std
     
-    sample_mean = mean_preds_inv[sample_idx, :, feature_idx]
-    sample_std = std_preds_inv[sample_idx, :, feature_idx]
-    
-    # Calculate the correct date indices for the prediction targets
-    # The test data starts at a certain index in the original data
-    # We need to find where the test data starts and then add the sequence length and sample index
-    num_train = int(len(original_df) * 0.7)
-    num_test = int(len(original_df) * 0.2)
-    test_start_idx = len(original_df) - num_test
-    
-    # For the first sample (sample_idx=0), the prediction targets start at:
-    # test_start_idx + seq_len + sample_idx
-    prediction_start_idx = test_start_idx + args.seq_len + sample_idx
-    prediction_dates = original_dates[prediction_start_idx:prediction_start_idx + args.pred_len]
-    
-    # Get the exact original true values directly from the source data
-    original_true_values = []
-    for t in range(args.pred_len):
-        actual_idx = prediction_start_idx + t
-        if actual_idx < len(original_df):
-            original_true_values.append(original_df.iloc[actual_idx]['OT'])
-        else:
-            original_true_values.append(np.nan)
-    original_true_values = np.array(original_true_values)
-    
-    # Calculate confidence bounds in the original scale
-    lower_bound = sample_mean - z_score * sample_std
-    upper_bound = sample_mean + z_score * sample_std
+    # Calculate sample metrics
+    sample_mae = np.mean(np.abs(target_true_sample - target_pred_sample))
+    sample_rmse = np.sqrt(np.mean((target_true_sample - target_pred_sample)**2))
     
     print(f"\n" + "="*80)
-    print(" " * 20 + f"SAMPLE PREDICTION ANALYSIS")
+    print(" " * 20 + f"SAMPLE PREDICTION ANALYSIS (Sample {sample_idx})")
     print("="*80)
-    print(f"Showing detailed analysis for SAMPLE {sample_idx + 1} (out of {n_samples} test samples)")
-    print(f"Target Feature: {args.target} (feature index: {feature_idx})")
-    print(f"Prediction period: {args.pred_len} timesteps")
-    print("-"*80)
-    print(" Timestep |    Date     |  True  |  Pred  | Lower Bound | Upper Bound")
-    print("-"*80)
-    for t in range(min(10, len(prediction_dates))): # Print first 10 timesteps or available dates
-        if t < len(prediction_dates):
-            date_str = prediction_dates.iloc[t].strftime('%Y-%m-%d')
-            true_value = original_true_values[t]
-            print(f" {t+1:^8} | {date_str} | {true_value:6.4f} | {sample_mean[t]:6.4f} |   {lower_bound[t]:6.4f}   |   {upper_bound[t]:6.4f}")
+    print(f"MAE for sample {sample_idx}: {sample_mae:.6f}")
+    print(f"RMSE for sample {sample_idx}: {sample_rmse:.6f}")
+    coverage = np.mean((target_true_sample >= lower_bound) & (target_true_sample <= upper_bound))
+    print(f"Coverage ({args.confidence_level*100:.0f}% CI): {coverage*100:.1f}%")
     
-    if len(prediction_dates) > 10:
-        print(f"    ... (showing first 10 out of {len(prediction_dates)} prediction timesteps)")
+    # Generate line graph
+    plt.figure(figsize=(15, 7))
+    plt.plot(target_true_sample, color='blue', label='Actual OT')
+    plt.plot(target_pred_sample, color='green', label='Predicted OT')
+    plt.fill_between(range(args.pred_len), lower_bound, upper_bound, color='green', alpha=0.2, label=f'{args.confidence_level*100:.0f}% CI')
     
-    # Verification: Calculate metrics using exact original true values for this sample
-    print(f"\n--- Sample {sample_idx + 1} Metrics (all {args.pred_len} timesteps) ---")
-    sample_mae = np.mean(np.abs(original_true_values - sample_mean))
-    sample_mse = np.mean((original_true_values - sample_mean)**2)
-    sample_rmse = np.sqrt(sample_mse)
-    
-    # Calculate sample MAPE
-    sample_mape = np.mean(np.abs((original_true_values - sample_mean) / (original_true_values + 1e-8))) * 100
-    
-    print(f"MAE for sample {sample_idx + 1}: {sample_mae:.6f}")
-    print(f"MSE for sample {sample_idx + 1}: {sample_mse:.6f}")
-    print(f"RMSE for sample {sample_idx + 1}: {sample_rmse:.6f}")
-    print(f"MAPE for sample {sample_idx + 1}: {sample_mape:.4f}%")
-    
-    # Calculate coverage: how many true values fall within the confidence intervals
-    within_bounds = np.sum((original_true_values >= lower_bound) & (original_true_values <= upper_bound))
-    coverage = within_bounds / len(original_true_values)
-    print(f"Coverage (true values within {args.confidence_level*100:.0f}% CI): {coverage*100:.1f}% ({within_bounds}/{len(original_true_values)})")
-    print("="*80)
-    
-    # Generate line graph of actual vs predicted values for OT
-    print("\nGenerating line graph of actual vs predicted values for OT...")
-    
-    # Create the plot
-    plt.figure(figsize=(12, 8))
-    
-    # Plot actual values in blue
-    plt.plot(range(len(original_true_values)), original_true_values, 
-             color='blue', linewidth=2, label='Actual OT', marker='o', markersize=4)
-    
-    # Plot predicted values in green
-    plt.plot(range(len(sample_mean)), sample_mean, 
-             color='green', linewidth=2, label='Predicted OT', marker='s', markersize=4)
-    
-    # Add confidence interval as a shaded area
-    plt.fill_between(range(len(sample_mean)), lower_bound, upper_bound, 
-                     color='green', alpha=0.2, label=f'{args.confidence_level*100:.0f}% Confidence Interval')
-    
-    # Customize the plot
-    plt.title(f'Actual vs Predicted OT Values - Sample {sample_idx + 1}\n'
-              f'Prediction Length: {args.pred_len} timesteps', fontsize=14, fontweight='bold')
+    plt.title(f'Actual vs Predicted OT - Sample {sample_idx}', fontsize=16)
     plt.xlabel('Time Step', fontsize=12)
     plt.ylabel('OT Value', fontsize=12)
-    plt.legend(fontsize=10, loc='best')
+    plt.legend()
     plt.grid(True, alpha=0.3)
     
-    # Add text box with metrics
-    metrics_text = f'MAE: {sample_mae:.4f}\nRMSE: {sample_rmse:.4f}\nMAPE: {sample_mape:.2f}%\nCoverage: {coverage*100:.1f}%'
-    plt.text(0.02, 0.98, metrics_text, transform=plt.gca().transAxes, 
-             verticalalignment='top', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.8))
-    
-    # Adjust layout and save
-    plt.tight_layout()
-    
-    # Save the plot
-    plot_filename = f'OT_prediction_sample_{sample_idx + 1}.png'
-    plt.savefig(plot_filename, dpi=300, bbox_inches='tight')
-    print(f"Plot saved as: {plot_filename}")
-    
-    # Show the plot
+    plot_filename = f'OT_prediction_sample_{sample_idx}.png'
+    plt.savefig(plot_filename)
+    print(f"\nPlot saved as: {plot_filename}")
     plt.show()
-    
-    # Generate a more detailed view with more samples if available
-    if n_samples > 1:
-        print(f"\nGenerating detailed comparison for first 500 timesteps across multiple samples...")
-        
-        # Flatten the data to show continuous predictions across samples
-        max_timesteps = min(500, n_samples * pred_len)
-        
-        # Create flattened arrays
-        flattened_true = trues_inv[:, :, feature_idx].flatten()[:max_timesteps]
-        flattened_pred = mean_preds_inv[:, :, feature_idx].flatten()[:max_timesteps]
-        
-        # Create another plot for the detailed view
-        plt.figure(figsize=(15, 8))
-        
-        # Plot actual values in blue
-        plt.plot(range(len(flattened_true)), flattened_true, 
-                 color='blue', linewidth=1.5, label='Actual OT', alpha=0.8)
-        
-        # Plot predicted values in green
-        plt.plot(range(len(flattened_pred)), flattened_pred, 
-                 color='green', linewidth=1.5, label='Predicted OT', alpha=0.8)
-        
-        # Customize the plot
-        plt.title(f'Actual vs Predicted OT Values - Detailed View\n'
-                  f'Showing {max_timesteps} timesteps across {min(max_timesteps//pred_len, n_samples)} samples', 
-                  fontsize=14, fontweight='bold')
-        plt.xlabel('Time Step', fontsize=12)
-        plt.ylabel('OT Value', fontsize=12)
-        plt.legend(fontsize=10)
-        plt.grid(True, alpha=0.3)
-        
-        # Add overall metrics text box
-        overall_metrics_text = f'Overall MAE: {feature_mae:.4f}\nOverall RMSE: {feature_rmse:.4f}\nOverall MAPE: {feature_mape:.2f}%\nR²: {feature_r2:.4f}'
-        plt.text(0.02, 0.98, overall_metrics_text, transform=plt.gca().transAxes, 
-                 verticalalignment='top', bbox=dict(boxstyle='round', facecolor='lightblue', alpha=0.8))
-        
-        # Adjust layout and save
-        plt.tight_layout()
-        
-        # Save the detailed plot
-        detailed_plot_filename = f'OT_prediction_detailed_view_{max_timesteps}.png'
-        plt.savefig(detailed_plot_filename, dpi=300, bbox_inches='tight')
-        print(f"Detailed plot saved as: {detailed_plot_filename}")
-        
-        # Show the plot
-        plt.show()
-        
-        # Generate complete test set visualization
-        print(f"\nGenerating complete test set visualization...")
-        
-        # Create a plot for the entire test set
-        plt.figure(figsize=(20, 10))
-        
-        # Use all available data
-        complete_true = trues_inv[:, :, feature_idx].flatten()
-        complete_pred = mean_preds_inv[:, :, feature_idx].flatten()
-        
-        # Plot actual values in blue
-        plt.plot(range(len(complete_true)), complete_true, 
-                 color='blue', linewidth=1, label='Actual OT', alpha=0.7)
-        
-        # Plot predicted values in green
-        plt.plot(range(len(complete_pred)), complete_pred, 
-                 color='green', linewidth=1, label='Predicted OT', alpha=0.7)
-        
-        # Customize the plot
-        plt.title(f'Actual vs Predicted OT Values - Complete Test Set\n'
-                  f'Total timesteps: {len(complete_true)} across {n_samples} samples', 
-                  fontsize=16, fontweight='bold')
-        plt.xlabel('Time Step', fontsize=14)
-        plt.ylabel('OT Value', fontsize=14)
-        plt.legend(fontsize=12)
-        plt.grid(True, alpha=0.3)
-        
-        # Add comprehensive metrics text box
-        complete_metrics_text = f'MAE: {feature_mae:.4f}\nMSE: {feature_mse:.4f}\nRMSE: {feature_rmse:.4f}\nMAPE: {feature_mape:.2f}%\nR²: {feature_r2:.4f}\nCorrelation: {corr:.4f}'
-        plt.text(0.02, 0.98, complete_metrics_text, transform=plt.gca().transAxes, 
-                 verticalalignment='top', bbox=dict(boxstyle='round', facecolor='lightgreen', alpha=0.8))
-        
-        # Adjust layout and save
-        plt.tight_layout()
-        
-        # Save the complete plot
-        complete_plot_filename = 'OT_prediction_complete_test_set.png'
-        plt.savefig(complete_plot_filename, dpi=300, bbox_inches='tight')
-        print(f"Complete test set plot saved as: {complete_plot_filename}")
-        
-        # Show the plot
-        plt.show()
-    
-    print("\nSaving prediction results and temporal attribution analysis...")
-    
-    # Create results directory if it doesn't exist
-    results_dir = 'results'
-    if not os.path.exists(results_dir):
-        os.makedirs(results_dir)
-    
-    # Save predictions with uncertainty
-    predictions_data = []
-    for t in range(args.pred_len):
-        for sample_idx in range(n_samples):
-            predictions_data.append({
-                'sample': sample_idx + 1,
-                'timestep': t + 1,
-                'true_value': trues_inv[sample_idx, t, feature_idx],
-                'predicted_value': mean_preds_inv[sample_idx, t, feature_idx],
-                'confidence_lower': mean_preds_inv[sample_idx, t, feature_idx] - z_score * std_preds_inv[sample_idx, t, feature_idx],
-                'confidence_upper': mean_preds_inv[sample_idx, t, feature_idx] + z_score * std_preds_inv[sample_idx, t, feature_idx]
-            })
-    
-    predictions_df = pd.DataFrame(predictions_data)
-    predictions_df.to_csv(os.path.join(results_dir, 'predictions.csv'), index=False)
-    
-    # Save temporal attribution analysis if available
-    if ensemble_has_attribution:
-        attribution_data = []
-        for sample_idx, attr in enumerate(attribution_results):
-            # Daily importance scores
-            for day, score in attr['daily'].items():
-                attribution_data.append({
-                    'sample': sample_idx + 1,
-                    'time_scale': 'daily',
-                    'period': day,
-                    'importance_score': score
-                })
-            
-            # Weekly importance scores
-            for week, score in attr['weekly'].items():
-                attribution_data.append({
-                    'sample': sample_idx + 1,
-                    'time_scale': 'weekly',
-                    'period': week,
-                    'importance_score': score
-                })
-            
-            # Monthly importance scores
-            for month, score in attr['monthly'].items():
-                attribution_data.append({
-                    'sample': sample_idx + 1,
-                    'time_scale': 'monthly',
-                    'period': month,
-                    'importance_score': score
-                })
-            
-            # Regime change
-            if attr['regime_change']:
-                attribution_data.append({
-                    'sample': sample_idx + 1,
-                    'time_scale': 'regime_change',
-                    'period': 'detected',
-                    'importance_score': attr['regime_change_point']
-                })
-        
-        attribution_df = pd.DataFrame(attribution_data)
-        attribution_df.to_csv(os.path.join(results_dir, 'temporal_attribution.csv'), index=False)
-        
-        attribution_df.to_csv(os.path.join(results_dir, 'temporal_attribution.csv'), index=False)
-        print(f"2. temporal_attribution.csv - Contains temporal attribution analysis")
-    
-    print(f"\nResults saved in the '{results_dir}' directory:")
-    print(f"1. predictions.csv - Contains predicted values with uncertainty bounds")
-    print(f"2. temporal_attribution.csv - Contains temporal attribution analysis")
-    
-    print("\nAll visualizations and results export completed successfully!")
-    print("="*80)
 
 if __name__ == '__main__':
     predict_with_uncertainty()
-

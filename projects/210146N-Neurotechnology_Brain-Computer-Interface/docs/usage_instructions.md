@@ -80,6 +80,17 @@ For some operating systems, the following command is necessary to make the new e
 ```
 python -m ipykernel install --user --name eeg-expy
 ```
+---
+If running in a collaborative environment, use these code to simulate the behavior of the virtual environment
+```python
+!mkdir -p eegnb_dir
+%cd eegnb_dir
+!git clone https://github.com/NeuroTechX/eeg-expy.git
+%cd eeg-expy
+!pip install -e .
+!pip install pyserial brainflow scikeras pyriemann
+```
+---
 
-Check **https://neurotechx.github.io/EEG-ExPy** for further details.
+Follow **https://neurotechx.github.io/EEG-ExPy** for further details.
 And experiments are available at the same documentation, that can be run with the above mentioned setup

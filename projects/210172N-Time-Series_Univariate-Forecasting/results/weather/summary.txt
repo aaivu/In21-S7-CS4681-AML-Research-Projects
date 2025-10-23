@@ -1,0 +1,123 @@
+===============================================================================================
+WEATHER DATASET - COMPLETE RESULTS SUMMARY
+===============================================================================================
+
+Experiment: PatchTST with ONNX Optimization and INT8 Quantization
+Dataset: Weather (21 features, 52,696 timesteps)
+Hardware: Google Colab T4 GPU (16GB)
+
+===============================================================================================
+CONFIGURATION
+===============================================================================================
+
+Model Architecture:
+  - Model: PatchTST
+  - Sequence Length: 336
+  - Patch Length: 16
+  - Stride: 8
+  - Model Dimension (d_model): 128
+  - Encoder Layers: 3
+  - Attention Heads: 16
+  - Feed-Forward Dimension: 256
+  - Dropout: 0.2
+
+Training Configuration:
+  - Optimizer: AdamW
+  - Learning Rate: 1e-4
+  - Batch Size: 128
+  - Early Stopping Patience: 5 epochs
+  - Loss Function: MSE
+
+Optimization Pipeline:
+  1. PyTorch Training (FP32)
+  2. ONNX Export (FP32)
+  3. Post-Training Dynamic Quantization (INT8)
+
+===============================================================================================
+RESULTS BY PREDICTION HORIZON
+===============================================================================================
+
+Prediction Length: 96
+  PyTorch (GPU):    MSE: 1838.69 | MAE: 13.9091 | Latency:   85.08 ms | Size:  3.48 MB
+  ONNX FP32 (GPU):  MSE: 1838.69 | MAE: 13.9091 | Latency:  106.70 ms | Size:  3.58 MB
+  ONNX INT8 (CPU):  MSE: 1827.64 | MAE: 13.8586 | Latency: 3032.36 ms | Size:  1.07 MB
+  Compression: 3.33x | Accuracy Impact: -0.36% MAE
+
+Prediction Length: 192
+  PyTorch (GPU):    MSE: 1655.52 | MAE: 12.4459 | Latency:   81.01 ms | Size:  5.40 MB
+  ONNX FP32 (GPU):  MSE: 1655.52 | MAE: 12.4459 | Latency:  106.81 ms | Size:  5.51 MB
+  ONNX INT8 (CPU):  MSE: 1752.22 | MAE: 12.9078 | Latency: 2994.85 ms | Size:  1.56 MB
+  Compression: 3.54x | Accuracy Impact: +3.71% MAE
+
+Prediction Length: 336
+  PyTorch (GPU):    MSE: 1771.06 | MAE: 13.5740 | Latency:   84.62 ms | Size:  8.29 MB
+  ONNX FP32 (GPU):  MSE: 1771.06 | MAE: 13.5740 | Latency:  107.30 ms | Size:  8.39 MB
+  ONNX INT8 (CPU):  MSE: 1826.40 | MAE: 13.8840 | Latency: 3059.00 ms | Size:  2.28 MB
+  Compression: 3.68x | Accuracy Impact: +2.28% MAE
+
+Prediction Length: 720
+  PyTorch (GPU):    MSE: 1816.18 | MAE: 13.5864 | Latency:   89.49 ms | Size: 15.98 MB
+  ONNX FP32 (GPU):  MSE: 1816.18 | MAE: 13.5864 | Latency:  112.30 ms | Size: 16.08 MB
+  ONNX INT8 (CPU):  MSE: 1819.88 | MAE: 13.6034 | Latency: 3135.68 ms | Size:  4.20 MB
+  Compression: 3.83x | Accuracy Impact: +0.13% MAE
+
+===============================================================================================
+OPTIMIZATION ANALYSIS
+===============================================================================================
+
+Compression Ratios (ONNX FP32 → INT8):
+  - pred_len=96:  3.33x  (3.58 MB → 1.07 MB)
+  - pred_len=192: 3.54x  (5.51 MB → 1.56 MB)
+  - pred_len=336: 3.68x  (8.39 MB → 2.28 MB)
+  - pred_len=720: 3.83x  (16.08 MB → 4.20 MB)
+  Average: 3.60x compression
+
+Accuracy Impact (MAE degradation):
+  - pred_len=96:  -0.36%  (improvement!)
+  - pred_len=192: +3.71%
+  - pred_len=336: +2.28%
+  - pred_len=720: +0.13%
+  Average: +1.44% MAE degradation
+
+Key Findings:
+  ✓ Consistent 3.3-3.8x model compression across all horizons
+  ✓ Minimal accuracy degradation (<4% MAE in all cases)
+  ✓ Larger models benefit more from quantization (720 → 3.83x)
+  ✓ Trade-off: CPU INT8 slower than GPU FP32 (expected for small models)
+
+===============================================================================================
+DEPLOYMENT RECOMMENDATIONS
+===============================================================================================
+
+For GPU Deployment:
+  - Use: PyTorch (GPU) or ONNX FP32 (GPU)
+  - Rationale: Fastest inference (80-90 ms)
+  - Best for: Real-time applications with GPU availability
+
+For CPU/Edge Deployment:
+  - Use: ONNX INT8 (CPU) with batch processing
+  - Rationale: 3.6x smaller models, acceptable accuracy
+  - Best for: Resource-constrained environments, mobile, edge devices
+  - Note: Single-sample latency high (~3s), but can be batched
+
+For Production:
+  - Recommendation: ONNX FP32 for GPU, ONNX INT8 for CPU/Edge
+  - Monitor: Accuracy degradation stays within acceptable threshold (<5%)
+  - Benefit: Platform-agnostic deployment with ONNX format
+
+===============================================================================================
+CONCLUSION
+===============================================================================================
+
+The optimization pipeline successfully demonstrates:
+  1. Effective model compression (3.6x average) with minimal accuracy loss (1.44% MAE)
+  2. Feasibility of deploying PatchTST on resource-constrained devices
+  3. Excellent compression-accuracy tradeoff for long-horizon forecasting
+
+Next Steps:
+  - Extend to M4 Competition benchmark
+  - Compare with N-BEATS baseline
+  - Evaluate static quantization for improved INT8 performance
+  - Benchmark on actual edge devices (Raspberry Pi, mobile)
+
+===============================================================================================

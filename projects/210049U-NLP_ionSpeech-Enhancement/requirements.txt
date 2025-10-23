@@ -5,20 +5,22 @@ scikit-learn>=1.0.0
 matplotlib>=3.5.0
 seaborn>=0.11.0
 
-# Deep Learning (uncomment as needed)
-# torch>=1.10.0
-# torchvision>=0.11.0
-# tensorflow>=2.8.0
-# keras>=2.8.0
+# Deep Learning - Required for Speech Enhancement
+torch>=2.0.0
+torchaudio>=2.0.0
 
-# NLP Libraries (uncomment as needed)
-# nltk>=3.7.0
-# spacy>=3.4.0
-# transformers>=4.15.0
+# Speech Processing & Enhancement
+speechbrain>=0.5.16
+soundfile>=0.12.1
 
-# Computer Vision (uncomment as needed)
-# opencv-python>=4.5.0
-# pillow>=8.3.0
+# Audio Evaluation Metrics
+pystoi>=0.3.3
+pesq>=0.0.4
+mir-eval>=0.7
+
+# Audio Processing
+librosa>=0.10.0
+scipy>=1.9.0
 
 # Utilities
 jupyter>=1.0.0

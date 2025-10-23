@@ -1,0 +1,50 @@
+{
+    "os": "Windows-10-10.0.26100-SP0",
+    "python": "3.9.23",
+    "heartbeatAt": "2025-10-01T17:52:35.983693",
+    "startedAt": "2025-10-01T17:52:25.676812",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "C:\\Users\\ASUS TUF\\Downloads\\Diffusion-LM\\train_gpt2_e2e.py",
+    "codePath": "train_gpt2_e2e.py",
+    "git": {
+        "remote": "git@github.com:XiangLi1999/Diffusion-LM.git",
+        "commit": "759889d58ef38e2eed41a8c34db8032e072826f4"
+    },
+    "email": "dinusha.21@cse.mrt.ac.lk",
+    "root": "C:/Users/ASUS TUF/Downloads/Diffusion-LM",
+    "host": "LAPTOP-CNQ9DT6N",
+    "username": "ASUS TUF",
+    "executable": "C:\\Users\\ASUS TUF\\miniconda3\\envs\\diff-lm\\python.exe",
+    "cpu_count": 8,
+    "cpu_count_logical": 16,
+    "cpu_freq": {
+        "current": 2523.0,
+        "min": 0.0,
+        "max": 3100.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 2523.0,
+            "min": 0.0,
+            "max": 3100.0
+        }
+    ],
+    "disk": {
+        "total": 447.5598793029785,
+        "used": 248.1758155822754
+    },
+    "gpu": "NVIDIA GeForce RTX 3050 Laptop GPU",
+    "gpu_count": 1,
+    "gpu_devices": [
+        {
+            "name": "NVIDIA GeForce RTX 3050 Laptop GPU",
+            "memory_total": 4294967296
+        }
+    ],
+    "memory": {
+        "total": 23.822917938232422
+    }
+}

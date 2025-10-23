@@ -1,0 +1,65 @@
+{
+  "timestamp": "20251020_155013",
+  "best_loss": {
+    "checkpoint": "../checkpoints/istft_vocoder_v2/best_loss.pt",
+    "metadata": {
+      "global_step": 245000,
+      "epoch": 99,
+      "best_val_loss": 1.1773290312479412,
+      "best_val_mcd": 17.518814584922946
+    },
+    "metrics": {
+      "mcd_mean": 18.328042945856104,
+      "mcd_std": 0.771048009069253,
+      "mcd_median": 18.309919061325743,
+      "time_loss_mean": 0.12813824189205963,
+      "time_loss_std": 0.021192914228756184,
+      "time_loss_median": 0.12514245510101318,
+      "mel_loss_mean": 0.010398573111742734,
+      "mel_loss_std": 0.0014114793140742137,
+      "mel_loss_median": 0.01033817371353507,
+      "stft_loss_mean": 0.8708137998978297,
+      "stft_loss_std": 0.0269651739617902,
+      "stft_loss_median": 0.8685938119888306,
+      "snr_mean": -2.751410605096902,
+      "snr_std": 1.0589694927390871,
+      "snr_median": -2.867632269859314,
+      "inference_times_mean": 0.01931339134664995,
+      "inference_times_std": 0.11368767448192693,
+      "inference_times_median": 0.010964727499867877
+    },
+    "rtf": 0.006172802343762385,
+    "inference_time_ms": 4.458439799982443
+  },
+  "best_mcd": {
+    "checkpoint": "../checkpoints/istft_vocoder_v2/best_mcd.pt",
+    "metadata": {
+      "global_step": 246000,
+      "epoch": 99,
+      "best_val_loss": 1.1773290312479412,
+      "best_val_mcd": 17.468784943849432
+    },
+    "metrics": {
+      "mcd_mean": 18.210384856843294,
+      "mcd_std": 0.7970572887051927,
+      "mcd_median": 18.215695918854813,
+      "time_loss_mean": 0.1284883930782477,
+      "time_loss_std": 0.02126562091630753,
+      "time_loss_median": 0.12524087354540825,
+      "mel_loss_mean": 0.01046669545583427,
+      "mel_loss_std": 0.001392991017012158,
+      "mel_loss_median": 0.010387507732957602,
+      "stft_loss_mean": 0.8670117847124735,
+      "stft_loss_std": 0.025875080249110217,
+      "stft_loss_median": 0.8646830916404724,
+      "snr_mean": -2.8012309979114103,
+      "snr_std": 1.0563411626260015,
+      "snr_median": -2.940474510192871,
+      "inference_times_mean": 0.010726658466674054,
+      "inference_times_std": 0.002144068224591691,
+      "inference_times_median": 0.00997461650013065
+    },
+    "rtf": 0.005942137303804884,
+    "inference_time_ms": 4.579112670044196
+  }
+}

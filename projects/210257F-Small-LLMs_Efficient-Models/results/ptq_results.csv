@@ -1,0 +1,2 @@
+Model,Method,Original_Size_MB,Quantized_Size_MB,Compression_Ratio,Original_Accuracy,Quantized_Accuracy,Accuracy_Drop
+distilled_finetuned,Dynamic PTQ (INT8),127.28,66.23,1.92x,92.09%,90.14%,1.95%

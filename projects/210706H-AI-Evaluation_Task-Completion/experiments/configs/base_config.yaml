@@ -1,0 +1,61 @@
+# CAFE Framework Configuration
+
+# Model Configuration
+model:
+  name: "roberta-base"
+  max_length: 128
+  hidden_dim: 768
+  dropout_rate: 0.1
+  num_toxicity_classes: 1
+
+# Training Configuration
+training:
+  batch_size: 16
+  num_epochs: 10
+  learning_rate: 2e-5
+  weight_decay: 0.01
+  gradient_clip_norm: 1.0
+  warmup_steps: 500
+  
+# Loss Function Configuration
+loss:
+  alpha: 1.0  # Toxicity loss weight
+  beta: 0.5   # Fairness loss weight
+  gamma: 0.3  # Context loss weight
+
+# Data Configuration
+data:
+  train_test_split: 0.2
+  augmentation:
+    enable: true
+    num_paraphrases: 1
+    num_adversarial: 1
+  
+# Evaluation Configuration
+evaluation:
+  metrics:
+    - f1_score
+    - accuracy
+    - precision
+    - recall
+    - auc_score
+    - fairness_gap
+    - expected_maximum_toxicity
+    - toxicity_probability
+  
+  thresholds:
+    toxicity: 0.5
+    
+# System Configuration
+system:
+  random_seed: 42
+  device: "auto"  # auto, cpu, cuda
+  num_workers: 4
+  
+# Paths
+paths:
+  data_dir: "data"
+  results_dir: "results"
+  models_dir: "results/models"
+  metrics_dir: "results/metrics"
+  plots_dir: "results/plots"

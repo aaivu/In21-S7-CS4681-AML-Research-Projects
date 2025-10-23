@@ -32,3 +32,5 @@ dist/
 # Ignore test and coverage reports
 .coverage
 htmlcov/
+
+checkpoints/

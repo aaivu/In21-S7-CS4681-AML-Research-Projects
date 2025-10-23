@@ -1,66 +1,24 @@
-# Research Proposal: Small LLMs:Efficient Models
-
-**Student:** 210257F
-**Research Area:** Small LLMs:Efficient Models
-**Date:** 2025-09-01
-
 ## Abstract
+The significant memory and computational requirements of large transformer models hinder their deployment on resource-constrained devices. This paper introduces EdgeMIN, a systematic three-stage compression pipeline designed to generate efficient transformer models suitable for environments with limited resources, focusing on metrics measurable without specialized hardware. Our pipeline sequentially applies: 1) MiniLMv2 relational knowledge distillation to transfer semantic knowledge from a DistilBERT teacher (66.96M parameters) to a MiniLM-based student (33.36M), 2) Structured attention head pruning removing 20% of heads, and 3) Aggressive post-training dynamic quantization (INT8), implicitly incorporating FFN layer pruning. We evaluate the pipeline across multiple GLUE tasks (SST-2, MNLI, QQP), demonstrating substantial efficiency gains. The final compressed model achieves a **1.96× reduction in actual file size** (65.09MB), a **2.8× reduction in parameters** (11.94M), an estimated **2.6× reduction in theoretical FLOPs**, and notable **CPU latency speedups** (e.g., **37%** on SST-2).
 
-[Write a brief abstract of your research proposal (150-200 words)]
+## I. INTRODUCTION
+Transformer architectures [1], [2] represent the state-of-the-art for a vast array of natural language processing (NLP) tasks. However, their success often comes at the cost of substantial model size (hundreds of millions, even billions, of parameters) and high computational demands (billions of FLOPs per inference) [3]. These resource requirements create a significant barrier, often termed the "deployment gap," preventing their use in resource-constrained settings like mobile devices, embedded systems, IoT sensors, and web browsers where factors like low latency, user privacy (on-device processing), and offline capability are paramount.
 
-## 1. Introduction
+Model compression techniques offer a path to bridge this gap. Predominant strategies include knowledge distillation (KD) [4], which trains a smaller "student" model to mimic a larger "teacher"; parameter pruning which removes redundant weights or structures; and quantization [5], which reduces the numerical precision of weights and activations. While numerous studies have demonstrated the effectiveness of these techniques individually [6]–[9], achieving the aggressive compression often needed for edge deployment typically requires combining multiple methods. However, the optimal way to integrate these techniques and the resulting trade-offs, especially concerning performance metrics measurable without specialized edge hardware, remain important areas of investigation.
 
-[Introduce your research topic and its significance]
+This paper presents EdgeMIN, a systematic and reproducible three-stage pipeline designed to compress transformer models significantly, focusing on achieving and validating efficiency using widely accessible computational resources (i.e., standard CPUs). Our pipeline integrates state-of-the-art techniques in a specific sequence:
 
-## 2. Problem Statement
+1)  **Stage 1: Relational Knowledge Distillation:** We employ MiniLMv2 [10] to effectively transfer the rich self-attention interaction patterns from a larger teacher model (DistilBERT) to a smaller student baseline, aiming to preserve performance during initial model downsizing.
+2)  **Stage 2: Structured Attention Head Pruning:** We apply magnitude-based structured pruning [8] to remove less salient attention heads, reducing parameter count, actual model size, and theoretical computational complexity (FLOPs).
+3)  **Stage 3: Aggressive Post-Training Quantization (PTQ):** We utilize dynamic INT8 quantization, which in our configuration aggressively prunes FFN layers implicitly (as evidenced by parameter reduction), leading to a drastic reduction in the final parameter count and file size, while also impacting inference speed.
 
-[Clearly define the research problem you aim to solve]
+We demonstrate the efficacy of EdgeMIN by compressing a DistilBERT teacher (66.96M params) into a MiniLM-based student architecture (initially 33.36M params). We conduct a thorough evaluation across three distinct GLUE benchmark tasks: SST-2 (sentiment classification), MNLI (natural language inference), and QQP (paraphrase detection) [11]. Our analysis focuses on quantifying the impact of each pipeline stage on multiple efficiency metrics: actual file size (MB), parameter count (M), theoretical FLOPs (Billion), and, critically, average inference latency measured on a standard CPU (ms).
 
-## 3. Literature Review Summary
+Our key contributions are reiterated and expanded:
 
-[Provide a brief summary of relevant literature and identify gaps]
+* We introduce EdgeMIN, a concrete three-stage pipeline integrating advanced distillation, structured pruning, and aggressive quantization techniques, designed for reproducibility.
+* We provide extensive empirical results across multiple NLP tasks, demonstrating substantial gains: 1.96× actual file size reduction, 2.8× parameter reduction, an estimated 2.6× FLOPs reduction, and significant CPU latency speedups (up to 44% vs. baseline student), with justifiable accuracy trade-offs (estimated 89.8% on SST-2).
+* Through detailed ablation studies, we dissect the contribution of each stage to both accuracy and efficiency metrics, uncovering a nuanced interaction effect between pruning and dynamic quantization on CPU latency.
+* We present a validated methodology for simulating and achieving efficient transformer models, providing strong empirical evidence of their suitability for resource-constrained scenarios, even when evaluated solely on CPU.
 
-## 4. Research Objectives
-
-### Primary Objective
-[Main goal of your research]
-
-### Secondary Objectives
-- [Objective 1]
-- [Objective 2]
-- [Objective 3]
-
-## 5. Methodology
-
-[Describe your proposed methodology and approach]
-
-## 6. Expected Outcomes
-
-[What do you expect to achieve?]
-
-## 7. Timeline
-
-| Week | Task |
-|------|------|
-| 1-2  | Literature Review |
-| 3-4  | Methodology Development |
-| 5-8  | Implementation |
-| 9-12 | Experimentation |
-| 13-15| Analysis and Writing |
-| 16   | Final Submission |
-
-## 8. Resources Required
-
-[List required resources, datasets, tools, etc.]
-
-## References
-
-[Add references in academic format]
-
----
-
-**Submission Instructions:**
-1. Complete all sections above
-2. Commit your changes to the repository
-3. Create an issue with the label "milestone" and "research-proposal"
-4. Tag your supervisors in the issue for review
+The structure of the paper is as follows: Section II reviews relevant background. Section III details the EdgeMIN methodology. Section IV describes the experimental setup and presents the main results. Section V provides an analysis of these results. Section VI discusses limitations and future work, and Section VII concludes the paper.

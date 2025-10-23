@@ -127,37 +127,7 @@ _LGKR reduces variance on average, indicating improved fairness and stability._
 
 ---
 
-## 7. Ablation Studies
-
-### 7.1 Distillation Weight (λ)
-- λ = 0.5 yielded the most balanced performance.
-- Higher λ values (≥2.0) constrained local learning and slightly reduced accuracy.  
-- The sensitivity was mild, indicating robustness to parameter choice.
-
-**Figure 3:** Ablation results on λ.  
-![Ablation λ Placeholder](images/ablation_lambda.png)
-
----
-
-### 7.2 Temperature (T)
-- Moderate temperature (T = 2) provided smoother convergence and higher generalization.  
-- Too low (T = 1) or too high (T = 4) degraded performance slightly.
-
-**Figure 4:** Ablation results on T.  
-![Ablation Temperature Placeholder](images/ablation_temperature.png)
-
----
-
-### 7.3 Confidence Threshold (τ) and Warm-Up
-- Confidence thresholding (τ = 0.5) prevented noisy teacher signals.  
-- λ warm-up improved stability in early rounds, especially on CIFAR-10.
-
-**Figure 5:** Comparison of runs with and without λ warm-up.  
-![Warmup Placeholder](images/warmup_effect.png)
-
----
-
-## 8. Observations
+## 7. Observations
 
 - Improvements from LGKR are **incremental but consistent** across datasets.  
 - The method stabilizes training over time, even when early rounds exhibit mixed results.  
@@ -166,7 +136,7 @@ _LGKR reduces variance on average, indicating improved fairness and stability._
 
 ---
 
-## 9. Limitations and Future Work
+## 8. Limitations and Future Work
 
 - The accuracy improvements, though consistent, remain modest (+0.8% to +1.9%).  
 - Hyperparameters λ, T, and τ may need dataset-specific tuning.  
@@ -179,19 +149,7 @@ _LGKR reduces variance on average, indicating improved fairness and stability._
 
 ---
 
-## 10. Summary Figures
-
-To be included after results are finalized:
-
-1. ![CIFAR-10 Convergence](images/convergence_curve.png)
-2. ![Client Variance](images/stability_variance.png)
-3. ![Rounds to Target](images/rounds_to_target.png)
-4. ![Ablation: λ and T](images/ablation_combined.png)
-5. ![Warm-up Effects](images/warmup_effect.png)
-
----
-
-## 11. Conclusion
+## 9. Conclusion
 
 The conducted experiments demonstrate that **Local–Global Knowledge Regularization** offers a practical enhancement to FedAvg. It achieves better convergence stability, fairness, and efficiency under non-IID conditions while keeping the server and communication architecture untouched. The simplicity, low overhead, and empirical gains make it a promising direction for more robust and scalable federated learning systems.
 

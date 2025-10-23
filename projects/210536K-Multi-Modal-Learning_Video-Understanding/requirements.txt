@@ -1,28 +1,23 @@
-# Core ML Libraries
-numpy>=1.21.0
-pandas>=1.3.0
-scikit-learn>=1.0.0
-matplotlib>=3.5.0
-seaborn>=0.11.0
 
-# Deep Learning (uncomment as needed)
-# torch>=1.10.0
-# torchvision>=0.11.0
-# tensorflow>=2.8.0
-# keras>=2.8.0
+# Uses CUDA 11.3 wheels for PyTorch 1.11
+--extra-index-url https://download.pytorch.org/whl/cu113
 
-# NLP Libraries (uncomment as needed)
-# nltk>=3.7.0
-# spacy>=3.4.0
-# transformers>=4.15.0
+# Core DL stack 
+torch==1.11.0+cu113
+torchvision==0.12.0+cu113
+torchaudio==0.11.0+cu113
 
-# Computer Vision (uncomment as needed)
-# opencv-python>=4.5.0
-# pillow>=8.3.0
+# Visualization
+tensorboard>=2.0,<3
 
-# Utilities
-jupyter>=1.0.0
-tqdm>=4.62.0
-python-dotenv>=0.19.0
+# Numeric stack
+# constraint was: 1.11 <= NumPy <= 1.23
+# Torch 1.11 works well with NumPy 1.23.x; pin to the last 1.23 release.
+numpy==1.23.5
 
-# Add your specific requirements below
+# Utilities requested
+PyYAML>=5.3,<7
+pandas==1.5.3
+h5py>=3.7,<4
+joblib>=1.2,<2
+

@@ -1,0 +1,64 @@
+# ---------------------------------------------------------------------
+# benchmark_project/config.yaml
+# Fully-configurable experiment settings
+# ---------------------------------------------------------------------
+
+# MODELS TO BENCHMARK
+models:
+  Qwen/Qwen2.5-0.5B: true
+  TinyLlama/TinyLlama-1.1B-intermediate-step-1431k-3T: true
+  microsoft/phi-1_5: true
+  google/gemma-3-1b-it: true
+
+# OUTPUT
+append: false
+output_dir: "../../results/baseline_benchmarking_results"
+csv_filename: "baseline_results.csv"
+
+# DEVICE SELECTION ("auto", "cuda", or "cpu")
+evaluation:
+  device: auto
+
+# HYPERPARAMETERS (all used by evaluation functions)
+hyperparams:
+  latency:
+    n_runs: 3
+    n_tokens: 50
+    prompt: "The disaster response team should"
+  perplexity:
+    max_samples: 200
+    max_length: 512
+  boolq:
+    max_samples: 200
+    max_length: 512
+    max_new_tokens: 5
+  squad:
+    max_samples: 200
+    max_length: 512
+    max_new_tokens: 40
+
+# PLOTS: toggle individual bar plots and scatter combinations
+plots:
+  bar_plots:
+    model_size: true
+    latency: true
+    perplexity: true
+    metrics_grouped: true
+
+  scatter_plots:
+    - x: "Size (GB)"
+      y: "Latency (ms_per_token)"
+      enabled: true
+    - x: "Size (GB)"
+      y: "SQuAD F1 (%)"
+      enabled: true
+    - x: "Latency (ms_per_token)"
+      y: "SQuAD F1 (%)"
+      enabled: true
+    - x: "Perplexity (WikiText-2)"
+      y: "SQuAD F1 (%)"
+      enabled: true
+
+# LOGGING
+logging:
+  verbose: true

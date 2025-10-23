@@ -1,28 +1,131 @@
-# Core ML Libraries
-numpy>=1.21.0
-pandas>=1.3.0
-scikit-learn>=1.0.0
-matplotlib>=3.5.0
+# Enhanced nnFormer for Brain Tumor Segmentation - 210353V
+# Complete Dependencies for Research Project
+
+# ==========================================
+# Core Deep Learning Framework
+# ==========================================
+torch>=1.8.1
+torchvision>=0.9.1
+tensorboardx>=2.3
+
+# ==========================================
+# Medical Image Processing
+# ==========================================
+SimpleITK>=2.0.2
+nibabel>=3.2.1
+medpy>=0.4.0
+dicom2nifti>=2.3.0
+
+# ==========================================
+# Scientific Computing
+# ==========================================
+numpy==1.19.5
+scipy>=1.5.4
+scikit-image>=0.17.2
+scikit-learn>=0.24.2
+pandas>=1.1.5
+
+# ==========================================
+# Computer Vision
+# ==========================================
+opencv-python>=4.5.0
+Pillow>=8.2.0
+tifffile==2020.9.3
+
+# ==========================================
+# Data Augmentation
+# ==========================================
+batchgenerators>=0.21
+imgaug>=0.4.0
+
+# ==========================================
+# Transformer & Attention Modules
+# ==========================================
+einops>=0.3.0
+timm>=0.4.9
+
+# ==========================================
+# Visualization & Plotting
+# ==========================================
+matplotlib>=3.3.4
 seaborn>=0.11.0
+plotly>=5.3.0
 
-# Deep Learning (uncomment as needed)
-# torch>=1.10.0
-# torchvision>=0.11.0
-# tensorflow>=2.8.0
-# keras>=2.8.0
-
-# NLP Libraries (uncomment as needed)
-# nltk>=3.7.0
-# spacy>=3.4.0
-# transformers>=4.15.0
-
-# Computer Vision (uncomment as needed)
-# opencv-python>=4.5.0
-# pillow>=8.3.0
-
-# Utilities
-jupyter>=1.0.0
-tqdm>=4.62.0
+# ==========================================
+# Progress Tracking & Utilities
+# ==========================================
+tqdm>=4.61.0
+pyyaml>=5.4.1
 python-dotenv>=0.19.0
 
-# Add your specific requirements below
+# ==========================================
+# Jupyter & Interactive Development
+# ==========================================
+jupyter>=1.0.0
+ipywidgets>=7.6.0
+notebook>=6.4.0
+
+# ==========================================
+# Statistical Analysis
+# ==========================================
+statsmodels>=0.12.0
+pingouin>=0.5.0
+
+# ==========================================
+# File Handling & IO
+# ==========================================
+h5py>=3.1.0
+pydicom>=2.1.2
+openpyxl>=3.0.9
+
+# ==========================================
+# Optimization & Training
+# ==========================================
+tensorboard>=2.8.0
+
+# ==========================================
+# Additional Research Tools
+# ==========================================
+requests>=2.26.0
+joblib>=1.0.1
+networkx>=2.5.1
+
+# ==========================================
+# Code Quality & Testing
+# ==========================================
+pytest>=6.2.0
+black>=21.6b0
+flake8>=3.9.0
+
+# ==========================================
+# Documentation
+# ==========================================
+sphinx>=4.0.0
+sphinx-rtd-theme>=0.5.0
+
+# ==========================================
+# Project-Specific Dependencies
+# ==========================================
+# Install nnFormer from source:
+# cd src/nnformer && pip install -e .
+
+# ==========================================
+# Notes
+# ==========================================
+# 1. Install PyTorch with CUDA support:
+#    pip install torch==1.8.1+cu111 torchvision==0.9.1+cu111 -f https://download.pytorch.org/whl/torch_stable.html
+#
+# 2. For Windows users, install SimpleITK via:
+#    pip install SimpleITK
+#
+# 3. Some packages may require Microsoft Visual C++ Build Tools on Windows
+#
+# 4. Recommended to use conda environment:
+#    conda env create -f src/nnformer/environment.yml
+#    conda activate nnFormer
+#
+# 5. GPU Requirements:
+#    - NVIDIA GPU with CUDA support
+#    - Minimum 16GB VRAM (RTX 3090, A100, or better)
+#    - CUDA 10.1 or higher
+

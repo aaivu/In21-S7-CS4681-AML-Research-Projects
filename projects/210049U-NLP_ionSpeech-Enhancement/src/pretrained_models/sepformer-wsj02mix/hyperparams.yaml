@@ -1,0 +1,65 @@
+# ################################
+# Model: Inference for source separation with SepFormer
+# https://arxiv.org/abs/2010.13154
+# Generated from speechbrain/recipes/WSJ0Mix/separation/train/hparams/sepformer-wsj02mix.yaml
+# Dataset : wsj02mix
+# ###############################
+
+# Parameters
+sample_rate: 8000
+num_spks: 2
+
+# Specifying the network
+Encoder: !new:speechbrain.lobes.models.dual_path.Encoder
+  kernel_size: 16
+  out_channels: 256
+
+SBtfintra: !new:speechbrain.lobes.models.dual_path.SBTransformerBlock
+  num_layers: 8
+  d_model: 256
+  nhead: 8
+  d_ffn: 1024
+  dropout: 0
+  use_positional_encoding: true
+  norm_before: true
+
+SBtfinter: !new:speechbrain.lobes.models.dual_path.SBTransformerBlock
+  num_layers: 8
+  d_model: 256
+  nhead: 8
+  d_ffn: 1024
+  dropout: 0
+  use_positional_encoding: true
+  norm_before: true
+
+MaskNet: !new:speechbrain.lobes.models.dual_path.Dual_Path_Model
+  num_spks: !ref <num_spks>
+  in_channels: 256
+  out_channels: 256
+  num_layers: 2
+  K: 250
+  intra_model: !ref <SBtfintra>
+  inter_model: !ref <SBtfinter>
+  norm: ln
+  linear_layer_after_inter_intra: false
+  skip_around_intra: true
+
+Decoder: !new:speechbrain.lobes.models.dual_path.Decoder
+  in_channels: 256
+  out_channels: 1
+  kernel_size: 16
+  stride: 8
+  bias: false
+
+modules:
+  encoder: !ref <Encoder>
+  decoder: !ref <Decoder>
+  masknet: !ref <MaskNet>
+
+pretrainer: !new:speechbrain.utils.parameter_transfer.Pretrainer
+  loadables:
+    masknet: !ref <MaskNet>
+    encoder: !ref <Encoder>
+    decoder: !ref <Decoder>
+
+

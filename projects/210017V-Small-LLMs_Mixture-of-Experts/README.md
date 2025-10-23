@@ -60,4 +60,44 @@ Create GitHub Issues with the following labels for tracking:
 
 ---
 
-**Remember:** Regular commits and clear documentation are essential for project success!
+## Setup Instructions
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/aaivu/In21-S7-CS4681-AML-Research-Projects.git
+cd In21-S7-CS4681-AML-Research-Projects/projects/210017V-Small-LLMs_Mixture-of-Experts
+```
+
+### 2. Create and Activate a Virtual Environment
+```bash
+python3 -m venv venv
+```
+```bash
+source venv/bin/activate  # On Linux / macOS
+```
+```bash
+venv\Scripts\activate     # On Windows
+```
+
+### 3. Install Requirements
+
+Install all dependencies listed in the requirements.txt file:
+```bash
+pip install -r requirements.txt
+```
+
+## Reproduce Experiments
+
+### 1. Unzip Dataset
+The dataset used in experiments is located at data/wikitext-2.zip.
+Unzip it before running experiments:
+```bash
+unzip data/wikitext-2.zip
+```
+
+### 2. Running Experiments
+
+To reproduce the training experiments, simply run:
+```bash
+python3 experiments/run_experiments.py
+```

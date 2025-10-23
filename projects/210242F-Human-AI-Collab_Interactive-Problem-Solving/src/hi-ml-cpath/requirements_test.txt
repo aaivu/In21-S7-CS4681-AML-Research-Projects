@@ -1,0 +1,13 @@
+black==22.1.0
+coverage==7.1.0
+flake8==6.0.0
+mypy==1.0.1
+mypy-extensions==1.0.0
+pipdeptree==2.5.0
+pre-commit==3.0.4
+pylint==2.16.2
+pycobertura==3.0.0
+pytest==7.2.1
+pytest-cov==4.0.0
+pytest-rerunfailures==11.1.1
+pytest-timeout==2.1.0

@@ -23,7 +23,7 @@ Citation-network V1 (title classification):
 |-------------------|----------|----------|----------|
 | Iter-1 UniMP      | 70.20%   | 68.70%   | 69.40%   |
 | Iter-2 R-UniMP    | 73.71%   | 72.50%   | 70.20%   |
-| Iter-2 H-UniMP    | 73.92%   | 73.30%   | 70.50%   |
+| Iter-3 H-UniMP    | 73.92%   | 73.30%   | 70.50%   |
 
 ### Observations
 - Additional +3% gain from gating and masking schedule.

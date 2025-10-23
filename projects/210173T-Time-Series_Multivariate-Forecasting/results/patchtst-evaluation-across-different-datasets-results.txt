@@ -1,0 +1,35 @@
+weather_336_96_base_model_PatchTST_custom_ftM_sl336_ll48_pl96_dm128_nh16_el3_dl1_df256_fc1_ebtimeF_dtTrue_Exp_0  
+mse:0.1590450555086136, mae:0.20734095573425293, rse:0.5253758430480957
+training_time:550.3s (9.2min)
+
+weather_336_96_multi_scale_PatchTST_custom_ftM_sl336_ll48_pl96_dm128_nh16_el3_dl1_df256_fc1_ebtimeF_dtTrue_Exp_0  
+mse:0.15046298503875732, mae:0.20863749086856842, rse:0.511004626750946
+training_time:1761.9s (29.4min)
+
+electricity_336_96_base_model_PatchTST_custom_ftM_sl336_ll48_pl96_dm128_nh16_el3_dl1_df256_fc1_ebtimeF_dtTrue_Exp_0  
+mse:0.13793540000915527, mae:0.2342091202735901, rse:0.36917001008987427
+training_time:4184.7s (69.7min)
+
+electricity_336_96_multi_scale_PatchTST_custom_ftM_sl336_ll48_pl96_dm128_nh16_el3_dl1_df256_fc1_ebtimeF_dtTrue_Exp_0  
+mse:0.1340664178133011, mae:0.23279228806495667, rse:0.36395567655563354
+training_time:13318.0s (222.0min)
+
+traffic_336_96_base_model_PatchTST_custom_ftM_sl336_ll48_pl96_dm128_nh16_el3_dl1_df256_fc1_ebtimeF_dtTrue_Exp_0  
+mse:0.3910212516784668, mae:0.26835453510284424, rse:0.5177574753761292
+training_time:7412.8s (123.5min)
+
+exchange_rate_336_96_base_model_PatchTST_custom_ftM_sl336_ll48_pl96_dm128_nh16_el3_dl1_df256_fc1_ebtimeF_dtTrue_Exp_0  
+mse:0.09510381519794464, mae:0.21780996024608612, rse:0.23487992584705353
+training_time:33.9s (0.6min)
+
+exchange_rate_336_96_multi_model_PatchTST_custom_ftM_sl336_ll48_pl96_dm128_nh16_el3_dl1_df256_fc1_ebtimeF_dtTrue_Exp_0  
+mse:0.09645161032676697, mae:0.22875994443893433, rse:0.23653839528560638
+training_time:94.0s (1.6min)
+
+national_illness_104_24_base_model_PatchTST_custom_ftM_sl104_ll48_pl24_dm16_nh4_el3_dl1_df128_fc1_ebtimeF_dtTrue_Exp_0  
+mse:1.4337158203125, mae:0.7968036532402039, rse:0.5778344869613647
+training_time:123.6s (2.1min)
+
+national_illness_104_24_multi_model_PatchTST_custom_ftM_sl104_ll48_pl24_dm16_nh4_el3_dl1_df128_fc1_ebtimeF_dtTrue_Exp_0  
+mse:1.7391177415847778, mae:0.9023001790046692, rse:0.6364091634750366
+training_time:161.4s (2.7min)
