@@ -171,7 +171,59 @@ All ablation variants use identical architecture, data, and training procedures,
 
 ## 7. Risk Analysis
 
-[Identify potential risks and mitigation strategies]
+## Risk Analysis
+
+**Risk 1: Insufficient Control Success Improvement**  
+**Likelihood:** Low | **Impact:** Medium | **Severity:** Medium
+
+There is a possibility that the anchor loss enhancement provides marginal improvements (<1%) in control success rates, making the contribution appear incremental rather than substantial. This could occur if the discrete commitment problem is not the primary bottleneck in controllable generation, or if the baseline clamping mechanism already adequately addresses alignment issues.
+
+*Mitigation Strategy:* Preliminary results demonstrate consistent 2-5% improvements across multiple tasks, reducing this risk significantly. If improvements are smaller than expected, we will: (1) conduct detailed error analysis to identify what other factors limit controllability beyond discrete commitment, (2) reframe the contribution as a principled characterization of the discrete commitment problem with quantitative metrics (MED, Clamping Frequency), and (3) emphasize the theoretical synthesis of diffusion models and vector quantization principles. Additionally, even modest control improvements combined with reduced inference overhead (35% fewer clamping operations) represent practical value.
+
+**Risk 2: Excessive Fluency Degradation**  
+**Likelihood:** Low | **Impact:** High | **Severity:** Medium
+
+The anchor loss regularization might overly constrain the embedding space, forcing discrete commitment at the expense of natural language fluency. If the lm-score increases by more than 3-4 points, the generated text may become stilted and unnatural, limiting practical applicability despite improved control success.
+
+*Mitigation Strategy:* The hyperparameter λ provides explicit control over the fluency-controllability trade-off. Our grid search over λ ∈ {0.01, 0.1, 1.0} enables identification of optimal operating points. Preliminary results show modest fluency costs (1.8-2.1 lm-score increase) that are acceptable for constraint-heavy applications. If fluency degradation exceeds acceptable thresholds at all λ values, we will: (1) explore alternative anchor loss formulations (e.g., asymmetric penalties, adaptive λ scheduling), (2) investigate architectural modifications (larger embedding dimensions, additional regularization terms), and (3) document the Pareto frontier to help practitioners choose appropriate trade-offs for their applications.
+
+**Risk 3: Task-Dependent Performance Variability**  
+**Likelihood:** Medium | **Impact:** Low | **Severity:** Low
+
+The anchor loss may improve performance significantly on some tasks (e.g., Syntax Spans, POS control) while providing minimal benefit or even degrading performance on others (e.g., Semantic Content, Infilling). This variability could complicate the narrative and make it difficult to provide general recommendations.
+
+*Mitigation Strategy:* Task-dependent variability is expected and scientifically valuable—it provides insights into when and why discrete commitment helps controllable generation. We will: (1) systematically analyze which task characteristics (fine-grained vs. global constraints, syntactic vs. semantic controls) correlate with anchor loss effectiveness, (2) provide clear guidance on when practitioners should apply the enhancement, and (3) frame heterogeneous results as a contribution to understanding the relationship between discrete alignment and controllability. The diverse task suite (6 tasks spanning different control types) is specifically designed to reveal these patterns.
+
+**Risk 4: Computational Resource Limitations**  
+**Likelihood:** Low | **Impact:** Medium | **Severity:** Low
+
+Training could be interrupted due to Google Colab session timeouts, GPU quota exhaustion, or insufficient storage for checkpoints. This would delay experiments and potentially prevent completion of all planned ablation studies within the 14-week timeline.
+
+*Mitigation Strategy:* Migration from NVIDIA RTX 3050 (4GB) to Google Colab T4 GPUs (16GB) has already addressed the primary computational constraint, reducing training time from 42 days to 2-3 days per model. Additional safeguards include: (1) checkpoint saving every 10K steps to Google Drive with automatic resume functionality, (2) prioritizing critical experiments (baseline + λ=0.1 variant) before ablations, (3) maintaining backup Colab Pro subscription to avoid quota interruptions, and (4) implementing early stopping if validation metrics plateau, reducing unnecessary training time. The current timeline includes 2-week buffer for addressing unexpected delays.
+
+**Risk 5: Reproducibility and Implementation Errors**  
+**Likelihood:** Medium | **Impact:** High | **Severity:** Medium
+
+Implementation bugs in the anchor loss computation, gradient flow issues, or incorrect evaluation metrics could lead to spurious results that fail to replicate. Complex systems like Diffusion-LM have many potential failure points (embedding layer modifications, loss computation, classifier integration).
+
+*Mitigation Strategy:* We employ rigorous validation procedures: (1) unit tests for anchor loss computation verified against manual calculations, (2) gradient checking using PyTorch autograd verification tools, (3) baseline model replication that matches published Diffusion-LM results before implementing enhancements, (4) ablation with λ=0.0 that should exactly match baseline to verify implementation correctness, and (5) qualitative inspection of generated samples at regular training intervals to detect anomalies early. All code is version-controlled with detailed commit messages documenting changes. Using the official Diffusion-LM codebase as foundation reduces implementation risk compared to building from scratch.
+
+**Risk 6: Limited Generalization Beyond Evaluated Settings**  
+**Likelihood:** Medium | **Impact:** Low | **Severity:** Low
+
+Results may be specific to the E2E and ROCStories datasets, the 80M parameter model scale, or the particular control tasks evaluated. The enhancement might not generalize to larger models (GPT-3 scale), different domains (code, scientific text), or alternative control requirements.
+
+*Mitigation Strategy:* We acknowledge this limitation explicitly in the paper and position our work as providing proof-of-concept evidence and methodology that can be scaled. The two-dataset evaluation (E2E: constrained domain, ROCStories: open-ended narratives) demonstrates some generalization across domain complexity. The six diverse control tasks span syntactic and semantic constraints, showing breadth within current scope. We will: (1) discuss generalization limitations in the paper's Limitations section, (2) propose scaling experiments as future work with clear hypotheses about expected behavior, and (3) emphasize that even domain-specific improvements have practical value for applications like data-to-text generation in enterprise settings.
+
+**Risk 7: Negative or Null Results**  
+**Likelihood:** Very Low | **Impact:** High | **Severity:** Medium
+
+Despite theoretical motivation and preliminary positive results, final comprehensive evaluation might reveal no statistically significant improvements, or improvements might disappear when controlling for confounding factors (e.g., additional training steps, different random seeds).
+
+*Mitigation Strategy:* Preliminary results from baseline training and initial enhanced model experiments show consistent positive trends, making null results unlikely. However, if negative results occur, we will: (1) conduct thorough diagnostic analysis to understand why the approach failed (implementation errors, theoretical assumptions violated, baseline already optimal), (2) report negative results honestly as a contribution to the field—demonstrating what doesn't work is valuable for guiding future research, (3) publish findings as a "Lessons Learned" paper or workshop contribution, and (4) pivot to alternative formulations if time permits (e.g., different loss functions, architectural modifications). The research design's emphasis on understanding mechanisms (via MED and Clamping Frequency metrics) ensures scientific value even if performance improvements are absent.
+
+**Overall Risk Assessment:**  
+The majority of identified risks have low-to-medium likelihood and impact, with multiple mitigation strategies in place. The most critical risks (insufficient improvements, excessive fluency degradation) are already partially mitigated by preliminary positive results. Computational and implementation risks are well-controlled through infrastructure choices and validation procedures. The project has high probability of successful completion with publishable results, either as performance improvements or as scientific insights into the discrete commitment problem in diffusion-based text generation.
 
 ## 8. Expected Outcomes
 
@@ -186,5 +238,57 @@ This research makes five primary contributions to the field. First, we introduce
 The broader impact of this work extends to immediate applications in data-to-text generation with structural constraints (E2E, WebNLG), controlled story generation with syntactic and semantic requirements, and code generation with syntax constraints and type systems. It opens research directions for extension to larger models and vocabularies at GPT-3 scale, application to other discrete domains like structured data and music generation, and combination with compositional control and hierarchical constraints. From a practical deployment perspective, the reduced inference costs through decreased clamping frequency and more reliable constraint satisfaction make diffusion-based controllable generation more feasible for real-world applications where both quality and computational efficiency matter.
 
 ---
+## References
+
+1. Li, X., Thickstun, J., Gulrajani, I., Liang, P., & Hashimoto, T. B. (2022). Diffusion-LM improves controllable text generation. *Advances in Neural Information Processing Systems*, 35, 4328-4343.
+
+2. Van den Oord, A., Vinyals, O., & Kavukcuoglu, K. (2017). Neural discrete representation learning. *Advances in Neural Information Processing Systems*, 30, 6306-6315.
+
+3. Gao, Z., Guo, J., Tan, X., Zhu, Y., Zhang, F., Bian, J., & Xu, L. (2024). Empowering diffusion models on the embedding space for text generation. *Proceedings of the 2024 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies (NAACL-HLT)*, 4664-4683.
+
+4. Novikova, J., Dušek, O., & Rieser, V. (2017). The E2E dataset: New challenges for end-to-end generation. *Proceedings of the 18th Annual SIGdial Meeting on Discourse and Dialogue*, 201-206.
+
+5. Mostafazadeh, N., Chambers, N., He, X., Parikh, D., Batra, D., Vanderwende, L., Kohli, P., & Allen, J. (2016). A corpus and cloze evaluation for deeper understanding of commonsense stories. *Proceedings of the 2016 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies (NAACL-HLT)*, 839-849.
+
+6. Ho, J., Jain, A., & Abbeel, P. (2020). Denoising diffusion probabilistic models. *Advances in Neural Information Processing Systems*, 33, 6840-6851.
+
+7. Song, Y., Sohl-Dickstein, J., Kingma, D. P., Kumar, A., Ermon, S., & Poole, B. (2021). Score-based generative modeling through stochastic differential equations. *International Conference on Learning Representations (ICLR)*.
+
+8. Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, Ł., & Polosukhin, I. (2017). Attention is all you need. *Advances in Neural Information Processing Systems*, 30, 5998-6008.
+
+9. Dathathri, S., Madotto, A., Lan, J., Hung, J., Frank, E., Molino, P., Yosinski, J., & Liu, R. (2020). Plug and play language models: A simple approach to controlled text generation. *International Conference on Learning Representations (ICLR)*.
+
+10. Yang, K., & Klein, D. (2021). FUDGE: Controlled text generation with future discriminators. *Proceedings of the 2021 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies (NAACL)*, 3511-3535.
+
+11. Radford, A., Wu, J., Child, R., Luan, D., Amodei, D., & Sutskever, I. (2019). Language models are unsupervised multitask learners. *OpenAI Blog*, 1(8), 9.
+
+12. Devlin, J., Chang, M. W., Lee, K., & Toutanova, K. (2019). BERT: Pre-training of deep bidirectional transformers for language understanding. *Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies (NAACL-HLT)*, 4171-4186.
+
+13. Honnibal, M., Montani, I., Van Landeghem, S., & Boyd, A. (2020). spaCy: Industrial-strength natural language processing in Python. *Software available from https://spacy.io*.
+
+14. Kitaev, N., & Klein, D. (2018). Constituency parsing with a self-attentive encoder. *Proceedings of the 56th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)*, 2676-2686.
+
+15. Papineni, K., Roukos, S., Ward, T., & Zhu, W. J. (2002). BLEU: A method for automatic evaluation of machine translation. *Proceedings of the 40th Annual Meeting of the Association for Computational Linguistics*, 311-318.
+
+16. Lin, C. Y. (2004). ROUGE: A package for automatic evaluation of summaries. *Text Summarization Branches Out*, 74-81.
+
+17. Vedantam, R., Lawrence Zitnick, C., & Parikh, D. (2015). CIDEr: Consensus-based image description evaluation. *Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR)*, 4566-4575.
+
+18. Zhang, T., Kishore, V., Wu, F., Weinberger, K. Q., & Artzi, Y. (2020). BERTScore: Evaluating text generation with BERT. *International Conference on Learning Representations (ICLR)*.
+
+19. Loshchilov, I., & Hutter, F. (2019). Decoupled weight decay regularization. *International Conference on Learning Representations (ICLR)*.
+
+20. Paszke, A., Gross, S., Massa, F., Lerer, A., Bradbury, J., Chanan, G., ... & Chintala, S. (2019). PyTorch: An imperative style, high-performance deep learning library. *Advances in Neural Information Processing Systems*, 32, 8024-8035.
+
+21. Wolf, T., Debut, L., Sanh, V., Chaumond, J., Delangue, C., Moi, A., ... & Rush, A. M. (2020). Transformers: State-of-the-art natural language processing. *Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing: System Demonstrations*, 38-45.
+
+22. Sennrich, R., Haddow, B., & Birch, A. (2016). Neural machine translation of rare words with subword units. *Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)*, 1715-1725.
+
+23. Kingma, D. P., & Ba, J. (2015). Adam: A method for stochastic optimization. *International Conference on Learning Representations (ICLR)*.
+
+24. Marcus, M., Santorini, B., & Marcinkiewicz, M. A. (1993). Building a large annotated corpus of English: The Penn Treebank. *Computational Linguistics*, 19(2), 313-330.
+
+25. Biewald, L. (2020). Experiment tracking with Weights and Biases. *Software available from https://wandb.ai*.
+
 
 **Note:** Update this document as your methodology evolves during implementation.
