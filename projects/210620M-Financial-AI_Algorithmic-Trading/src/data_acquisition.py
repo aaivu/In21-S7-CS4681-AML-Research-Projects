@@ -3,6 +3,7 @@ import pandas as pd
 import ta
 import numpy as np
 import os
+import argparse
 
 def get_stock_data(ticker='AAPL', start='2010-01-01', end='2023-01-01', save_path='processed_data'):
     print(f"Downloading data for {ticker}...")
@@ -37,3 +38,19 @@ def get_stock_data(ticker='AAPL', start='2010-01-01', end='2023-01-01', save_pat
 
     print(f"Train shape: {train.shape}, Test shape: {test.shape}")
     return train, test
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Download and process stock data.')
+    parser.add_argument('--ticker', type=str, default='AAPL', help='Stock ticker symbol (default: AAPL)')
+    parser.add_argument('--start', type=str, default='2010-01-01', help='Start date in YYYY-MM-DD format')
+    parser.add_argument('--end', type=str, default='2023-01-01', help='End date in YYYY-MM-DD format')
+    parser.add_argument('--save_path', type=str, default='processed_data', help='Directory to save train/test CSV files')
+
+    args = parser.parse_args()
+
+    get_stock_data(
+        ticker=args.ticker,
+        start=args.start,
+        end=args.end,
+        save_path=args.save_path
+    )
