@@ -20,7 +20,10 @@ $ git clone https://github.com/JaninduTharuka/MolCLR.git
 $ cd MolCLR
 ```
 
-change parameters in `config_finetune.yaml` and,
+download datasets from [here](https://drive.google.com/file/d/1aDtN6Qqddwwn2x612kWz9g0xQcuAtzDE/view?usp=sharing).
+extract zip file under ./data folder.
+
+change parameters in `config_finetune.yaml` and run,
 ```
 $ python finetune.py
 ```
