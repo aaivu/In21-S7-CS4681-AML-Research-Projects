@@ -1,0 +1,2 @@
+Dataset,Model,Description,Best Step,Training Time (s),Test Error,Test AUC,Test LogLoss
+CLICK,deep,"Multi-layer NODE (8 layers, 128 trees each)",50,3243.857527732849,0.35073,0.7097221662949418,0.6668387638715969

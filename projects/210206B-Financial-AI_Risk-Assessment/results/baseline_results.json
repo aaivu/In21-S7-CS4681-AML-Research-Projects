@@ -1,0 +1,21 @@
+{
+  "CLICK_deep": {
+    "dataset": "CLICK",
+    "model_config": "deep",
+    "model_description": "Multi-layer NODE (8 layers, 128 trees each)",
+    "best_step": 50,
+    "best_val_metric": 0.34924,
+    "training_time": 3243.857527732849,
+    "test_results": {
+      "test_error": 0.35073,
+      "test_auc": 0.7097221662949418,
+      "test_logloss": 0.6668387638715969
+    },
+    "dataset_info": {
+      "train_size": 800000,
+      "valid_size": 100000,
+      "test_size": 100000,
+      "num_features": 11
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "baseline": {
+    "test_error": 0.35073,
+    "test_auc": 0.7097221662949418,
+    "test_logloss": 0.6668387638715969,
+    "training_time": 3243.857527732849,
+    "best_step": 50
+  },
+  "sweep_results": [
+    {
+      "config_name": "lr3e-04_bce_none_qhadam",
+      "config_idx": 1,
+      "learning_rate": 0.0003,
+      "loss_type": "bce",
+      "focal_gamma": 0.0,
+      "label_smoothing": 0.0,
+      "scheduler_type": "none",
+      "optimizer": "qhadam",
+      "best_step": 1400,
+      "training_time": 458.9872033596039,
+      "test_error": 0.35461,
+      "test_auc": 0.7021571121242594,
+      "test_logloss": 0.7218235750209092,
+      "improvement_over_baseline": {
+        "error_delta": -0.0038799999999999946,
+        "auc_delta": -0.007565054170682428,
+        "logloss_delta": -0.05498481114931231
+      }
+    }
+  ],
+  "timestamp": "2025-10-15T12:46:10.111247",
+  "total_configurations": 1
+}

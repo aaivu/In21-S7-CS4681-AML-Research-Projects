@@ -1,0 +1,162 @@
+[
+  {
+    "experiment": "a9a_sweep_lr0.005-wr5-ls0.0_2025.10.02_04-51-32",
+    "lr": 0.005,
+    "warmup_ratio": 0.05,
+    "loss_type": null,
+    "label_smoothing": 0.0,
+    "test_auc": 0.9045569044313844,
+    "test_error": 0.14814814814814814,
+    "best_step": 612
+  },
+  {
+    "experiment": "a9a_sweep_lr0.005-wr10-ls0.0_2025.10.02_05-05-46",
+    "lr": 0.005,
+    "warmup_ratio": 0.1,
+    "loss_type": null,
+    "label_smoothing": 0.0,
+    "test_auc": 0.9035792935537283,
+    "test_error": 0.14863951845709722,
+    "best_step": 612
+  },
+  {
+    "experiment": "a9a_sweep_lr0.01-wr5-ls0.0_2025.10.02_05-18-26",
+    "lr": 0.01,
+    "warmup_ratio": 0.05,
+    "loss_type": null,
+    "label_smoothing": 0.0,
+    "test_auc": 0.9031478508838786,
+    "test_error": 0.15091210613598674,
+    "best_step": 612
+  },
+  {
+    "experiment": "a9a_sweep_lr0.01-wr10-ls0.0_2025.10.02_05-29-57",
+    "lr": 0.01,
+    "warmup_ratio": 0.1,
+    "loss_type": null,
+    "label_smoothing": 0.0,
+    "test_auc": 0.9034948816529259,
+    "test_error": 0.15115779129046128,
+    "best_step": 612
+  },
+  {
+    "experiment": "a9a_sweep_lr0.005-wr5-ls0.05_2025.10.02_05-41-28",
+    "lr": 0.005,
+    "warmup_ratio": 0.05,
+    "loss_type": null,
+    "label_smoothing": 0.05,
+    "test_auc": 0.9041941653540688,
+    "test_error": 0.15318469381487623,
+    "best_step": 612
+  },
+  {
+    "experiment": "a9a_sweep_lr0.005-wr10-ls0.05_2025.10.02_05-53-01",
+    "lr": 0.005,
+    "warmup_ratio": 0.1,
+    "loss_type": null,
+    "label_smoothing": 0.05,
+    "test_auc": 0.9036144895735516,
+    "test_error": 0.15699281370923163,
+    "best_step": 612
+  },
+  {
+    "experiment": "a9a_sweep_lr0.01-wr5-ls0.05_2025.10.02_06-04-32",
+    "lr": 0.01,
+    "warmup_ratio": 0.05,
+    "loss_type": null,
+    "label_smoothing": 0.05,
+    "test_auc": 0.9020128850992399,
+    "test_error": 0.15515017505067255,
+    "best_step": 612
+  },
+  {
+    "experiment": "a9a_sweep_lr0.01-wr10-ls0.05_2025.10.02_06-16-05",
+    "lr": 0.01,
+    "warmup_ratio": 0.1,
+    "loss_type": null,
+    "label_smoothing": 0.05,
+    "test_auc": 0.9038693771313377,
+    "test_error": 0.1482709907253854,
+    "best_step": 612
+  },
+  {
+    "experiment": "a9a_sweep_lr0.005-wr5-focal1.5_2025.10.02_06-27-38",
+    "lr": 0.005,
+    "warmup_ratio": 0.05,
+    "loss_type": "focal",
+    "focal_gamma": 1.5,
+    "test_auc": 0.9038698998703816,
+    "test_error": 0.14857809716847858,
+    "best_step": 612
+  },
+  {
+    "experiment": "a9a_sweep_lr0.005-wr10-focal1.5_2025.10.02_06-39-12",
+    "lr": 0.005,
+    "warmup_ratio": 0.1,
+    "loss_type": "focal",
+    "focal_gamma": 1.5,
+    "test_auc": 0.9035375162493431,
+    "test_error": 0.1489466249001904,
+    "best_step": 612
+  },
+  {
+    "experiment": "a9a_sweep_lr0.01-wr5-focal1.5_2025.10.02_06-50-48",
+    "lr": 0.01,
+    "warmup_ratio": 0.05,
+    "loss_type": "focal",
+    "focal_gamma": 1.5,
+    "test_auc": 0.9027941656468028,
+    "test_error": 0.15035931453841903,
+    "best_step": 612
+  },
+  {
+    "experiment": "a9a_sweep_lr0.01-wr10-focal1.5_2025.10.02_07-02-54",
+    "lr": 0.01,
+    "warmup_ratio": 0.1,
+    "loss_type": "focal",
+    "focal_gamma": 1.5,
+    "test_auc": 0.9040012014634184,
+    "test_error": 0.15183342546526626,
+    "best_step": 612
+  },
+  {
+    "experiment": "a9a_sweep_lr0.005-wr5-focal2.0_2025.10.02_07-14-42",
+    "lr": 0.005,
+    "warmup_ratio": 0.05,
+    "loss_type": "focal",
+    "focal_gamma": 2.0,
+    "test_auc": 0.9035716929280306,
+    "test_error": 0.15287758737178306,
+    "best_step": 612
+  },
+  {
+    "experiment": "a9a_sweep_lr0.005-wr10-focal2.0_2025.10.02_07-26-28",
+    "lr": 0.005,
+    "warmup_ratio": 0.1,
+    "loss_type": "focal",
+    "focal_gamma": 2.0,
+    "test_auc": 0.903935822491203,
+    "test_error": 0.1539831705669185,
+    "best_step": 612
+  },
+  {
+    "experiment": "a9a_sweep_lr0.01-wr5-focal2.0_2025.10.02_07-38-23",
+    "lr": 0.01,
+    "warmup_ratio": 0.05,
+    "loss_type": "focal",
+    "focal_gamma": 2.0,
+    "test_auc": 0.9023579033229685,
+    "test_error": 0.15269332350592715,
+    "best_step": 612
+  },
+  {
+    "experiment": "a9a_sweep_lr0.01-wr10-focal2.0_2025.10.02_07-49-57",
+    "lr": 0.01,
+    "warmup_ratio": 0.1,
+    "loss_type": "focal",
+    "focal_gamma": 2.0,
+    "test_auc": 0.9031809507201358,
+    "test_error": 0.15017505067256312,
+    "best_step": 612
+  }
+]

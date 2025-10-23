@@ -1,0 +1,2 @@
+Config,Learning Rate,Loss Type,Scheduler,Optimizer,Best Step,Training Time (s),Test Error,Test AUC,Test LogLoss,Error Δ vs Baseline,AUC Δ vs Baseline
+lr3e-04_bce_none_qhadam,0.0003,bce,none,qhadam,1400,459.0,0.35461,0.70216,0.72182,-0.00388,-0.00757
