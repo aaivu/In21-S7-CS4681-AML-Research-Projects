@@ -152,7 +152,7 @@ Standardized evaluation frameworks are essential for comparing RAG systems:
 
 **Why it matters:** Real-time applications and user-facing systems require responses within strict latency constraints. Current agentic frameworks may be impractical for production deployments requiring sub-second response times. Reducing latency while maintaining reasoning quality is critical for adoption.
 
-**How your project addresses it:** Investigate strategies to reduce LLM calls through more efficient planning mechanisms, such as enabling the Planner to create complex, multi-action plans simultaneously rather than sequentially, or employing smaller, distilled models for critique loops that maintain reasoning quality at lower computational cost.
+**How this project addresses it:** Investigate strategies to reduce LLM calls through more efficient planning mechanisms, such as enabling the Planner to create complex, multi-action plans simultaneously rather than sequentially, or employing smaller, distilled models for critique loops that maintain reasoning quality at lower computational cost.
 
 ### Gap 2: Limited Tool Ecosystem and Integration
 
@@ -160,15 +160,15 @@ Standardized evaluation frameworks are essential for comparing RAG systems:
 
 **Why it matters:** Many complex questions cannot be answered through retrieval alone. For example, comparative analysis across multiple sources may require computation, real-time data requires web search, and some queries benefit from structured database queries rather than semantic search. Limited tool availability severely constrains system capabilities.
 
-**How your project addresses it:** Extend the Executor to use a wider array of tools beyond retrieval, including code interpreters for calculations, web search APIs for real-time information, and database query engines. Develop a meta-layer for tool selection and composition based on query analysis.
+**How this project addresses it:** Extend the Executor to use a wider array of tools beyond retrieval, including code interpreters for calculations, web search APIs for real-time information, and database query engines. Develop a meta-layer for tool selection and composition based on query analysis.
 
 ### Gap 3: Hybrid Planning and Fine-Grained Critique Mechanisms
 
-**Description:** Current agentic approaches typically employ either explicit planning (like CogniRAG) or token-level self-correction (like Self-RAG), but rarely combine both. This creates a gap between coarse-grained strategic planning and fine-grained token-level quality control.
+**Description:** Current agentic approaches typically employ either explicit planning  or token-level self-correction (like Self-RAG), but rarely combine both. This creates a gap between coarse-grained strategic planning and fine-grained token-level quality control.
 
 **Why it matters:** Combining explicit planning with fine-grained critique could enable systems to verify factual accuracy at the token level while maintaining overall strategic coherence. This hybrid approach could significantly improve both accuracy and efficiency by catching errors at multiple abstraction levels.
 
-**How your project addresses it:** Explore architectures combining CogniRAG's explicit planning with Self-RAG's reflection tokens. Develop mechanisms to integrate token-level critique into the Planner's decision loop, allowing for both strategic and tactical error correction.
+**How your project addresses it:** Explore architectures combining explicit planning with Self-RAG's reflection tokens. Develop mechanisms to integrate token-level critique into the Planner's decision loop, allowing for both strategic and tactical error correction.
 
 ### Gap 4: Generalization Across Query Types and Domains
 
@@ -176,7 +176,7 @@ Standardized evaluation frameworks are essential for comparing RAG systems:
 
 **Why it matters:** Real-world deployments must handle heterogeneous queries across domains without task-specific fine-tuning. Understanding how RAG systems generalize, and developing techniques to improve cross-domain performance, is critical for building robust, versatile systems.
 
-**How your project addresses it:** Conduct comprehensive evaluation across multiple benchmarks and diverse domains. Analyze failure modes across different query types and develop adaptive mechanisms that adjust retrieval and reasoning strategies based on query characteristics.
+**How this project addresses it:** Conduct comprehensive evaluation across multiple benchmarks and diverse domains. Analyze failure modes across different query types and develop adaptive mechanisms that adjust retrieval and reasoning strategies based on query characteristics.
 
 ### Gap 5: Interpretability and Explainability
 
@@ -184,7 +184,7 @@ Standardized evaluation frameworks are essential for comparing RAG systems:
 
 **Why it matters:** For high-stakes applications (legal, medical, financial), users need to understand not just answers but the reasoning behind them. Poor explanation quality undermines trust and adoption. Developing better explanation mechanisms is crucial for transparency.
 
-**How your project addresses it:** Develop specialized explanation modules that transform technical reasoning traces into clear, natural language explanations. Implement interactive explanation systems allowing users to drill down into specific reasoning steps and question the system's decisions.
+**How this project addresses it:** Develop specialized explanation modules that transform technical reasoning traces into clear, natural language explanations. Implement interactive explanation systems allowing users to drill down into specific reasoning steps and question the system's decisions.
 
 
 ## 5. Theoretical Framework
@@ -213,7 +213,7 @@ RAG systems operate at the intersection of several theoretical domains:
 
 **User Studies**: While less common in academic papers, some recent work includes user evaluations assessing whether systems' explanations are helpful and whether users trust the recommendations.
 
-### 6.2 Most Promising Approaches for Your Work
+### 6.2 Most Promising Approaches for this Work
 
 **Agentic Architectures with Modular Design**: CogniRAG's three-component architecture (Planner, Executor, Generator) shows promise for handling complex reasoning while maintaining interpretability. This separation of concerns enables independent optimization of each component.
 
@@ -230,7 +230,7 @@ RAG systems operate at the intersection of several theoretical domains:
 
 The RAG literature reveals a field in rapid evolution from foundational single-pass pipelines to sophisticated agentic systems that model human cognitive processes. The progression through naive RAG, advanced RAG with optimized retrieval techniques, to agentic RAG demonstrates how incorporating reasoning, planning, and self-critique mechanisms substantially improves performance on complex tasks.
 
-CogniRAG and similar recent frameworks show that explicit modeling of cognitive processes—planning, execution, and synthesis—yields significant improvements. Empirical results demonstrate 24.1% improvements in answer correctness and 8.5% improvements in response relevancy compared to strong non-agentic baselines, particularly on multi-hop reasoning tasks that challenge conventional approaches.
+Recent frameworks show that explicit modeling of cognitive processes—planning, execution, and synthesis—yields significant improvements. Empirical results demonstrate 24.1% improvements in answer correctness and 8.5% improvements in response relevancy compared to strong non-agentic baselines, particularly on multi-hop reasoning tasks that challenge conventional approaches.
 
 However, substantial research opportunities remain. Latency optimization, expanded tool integration, and hybrid approaches combining explicit planning with token-level critique represent critical frontiers. Additionally, gaps in cross-domain generalization, improved interpretability, and comprehensive evaluation methodologies remain to be addressed.
 
