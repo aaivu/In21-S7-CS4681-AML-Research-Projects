@@ -70,6 +70,34 @@ These arguments enable the use of a cyclical learning rate schedule, an alternat
 - cyclic_base_lr and --cyclic_max_lr: Define the lower and upper bounds of the learning rate cycle.
 - cyclic_step_size: Controls the duration of a half-cycle, allowing for adjustment of the learning rate's oscillation frequency.
 - cyclic_mode: Allows testing of different cycle shapes, such as 'triangular' or 'triangular2'.
+  - `triangular`: A simple up-and-down oscillation with constant amplitude.
+  - `triangular2`: Similar to `triangular`, but each cycle’s amplitude is halved, leading to a gradual reduction in oscillation range.
+  - `exp_range`: Uses an exponentially decaying upper bound (scaled by gamma), gradually lowering the entire learning rate envelope over time.
+
+```python
+group = parser.add_argument_group("cyclic_lr")
+group.add_argument('--use_cyclic_lr', action='store_true', default=False,
+                   help='If set, use cyclic learning rate schedule instead of exponential/cosine')
+group.add_argument('--cyclic_base_lr', type=float, default=1e-4,
+                   help='Lower bound of the cyclic learning rate')
+group.add_argument('--cyclic_max_lr', type=float, default=1e-2,
+                   help='Upper bound of the cyclic learning rate')
+group.add_argument('--cyclic_step_size', type=int, default=2000,
+                   help='Number of iterations per half cycle (so full cycle = 2 * step_size)')
+group.add_argument('--cyclic_mode', choices=["triangular", "triangular2", "exp_range"], default="triangular",
+                   help='Cyclic mode: triangular, triangular2, or exp_range')
+group.add_argument('--cyclic_gamma', type=float, default=1.0,
+                   help='Scaling factor for exp_range mode')
+```
+
+#### 4.1.3. Cosine Annealing Scheduler
+
+These arguments enable the use of a **cosine annealing learning rate schedule**, which gradually decreases the learning rate following a cosine curve instead of exponential decay. This helps achieve smoother convergence and can improve stability during long training runs.
+
+- use_cosine_annealing: A boolean flag to activate the cosine annealing scheduler. When enabled, all learning rates will follow a cosine decay pattern instead of the default exponential schedule.
+- cosine_T_max: Defines the total number of steps for one complete cosine cycle. If set to `0`, the learning rate remains constant after the warmup phase.
+- cosine_eta_min: Specifies the minimum learning rate value reached at the end of a cosine cycle.
+- cosine_warmup_steps: Number of initial steps used for linear warmup before starting the cosine decay, allowing the model to stabilize early in training.
 
 ```python
 group = parser.add_argument_group("cosine_annealing")
@@ -83,7 +111,7 @@ group.add_argument('--cosine_warmup_steps', type=int, default=0,
                    help='Linear warmup steps from 0 to initial lr before cosine annealing starts')
 ```
 
-#### 4.1.3. Progressive TV and Sparsity Scheduling
+#### 4.1.4. Progressive TV and Sparsity Scheduling
 
 This code enables the progressive regularization training strategy. It allows the strength of the Total Variation (TV) and sparsity regularizations to decay over time, balancing initial smoothness with final detail preservation.
 
