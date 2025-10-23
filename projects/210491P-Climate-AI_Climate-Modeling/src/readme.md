@@ -1,4 +1,4 @@
-- The notebook is provided inside the [src](https://github.com/aaivu/In21-S7-CS4681-AML-Research-Projects/tree/main/projects/210491P-Climate-AI_Climate-Modeling/src) folder.
+- The [notebook](https://colab.research.google.com/drive/1Fo7tOpook_ShKfgWG-7BsV3w1fuXcr3q?usp=sharing) is provided inside the [src](https://github.com/aaivu/In21-S7-CS4681-AML-Research-Projects/tree/main/projects/210491P-Climate-AI_Climate-Modeling/src) folder.
 - This notebook is not tuned for running in the local environment.
 - Upload the notebook to the Google Colab environment and run.
 - Use GPU runtime from faster execution.
