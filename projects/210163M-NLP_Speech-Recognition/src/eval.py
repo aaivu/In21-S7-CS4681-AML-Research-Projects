@@ -1,9 +1,8 @@
-# evaluate.py
 # Load a trained checkpoint and run evaluation on test-clean split, printing WER/CER.
 
 import argparse
 import os
-from transformers import AutoProcessor, AutoModelForCTC
+from model import Model
 from dataset_loader import load_librispeech_hf
 import numpy as np
 import torch
