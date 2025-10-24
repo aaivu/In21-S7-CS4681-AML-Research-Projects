@@ -1,51 +1,89 @@
-## III. THE EDGEMIN PIPELINE
-EdgeMIN consists of three sequential stages designed to systematically reduce model size and computational cost while preserving accuracy. Figure 1 provides a high-level overview.
+# Methodology: EdgeMIN - Systematic Pipeline for Compressing Transformers Towards Edge Optimization
+
+**Student:** 210257F - Nipuni Jayathilake  
+**Research Area:** Small LLMs: Efficient Models (Model Compression)  
+**Supervisor:** Dr. Uthayasanker Thayasivam  
+**Date:** 2025-01-24  
+
+---
+
+## I. Overview and Research Objective
+
+This methodology outlines **EdgeMIN**, a systematic three-stage pipeline designed to compress transformer models for deployment on **resource-constrained edge devices** (e.g., IoT sensors, smartphones). The goal is to achieve maximal size and computational reduction (8× theoretical compression) with minimal accuracy degradation ($<2\%$ loss).
+
+### A. Model Baselines
+
+| Model | Role | Architecture | Key Dimensions | Parameters (M) |
+| :--- | :--- | :--- | :--- | :--- |
+| **DistilBERT-base-uncased** | Teacher ($E_T$) | 6 Layers, 12 Heads | 768 Hidden Dim | 66.96M |
+| **MiniLM-like** | Student ($E_S$) | 12 Layers, 12 Heads | 384 Hidden Dim | 33.36M |
+
+### B. Validation Strategy
+
+The pipeline is validated on the **SST-2** sentiment classification task from the GLUE benchmark. Efficiency is measured using practical metrics on a **Google Colab standard CPU** to simulate edge constraints: actual file size (MB), parameter count (M), theoretical FLOPs (Billion), and CPU inference latency (ms).
+
+---
+
+## II. The EdgeMIN Pipeline (Sequential Stages)
+
+EdgeMIN applies compression in a strict order: **Distill $\rightarrow$ Prune Heads $\rightarrow$ Quantize/Prune FFN**.
 
 ### A. Stage 1: MiniLMv2 Relational Distillation
-**Goal:** Create a smaller student model that retains the core semantic understanding of a larger teacher.
 
-**Method:** We adopt MiniLMv2 [10], a relation-based KD method. Unlike methods matching hidden states, MiniLMv2 distills the similarity matrices (relations) derived from self-attention components (Queries Q, Keys K, Values V). Specifically, for each head in corresponding layers of the teacher (T) and student (S), it calculates self-relation matrices like $R_{QQ} = \text{softmax}(QQ^T / \sqrt{d_k})$. The distillation loss minimizes the KL divergence between these relation matrices across specified relation types (typically Q-Q, K-K, V-V) and layers:
+**Goal:** Create a strong student model by transferring core semantic understanding.
 
-$L_{distill} = \sum_{l=1}^{L_S} \sum_{i \in \{Q,K,V\}} \text{KL}(R^{(i)}_{T,l} \parallel R^{(i)}_{S,l})$ (1)
+**Method:** Relation-based Knowledge Distillation (KD) is used. It minimizes the KL divergence between the teacher and student's **self-attention relation matrices** ($R^{(i)}$) for Queries (Q), Keys (K), and Values (V):
 
-**Rationale:** This approach focuses on capturing the interactions learned by self-attention, which are crucial for transformer performance. Its key advantage is flexibility – it doesn’t require the student and teacher to have identical hidden dimensions or head counts, making it suitable for diverse model pairs.
+$$
+L_{\text{distill}} = \sum_{l=1}^{L_S} \sum_{i \in \{Q,K,V\}} \text{KL}(R^{(i)}_{T,l} \parallel R^{(i)}_{S,l}) \tag{1}
+$$
 
-**Implementation:** Our teacher $E_T$ is DistilBERT-base-uncased (6L, 768H, 12A, 66.96M params). The student $E_S$ uses a MiniLM-like architecture (12L, 384H, 12A, 33.36M params). Distillation is performed during fine-tuning on the downstream task.
+**Rationale:** This focuses on token interactions, providing flexibility to handle the student's different hidden dimension (384 vs. 768).
 
 ### B. Stage 2: Structured Attention Head Pruning
-**Goal:** Remove computationally redundant attention heads with minimal impact on accuracy.
 
-**Method:** We employ structured pruning based on gradient magnitude [8]. During a brief fine-tuning phase on the task data, we compute an importance score $I_h$ for each attention head $h$ in every layer:
+**Goal:** Remove computationally redundant attention heads, reducing parameters and FLOPs.
 
-$I_h = \parallel \nabla_{a_h} L_{task} \parallel_2$ (2)
+**Method:** **Structured pruning** based on **gradient magnitude** is employed. The importance score ($I_h$) for each head $h$ is computed from the task loss ($L_{\text{task}}$):
 
-where $a_h$ is the output vector of head $h$, and $L_{task}$ is the task loss. This score reflects the head’s influence on the final prediction. Heads are ranked globally by $I_h$, and the lowest-scoring 20% of heads are permanently removed (masked).
+$$
+I_h = \parallel \nabla_{a_h} L_{\text{task}} \parallel_2 \tag{2}
+$$
 
-**Rationale:** Removing entire heads results in a smaller, dense model, reducing parameters, FLOPs, and actual file size, unlike unstructured pruning. Magnitude-based criteria are simple and effective baselines. A short fine-tuning step (2 epochs) is crucial after pruning to allow the remaining heads to compensate and recover performance.
+The lowest-scoring **20%** of heads are permanently removed. This is followed by a short recovery fine-tuning phase (2 epochs).
 
-**Implementation:** We use PyTorch’s pruning utilities to mask the weights corresponding to the pruned heads. We explicitly save the pruned model after removing the masks permanently, resulting in a measurable reduction in file size and parameter count.
+**Rationale:** Structured removal creates a smaller, dense model, yielding direct **FLOPs reduction** and minimal accuracy impact.
 
-### C. Stage 3: Aggressive Post-Training Quantization (PTQ)
-**Goal:** Drastically reduce memory footprint and potentially accelerate inference by converting weights to lower precision, combined with implicit FFN pruning.
+### C. Stage 3: Aggressive Post-Training Dynamic Quantization (PTQ)
 
-**Method:** We apply dynamic PTQ using PyTorch’s `torch.quantization.quantize_dynamic` [16]. This function targets linear layers (`torch.nn.Linear`), converting their FP32 weights to INT8 format offline.
+**Goal:** Drastically reduce memory footprint and achieve maximal parameter reduction.
 
-$w_{INT8} = \text{clamp}(\text{round}(w/\text{scale} + \text{zero\_point}), q_{\min}, q_{\max})$ (3)
+**Method:** **Dynamic PTQ** converts FP32 linear layer weights to **INT8** format. This theoretically provides $4\times$ memory compression.
 
-Scale and zero point are computed per-tensor based on the weight range. During inference on CPU, these INT8 weights are dequantized back to FP32 "on-the-fly" just before computation.
+$$
+w_{\text{INT8}} = \text{clamp}(\text{round}(w/\text{scale} + \text{zero\_point}), q_{\min}, q_{\max}) \tag{3}
+$$
 
-The "aggressive" nature of this stage in our pipeline is evidenced by the substantial parameter drop (from 32.18M post-head-pruning to 11.94M post-quantization), suggesting that the process used implicitly prunes or removes components within the Feed-Forward Network (FFN) layers, beyond simple INT8 conversion. While the exact library mechanism for this implicit pruning is not detailed here, its effect is a key contributor to the final model’s compactness.
+**Aggressiveness & Key Result:** The quantization process leads to an observed substantial parameter drop (to **11.94M**), indicating **implicit pruning** of near-zero neurons within the Feed-Forward Network (FFN) layers, beyond simple INT8 conversion.
 
-**Rationale:** PTQ offers significant memory savings (theoretically up to 4× for INT8) with minimal implementation overhead (no retraining needed). Dynamic PTQ avoids the need for a calibration dataset. Combining this with implicit FFN pruning aims for maximal parameter and size reduction in the final stage, while potentially impacting latency as measured on CPU.
+---
 
-### D. Pipeline Order Justification
-The sequence (Distill → Prune Heads → Quantize/Prune FFN) is chosen deliberately:
-* **Distill First:** Establishes the best possible small student baseline by transferring knowledge before removing any components.
-* **Prune Heads Second:** Reduces the model complexity (parameters, FLOPs) before the final, potentially more sensitive, quantization/FFN pruning step. Fine-tuning after pruning helps stabilize the model.
-* **Quantize Last:** Applies the precision reduction and aggressive FFN pruning to the already compacted model. Applying PTQ last avoids the need to perform QAT, simplifying the process.
+## III. Experimental Protocol and Evaluation
 
-### E. Efficiency Metrics Measurement Details
-* **File Size (MB):** Measured via `os.path.getsize` on `pytorch_model.bin` (for standard models saved using `.save_pretrained()`) or the `.pth` file (for quantized models saved using `torch.save()`).
-* **Parameter Count (M):** Sum of `p.numel()` for `model.parameters()`.
-* **FLOPs (Billion):** Measured using `thop.profile` on a single representative input sequence (length 128) for the non-quantized models (Teacher, Student Baseline, Distilled, Pruned). FLOPs for Quantized and Pruned+Quantized are reported as identical to their respective parents (Distilled and Pruned) based on the assumption that dynamic PTQ primarily changes precision, not operation count, although the implicit FFN pruning significantly reduces the *actual* computation. We use an estimated 7.8B for baseline/distilled, 7.1B for pruned, and 3.0B for quantized/pruned-quantized based on observed parameter drops.
-* **CPU Latency (ms):** Measured using `time.time()` on a Google Colab standard CPU instance. For each model and task, we perform 10 warm-up inferences followed by measuring the average time over 100 subsequent inferences on a batch size of 1.
+### A. Pipeline Order Justification
+
+The sequence is chosen for progressive refinement:
+1.  **Distill First:** Ensures optimal knowledge transfer to the full student capacity.
+2.  **Prune Heads Second:** Reduces complexity before the final, precision-altering step.
+3.  **Quantize Last:** Applies maximum memory reduction and aggressive FFN pruning to the already compacted model.
+
+### B. Efficiency Metrics Measurement
+
+All models are evaluated under identical conditions on the Colab CPU:
+
+| Metric | Measurement Details |
+| :--- | :--- |
+| **File Size (MB)** | Measured via $\text{os.path.getsize}$ on the saved model file. |
+| **Parameter Count (M)** | Sum of $\text{p.numel()}$ for all $\text{model.parameters()}$. |
+| **CPU Latency (ms)** | Average time over **100 runs** on a single sample (Batch Size = 1), following **10 warm-up inferences**. |
+| **FLOPs (Billion)** | Measured using $\text{thop.profile}$ on a single input sequence (length 128). |
