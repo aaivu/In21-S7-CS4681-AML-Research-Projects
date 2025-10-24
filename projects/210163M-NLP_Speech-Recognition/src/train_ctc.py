@@ -4,7 +4,7 @@
 import argparse
 import os
 from model import Model
-from transformers import Wav2Vec2ForCTC, Wav2Vec2Processor, Wav2Vec2Config, TrainingArguments, Trainer
+from transformers import TrainingArguments, Trainer
 from dataset_loader import load_librispeech_hf
 from utils import DataCollatorCTCWithPadding, compute_metrics_logits, save_json
 import torch
