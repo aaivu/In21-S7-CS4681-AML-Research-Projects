@@ -1,0 +1,222 @@
+{
+    "_comment": "Memory-optimized configuration for 4x RTX 3090 (24GB each)",
+    "name": "EgoClip_MultiScale_MemoryOptimized",
+    "n_gpu": 4,
+    
+    "arch": {
+        "type": "FrozenInTime",
+        "args": {
+            "video_params": {
+                "model": "SpaceTimeTransformer",
+                "arch_config": "base_patch16_224",
+                "num_frames": 16,
+                "pretrained": true,
+                "time_init": "zeros"
+            },
+            "text_params": {
+                "model": "distilbert-base-uncased",
+                "pretrained": true,
+                "input": "text"
+            },
+            "projection": "minimal",
+            "load_checkpoint": ""
+        }
+    },
+    
+    "data_loader": [
+        {
+            "type": "MultiDistTextVideoDataLoader",
+            "args": {
+                "dataset_name": "EgoClip",
+                "data_dir": "dataset/ego4d_256/data_chunked/",
+                "meta_dir": "dataset/ego4d_toolbox/0_metadata/egovlp",
+                "reader": "cv2_egoclip",
+                "shuffle": true,
+                "num_workers": 8,
+                "_comment_batch_size": "Reduced for memory efficiency with multi-scale",
+                "batch_size": 12,
+                "split": "train",
+                "subsample": "mcq",
+                "text_params": {
+                    "input": "text"
+                },
+                "video_params": {
+                    "input_res": 224,
+                    "num_frames": 16,
+                    "loading": "lax"
+                },
+                "neg_param": false,
+                "multiscale_enabled": true,
+                "frame_counts": [4, 8, 16]
+            }
+        }
+    ],
+    
+    "optimizer": {
+        "type": "AdamW",
+        "args": {
+            "_comment_lr": "Slightly reduced for stability with gradient checkpointing",
+            "lr": 2.5e-5,
+            "betas": [0.9, 0.98],
+            "eps": 1e-6,
+            "weight_decay": 1e-6
+        }
+    },
+    
+    "loss": {
+        "type": "EgoNCE",
+        "args": {},
+        "tau_max": 0.07,
+        "tau_min": 0.03,
+        "tau_schedule": "cosine"
+    },
+    
+    "metrics": [
+        "egomcq_accuracy_metrics"
+    ],
+    
+    "trainer": {
+        "_comment_epochs": "Reduced for memory optimization testing",
+        "epochs": 8,
+        "max_samples_per_epoch": 400000,
+        "save_dir": "results/EgoClip_MultiScale_MemoryOptimized",
+        "save_period": 2,
+        "verbosity": 2,
+        "monitor": "min val_loss_0",
+        "early_stop": 8,
+        "init_val": false,
+        "neptune": false
+    },
+    
+    "visualizer": {
+        "type": ""
+    },
+    
+    "_comment_memory_config": "Memory optimization settings for 4x RTX 3090",
+    "memory_optimization": {
+        "enabled": true,
+        "_comment_gradient_checkpointing": "Only apply to 16-frame scale to save memory",
+        "gradient_checkpointing": {
+            "enabled": true,
+            "scales": [16],
+            "use_reentrant": false
+        },
+        "_comment_mixed_precision": "FP16 training with dynamic loss scaling",
+        "mixed_precision": {
+            "enabled": true,
+            "loss_scale": "dynamic",
+            "init_scale": 65536.0,
+            "growth_factor": 2.0,
+            "backoff_factor": 0.5,
+            "growth_interval": 2000
+        },
+        "_comment_sequential_processing": "Process scales one at a time",
+        "sequential_processing": {
+            "enabled": true,
+            "order": [4, 8, 16],
+            "cleanup_between_scales": true,
+            "force_cuda_cache_clear": true
+        },
+        "_comment_batch_optimization": "Adaptive batch sizing per scale",
+        "adaptive_batching": {
+            "enabled": true,
+            "base_batch_size": 12,
+            "scale_factors": {
+                "4": 1.0,
+                "8": 0.85,
+                "16": 0.7
+            },
+            "memory_threshold_gb": 20.0
+        },
+        "_comment_monitoring": "Memory usage monitoring",
+        "monitoring": {
+            "enabled": true,
+            "log_frequency": 50,
+            "alert_threshold_pct": 85,
+            "save_memory_logs": true
+        }
+    },
+    
+    "_comment_multiscale_config": "Multi-scale video encoder settings",
+    "multiscale": {
+        "enabled": true,
+        "frame_counts": [4, 8, 16],
+        "fusion_init": "uniform",
+        "fusion_trainable": true,
+        "fusion_type": "weighted",
+        "_comment_memory_settings": "Memory-efficient processing settings",
+        "sequential_processing": true,
+        "memory_efficient": true,
+        "use_gradient_checkpointing": true,
+        "checkpointing_scales": [16]
+    },
+    
+    "_comment_temporal_config": "Temporal consistency settings",
+    "temporal": {
+        "enabled": true,
+        "lambda_temporal_start": 0.08,
+        "lambda_temporal_end": 0.25,
+        "temporal_window": 2.0,
+        "batch_temporal_ratio": 0.25,
+        "_comment_reduced_ratio": "Reduced to 25% for memory efficiency"
+    },
+    
+    "_comment_temperature_config": "Temperature scheduling",
+    "temperature_scheduling": {
+        "enabled": true,
+        "tau_max": 0.07,
+        "tau_min": 0.03,
+        "tau_schedule": "cosine",
+        "total_epochs": 8
+    },
+    
+    "_comment_training_config": "Training optimization settings",
+    "training_optimization": {
+        "gradient_clipping": {
+            "enabled": true,
+            "max_norm": 0.8,
+            "_comment_reduced": "Reduced from 1.0 for stability with checkpointing"
+        },
+        "gradient_accumulation": {
+            "enabled": true,
+            "steps": 2,
+            "_comment": "Accumulate gradients to simulate larger batch size"
+        },
+        "amp_optimization": {
+            "opt_level": "O1",
+            "keep_batchnorm_fp32": true,
+            "loss_scale": "dynamic"
+        }
+    },
+    
+    "_comment_distributed_config": "4-GPU distributed training settings",
+    "distributed": {
+        "backend": "nccl",
+        "find_unused_parameters": false,
+        "bucket_cap_mb": 25,
+        "_comment_sync": "Reduce synchronization overhead",
+        "gradient_predivide_factor": 4.0
+    },
+    
+    "_comment_logging_config": "Enhanced logging for memory monitoring",
+    "logging": {
+        "log_fusion_weights": true,
+        "log_temperature_schedule": true,
+        "log_memory_usage": true,
+        "memory_log_frequency": 25,
+        "tensorboard_detailed": true,
+        "save_memory_stats": true
+    },
+    
+    "_comment_rtx3090_specific": "RTX 3090 specific optimizations",
+    "hardware_optimization": {
+        "gpu_model": "RTX_3090",
+        "memory_per_gpu_gb": 24,
+        "total_memory_gb": 96,
+        "_comment_utilization": "Target 85% max utilization per GPU",
+        "target_utilization_pct": 85,
+        "enable_tf32": true,
+        "cudnn_benchmark": true,
+        "cudnn_deterministic": false
+    }
+}

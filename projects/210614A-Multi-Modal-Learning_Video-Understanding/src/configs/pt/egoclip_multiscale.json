@@ -1,0 +1,145 @@
+{
+    "name": "EgoClip_MultiScale",
+    "n_gpu": 8,
+    "arch": {
+        "type": "FrozenInTime",
+        "args": {
+            "video_params": {
+                "model": "SpaceTimeTransformer",
+                "arch_config": "base_patch16_224",
+                "num_frames": 16,
+                "pretrained": true,
+                "time_init": "zeros"
+            },
+            "text_params": {
+                "model": "distilbert-base-uncased",
+                "pretrained": true,
+                "input": "text"
+            },
+            "projection": "minimal",
+            "load_checkpoint": ""
+        }
+    },
+    "data_loader": [
+        {
+            "type": "MultiDistTextVideoDataLoader",
+            "args": {
+                "dataset_name": "EgoClip",
+                "data_dir": "dataset/ego4d_256/data_chunked/",
+                "meta_dir": "dataset/ego4d_toolbox/0_metadata/egovlp",
+                "reader": "cv2_egoclip",
+                "shuffle": true,
+                "num_workers": 16,
+                "batch_size": 16,
+                "split": "train",
+                "subsample": "mcq",
+                "text_params": {
+                    "input": "text"
+                },
+                "video_params": {
+                    "input_res": 224,
+                    "num_frames": 16,
+                    "loading": "lax"
+                },
+                "neg_param": false,
+                "_comment_multiscale": "Multi-scale frame sampling parameters",
+                "multiscale_enabled": true,
+                "frame_counts": [4, 8, 16],
+                "temporal_sampling": "uniform"
+            }
+        }
+    ],
+    "optimizer": {
+        "type": "AdamW",
+        "args": {
+            "lr": 3e-5
+        }
+    },
+    "loss": {
+        "type": "EgoNCE",
+        "args": {},
+        "_comment_temperature": "Temperature scheduling parameters for enhanced EgoNCE",
+        "tau_max": 0.07,
+        "tau_min": 0.03,
+        "tau_schedule": "cosine"
+    },
+    "metrics": [
+        "egomcq_accuracy_metrics"
+    ],
+    "trainer": {
+        "epochs": 10,
+        "max_samples_per_epoch": 500000,
+        "save_dir": "results/EgoClip_MultiScale",
+        "save_period": 1,
+        "verbosity": 2,
+        "monitor": "min val_loss_0",
+        "early_stop": 10,
+        "init_val": false,
+        "neptune": false
+    },
+    "visualizer": {
+        "type": ""
+    },
+    "_comment_multiscale_config": "Multi-scale video encoder configuration",
+    "multiscale": {
+        "enabled": true,
+        "frame_counts": [4, 8, 16],
+        "fusion_init": "uniform",
+        "fusion_trainable": true,
+        "fusion_type": "weighted",
+        "sequential_processing": true,
+        "memory_efficient": true
+    },
+    "_comment_temporal_config": "Temporal consistency loss configuration",
+    "temporal": {
+        "enabled": true,
+        "lambda_temporal_start": 0.1,
+        "lambda_temporal_end": 0.3,
+        "temporal_window": 2.0,
+        "batch_temporal_ratio": 0.3,
+        "consistency_type": "cosine_similarity",
+        "schedule_lambda": true
+    },
+    "_comment_temperature_config": "Temperature scheduling configuration",
+    "temperature_scheduling": {
+        "enabled": true,
+        "tau_max": 0.07,
+        "tau_min": 0.03,
+        "tau_schedule": "cosine",
+        "total_epochs": 10,
+        "warmup_epochs": 1
+    },
+    "_comment_batch_sampler_config": "Custom batch sampler configuration",
+    "batch_sampler": {
+        "use_temporal_pairs": true,
+        "temporal_ratio": 0.3,
+        "max_temporal_gap": 2.0,
+        "min_clips_per_video": 2,
+        "fallback_to_random": true
+    },
+    "_comment_logging_config": "Enhanced logging and monitoring",
+    "logging": {
+        "log_fusion_weights": true,
+        "log_temperature_schedule": true,
+        "log_temporal_losses": true,
+        "tensorboard_detailed": true,
+        "save_enhanced_checkpoints": true,
+        "fusion_weights_frequency": "epoch",
+        "temperature_log_frequency": "batch"
+    },
+    "_comment_training_enhancements": "Additional training enhancements",
+    "training_enhancements": {
+        "gradient_clipping": {
+            "enabled": true,
+            "max_norm": 1.0
+        },
+        "mixed_precision": {
+            "enabled": true,
+            "loss_scale": "dynamic"
+        },
+        "gradient_accumulation": {
+            "enabled": false,
+            "steps": 1
+        }
+    }
+}
