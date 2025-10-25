@@ -1,115 +1,167 @@
-# ID-CodeFormer: Enhancing Identity Preservation in Blind Face Restoration
+<p align="center">
+  <img src="assets/CodeFormer_logo.png" height=110>
+</p>
 
-[**Original CodeFormer Repository**](https://github.com/SanjanaChamindu/CodeFormer.git)
+## Towards Robust Blind Face Restoration with Codebook Lookup Transformer (NeurIPS 2022)
 
-This repository contains the official PyTorch implementation for the paper: **"Enhancing Identity Preservation in Blind Face Restoration via Supervised Feature Embedding"**.
+[Paper](https://arxiv.org/abs/2206.11253) | [Project Page](https://shangchenzhou.com/projects/CodeFormer/) | [Video](https://youtu.be/d3VDpkXlueI)
 
-ID-CodeFormer is an enhanced version of the state-of-the-art Blind Face Restoration model, CodeFormer. Our work addresses the "identity drift" problem, where restored faces can lose resemblance to the original subject. By integrating an identity-preserving loss supervised by a pre-trained ArcFace network, ID-CodeFormer significantly improves identity fidelity while maintaining the high perceptual quality and robustness of the original model.
 
-### ✨ Key Features
+<a href="https://colab.research.google.com/drive/1m52PNveE4PBhYrecj34cnpEeiHcC5LTb?usp=sharing"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="google colab logo"></a> [![Hugging Face](https://img.shields.io/badge/Demo-%F0%9F%A4%97%20Hugging%20Face-blue)](https://huggingface.co/spaces/sczhou/CodeFormer) [![Replicate](https://img.shields.io/badge/Demo-%F0%9F%9A%80%20Replicate-blue)](https://replicate.com/sczhou/codeformer) [![OpenXLab](https://img.shields.io/badge/Demo-%F0%9F%90%BC%20OpenXLab-blue)](https://openxlab.org.cn/apps/detail/ShangchenZhou/CodeFormer) ![Visitors](https://api.infinitescript.com/badgen/count?name=sczhou/CodeFormer&ltext=Visitors)
 
-- **Enhanced Identity Preservation:** Directly mitigates identity loss by incorporating a supervised feature embedding loss from a pre-trained face recognition network.
-- **High-Fidelity Restoration:** Achieves a superior balance between perceptual quality and identity preservation, even on severely degraded images.
-- **Robust Performance:** Retains the robustness of the original CodeFormer, effectively handling various real-world degradations like noise, blur, and compression artifacts.
-- **Simple and Effective:** The identity-preserving module is easy to integrate into the original training pipeline without complex architectural changes.
 
-### 🎨 Qualitative Results Comparison
+[Shangchen Zhou](https://shangchenzhou.com/), [Kelvin C.K. Chan](https://ckkelvinchan.github.io/), [Chongyi Li](https://li-chongyi.github.io/), [Chen Change Loy](https://www.mmlab-ntu.com/person/ccloy/) 
 
-Our model demonstrates a clear improvement in preserving the subject's identity compared to the baseline CodeFormer.
+S-Lab, Nanyang Technological University
 
-**_Note:_** _To display your image, upload collage.jpg to your repository (e.g., into an assets folder) and replace the placeholder text below with the correct Markdown link: !\[Qualitative Results\](./assets/collage.jpg)_
+<img src="assets/network.jpg" width="800px"/>
 
-_From left to right: Degraded Input, Baseline CodeFormer, Our ID-CodeFormer, Ground Truth. Notice how ID-CodeFormer produces a restoration that is more faithful to the ground truth identity._
 
-### 🏛️ Architecture Overview
+:star: If CodeFormer is helpful to your images or projects, please help star this repo. Thanks! :hugs: 
 
-ID-CodeFormer builds directly upon the robust architecture of CodeFormer. The core modification is the introduction of an **Identity-Preserving Loss** during the training phase.
 
-- A low-quality input is processed by CodeFormer's encoder and Transformer to predict a sequence of discrete codebook indices.
-- These indices are used to construct a feature map that is decoded into a restored face image.
-- **Our Contribution:** During training, we feed both the restored image and the ground-truth image into a frozen, pre-trained ArcFace network to extract identity embeddings.
-- The cosine distance between these embeddings is calculated as an identity loss (\$L_{ids}\$), which is then backpropagated to update the weights of the CodeFormer encoder and Transformer. This new supervisory signal explicitly guides the model to predict codes that better preserve the subject's identity.
+### Update
+- **2023.07.20**: Integrated to :panda_face: [OpenXLab](https://openxlab.org.cn/apps). Try out online demo! [![OpenXLab](https://img.shields.io/badge/Demo-%F0%9F%90%BC%20OpenXLab-blue)](https://openxlab.org.cn/apps/detail/ShangchenZhou/CodeFormer)
+- **2023.04.19**: :whale: Training codes and config files are public available now.
+- **2023.04.09**: Add features of inpainting and colorization for cropped and aligned face images.
+- **2023.02.10**: Include `dlib` as a new face detector option, it produces more accurate face identity.
+- **2022.10.05**: Support video input `--input_path [YOUR_VIDEO.mp4]`. Try it to enhance your videos! :clapper: 
+- **2022.09.14**: Integrated to :hugs: [Hugging Face](https://huggingface.co/spaces). Try out online demo! [![Hugging Face](https://img.shields.io/badge/Demo-%F0%9F%A4%97%20Hugging%20Face-blue)](https://huggingface.co/spaces/sczhou/CodeFormer)
+- **2022.09.09**: Integrated to :rocket: [Replicate](https://replicate.com/explore). Try out online demo! [![Replicate](https://img.shields.io/badge/Demo-%F0%9F%9A%80%20Replicate-blue)](https://replicate.com/sczhou/codeformer)
+- [**More**](docs/history_changelog.md)
 
-**_Note:_** _To display your diagram, upload it to your repository and replace the placeholder text below with the correct Markdown link: !\[Architecture Diagram\](./assets/architecture.png)_
+### TODO
+- [x] Add training code and config files
+- [x] Add checkpoint and script for face inpainting
+- [x] Add checkpoint and script for face colorization
+- [x] ~~Add background image enhancement~~
 
-_Diagram illustrating the CodeFormer pipeline with the addition of the ArcFace-supervised identity loss feedback loop._
+#### :panda_face: Try Enhancing Old Photos / Fixing AI-arts
+[<img src="assets/imgsli_1.jpg" height="226px"/>](https://imgsli.com/MTI3NTE2) [<img src="assets/imgsli_2.jpg" height="226px"/>](https://imgsli.com/MTI3NTE1) [<img src="assets/imgsli_3.jpg" height="226px"/>](https://imgsli.com/MTI3NTIw) 
 
-### 🚀 Getting Started
+#### Face Restoration
 
-#### 1\. Prerequisites
+<img src="assets/restoration_result1.png" width="400px"/> <img src="assets/restoration_result2.png" width="400px"/>
+<img src="assets/restoration_result3.png" width="400px"/> <img src="assets/restoration_result4.png" width="400px"/>
 
-- Python >= 3.8
-- PyTorch >= 1.9
-- Other dependencies can be installed via pip:  
-    pip install -r requirements.txt  
+#### Face Color Enhancement and Restoration
 
-#### 2\. Clone the Repository
+<img src="assets/color_enhancement_result1.png" width="400px"/> <img src="assets/color_enhancement_result2.png" width="400px"/>
 
-git clone \[<https://github.com/SanjanaChamindu/CodeFormer.git\>](<https://github.com/SanjanaChamindu/CodeFormer.git>)  
-cd CodeFormer  
+#### Face Inpainting
 
-#### 3\. Download Pre-trained Models
+<img src="assets/inpainting_result1.png" width="400px"/> <img src="assets/inpainting_result2.png" width="400px"/>
 
-You will need the pre-trained weights for our ID-CodeFormer model, the baseline CodeFormer, and other dependent models like ArcFace.
 
-Run the following script to download the necessary models:
 
-python scripts/download_pretrained_models.py  
+### Dependencies and Installation
 
-This will download and place the models in the weights/ directory.
+- Pytorch >= 1.7.1
+- CUDA >= 10.1
+- Other required packages in `requirements.txt`
+```
+# git clone this repository
+git clone https://github.com/sczhou/CodeFormer
+cd CodeFormer
 
-### ⚙️ Inference
+# create new anaconda env
+conda create -n codeformer python=3.8 -y
+conda activate codeformer
 
-To restore faces in your own images, use the inference_codeformer.py script.
+# install python dependencies
+pip3 install -r requirements.txt
+python basicsr/setup.py develop
+conda install -c conda-forge dlib (only for face detection or cropping with dlib)
+```
+<!-- conda install -c conda-forge dlib -->
 
-**Restore a single image:**
+### Quick Inference
 
-python inference_codeformer.py --input_path path/to/your/image.jpg --output_path results/  
+#### Download Pre-trained Models:
+Download the facelib and dlib pretrained models from [[Releases](https://github.com/sczhou/CodeFormer/releases/tag/v0.1.0) | [Google Drive](https://drive.google.com/drive/folders/1b_3qwrzY_kTQh0-SnBoGBgOrJ_PLZSKm?usp=sharing) | [OneDrive](https://entuedu-my.sharepoint.com/:f:/g/personal/s200094_e_ntu_edu_sg/EvDxR7FcAbZMp_MA9ouq7aQB8XTppMb3-T0uGZ_2anI2mg?e=DXsJFo)] to the `weights/facelib` folder. You can manually download the pretrained models OR download by running the following command:
+```
+python scripts/download_pretrained_models.py facelib
+python scripts/download_pretrained_models.py dlib (only for dlib face detector)
+```
 
-**Key Arguments:**
+Download the CodeFormer pretrained models from [[Releases](https://github.com/sczhou/CodeFormer/releases/tag/v0.1.0) | [Google Drive](https://drive.google.com/drive/folders/1CNNByjHDFt0b95q54yMVp6Ifo5iuU6QS?usp=sharing) | [OneDrive](https://entuedu-my.sharepoint.com/:f:/g/personal/s200094_e_ntu_edu_sg/EoKFj4wo8cdIn2-TY2IV6CYBhZ0pIG4kUOeHdPR_A5nlbg?e=AO8UN9)] to the `weights/CodeFormer` folder. You can manually download the pretrained models OR download by running the following command:
+```
+python scripts/download_pretrained_models.py CodeFormer
+```
 
-- \--input_path: Path to the input image or a folder of images.
-- \--output_path: Folder to save the restored images.
-- \--w: A value between 0 and 1 to control the trade-off between quality (lower w) and fidelity (higher w). Default: 0.8.
-- \--face_upsample: Set this flag to upsample the restored faces.
+#### Prepare Testing Data:
+You can put the testing images in the `inputs/TestWhole` folder. If you would like to test on cropped and aligned faces, you can put them in the `inputs/cropped_faces` folder. You can get the cropped and aligned faces by running the following command:
+```
+# you may need to install dlib via: conda install -c conda-forge dlib
+python scripts/crop_align_face.py -i [input folder] -o [output folder]
+```
 
-### 📈 Quantitative Results
 
-Our method shows a significant improvement in identity similarity (ID-Sim) with a negligible impact on standard reconstruction metrics.
+#### Testing:
+[Note] If you want to compare CodeFormer in your paper, please run the following command indicating `--has_aligned` (for cropped and aligned face), as the command for the whole image will involve a process of face-background fusion that may damage hair texture on the boundary, which leads to unfair comparison.
 
-| **Method** | **PSNR ↑** | **SSIM ↑** | **LPIPS ↓** | **FID ↓** | **ID-Sim ↑** |
-| --- | --- | --- | --- | --- | --- |
-| CodeFormer | 26.54 | 0.782 | 0.231 | 35.1 | 0.58 |
-| --- | --- | --- | --- | --- | --- |
-| **ID-CodeFormer** | **26.51** | **0.781** | **0.233** | **35.5** | **0.72** |
-| --- | --- | --- | --- | --- | --- |
-| _Quantitative results on the LFW dataset._ |     |     |     |     |     |
-| --- | --- | --- | --- | --- | --- |
+Fidelity weight *w* lays in [0, 1]. Generally, smaller *w* tends to produce a higher-quality result, while larger *w* yields a higher-fidelity result. The results will be saved in the `results` folder.
 
-### 🎓 Training ID-CodeFormer
 
-To train the model from scratch, please follow these steps:
+🧑🏻 Face Restoration (cropped and aligned face)
+```
+# For cropped and aligned faces (512x512)
+python inference_codeformer.py -w 0.5 --has_aligned --input_path [image folder]|[image path]
+```
 
-- **Prepare Datasets:** Prepare the FFHQ dataset as described in the original CodeFormer documentation.
-- **Configure:** Modify the YAML configuration file in the options/ directory to specify dataset paths and training parameters.
-- **Run Training:**  
-    python basicsr/train.py -opt options/CodeFormer_stage2.yml --launcher pytorch  
+:framed_picture: Whole Image Enhancement
+```
+# For whole image
+# Add '--bg_upsampler realesrgan' to enhance the background regions with Real-ESRGAN
+# Add '--face_upsample' to further upsample restorated face with Real-ESRGAN
+python inference_codeformer.py -w 0.7 --input_path [image folder]|[image path]
+```
 
-### 📜 Citation
+:clapper: Video Enhancement
+```
+# For Windows/Mac users, please install ffmpeg first
+conda install -c conda-forge ffmpeg
+```
+```
+# For video clips
+# Video path should end with '.mp4'|'.mov'|'.avi'
+python inference_codeformer.py --bg_upsampler realesrgan --face_upsample -w 1.0 --input_path [video path]
+```
 
-If you find our work useful for your research, please consider citing our paper:
+🌈 Face Colorization (cropped and aligned face)
+```
+# For cropped and aligned faces (512x512)
+# Colorize black and white or faded photo
+python inference_colorization.py --input_path [image folder]|[image path]
+```
 
-@inproceedings{sanjana2025idcodeformer,  
-title={Enhancing Identity Preservation in Blind Face Restoration via Supervised Feature Embedding},  
-author={Sanjana K. Y. C. and Thayasivam, Uthayasanker},  
-booktitle={To Be Determined},  
-year={2025}  
-}  
+🎨 Face Inpainting (cropped and aligned face)
+```
+# For cropped and aligned faces (512x512)
+# Inputs could be masked by white brush using an image editing app (e.g., Photoshop) 
+# (check out the examples in inputs/masked_faces)
+python inference_inpainting.py --input_path [image folder]|[image path]
+```
+### Training:
+The training commands can be found in the documents: [English](docs/train.md) **|** [简体中文](docs/train_CN.md).
 
-### 🙏 Acknowledgments
+### Citation
+If our work is useful for your research, please consider citing:
 
-This project is built upon the excellent work of the original [**CodeFormer**](https://github.com/sczhou/CodeFormer) authors. We are grateful for their high-quality public repository.
+    @inproceedings{zhou2022codeformer,
+        author = {Zhou, Shangchen and Chan, Kelvin C.K. and Li, Chongyi and Loy, Chen Change},
+        title = {Towards Robust Blind Face Restoration with Codebook Lookup TransFormer},
+        booktitle = {NeurIPS},
+        year = {2022}
+    }
 
-### 📄 License
+### License
 
-This project is licensed under the [S-Lab License](https://www.google.com/search?q=LICENSE). It is available for non-commercial research purposes only.
+This project is licensed under <a rel="license" href="https://github.com/sczhou/CodeFormer/blob/master/LICENSE">NTU S-Lab License 1.0</a>. Redistribution and use should follow this license.
+
+### Acknowledgement
+
+This project is based on [BasicSR](https://github.com/XPixelGroup/BasicSR). Some codes are brought from [Unleashing Transformers](https://github.com/samb-t/unleashing-transformers), [YOLOv5-face](https://github.com/deepcam-cn/yolov5-face), and [FaceXLib](https://github.com/xinntao/facexlib). We also adopt [Real-ESRGAN](https://github.com/xinntao/Real-ESRGAN) to support background image enhancement. Thanks for their awesome works.
+
+### Contact
+If you have any questions, please feel free to reach me out at `shangchenzhou@gmail.com`. 

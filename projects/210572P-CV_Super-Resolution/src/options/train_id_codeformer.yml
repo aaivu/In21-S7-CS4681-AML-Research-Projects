@@ -1,0 +1,122 @@
+# options/train_id_codeformer.yml
+
+# general settings
+name: ID_CodeFormer
+model_type: CodeFormerModel
+num_gpu: 1
+manual_seed: 0
+
+# dataset and data loader settings
+datasets:
+  train:
+    name: FFHQ
+    type: FFHQBlindDataset
+    dataroot_gt: ./datasets/ffhq
+    io_backend:
+      type: disk
+    gt_size: 512
+    use_hflip: true
+    use_corrupt: true
+
+    # degradation configurations
+    blur_kernel_size: 41
+    kernel_list: ['iso', 'aniso']
+    kernel_prob: [0.5, 0.5]
+    blur_sigma: [0.1, 10]
+    downsample_range: [1, 8]
+    noise_range: [0, 10]
+    jpeg_range: [60, 100]
+
+    # data loader
+    num_worker_per_gpu: 2
+    batch_size_per_gpu: 4
+    dataset_enlarge_ratio: 1
+    prefetch_mode: ~
+
+# network structures
+network_g:
+  type: CodeFormer
+  dim_embd: 512
+  codebook_size: 1024
+  n_head: 8
+  n_layers: 9
+  connect_list: ['32', '64', '128', '256']
+  fix_modules: ['quantize', 'generator']
+  vqgan_path: 'weights/CodeFormer/vqgan_code1024.pth'
+
+network_d:
+  type: VQGANDiscriminator
+  nc: 3
+  ndf: 64
+  n_layers: 4
+
+# path
+path:
+  pretrain_network_g: 'weights/CodeFormer/codeformer_stage2.pth'
+  param_key_g: params_ema
+  strict_load_g: false
+  resume_state: ~
+
+# training settings
+train:
+  optim_g:
+    type: Adam
+    lr: !!float 2e-5
+    weight_decay: 0
+    betas: [0.9, 0.99]
+  optim_d:
+    type: Adam
+    lr: !!float 2e-5
+    weight_decay: 0
+    betas: [0.9, 0.99]
+
+  scheduler:
+    type: CosineAnnealingRestartLR
+    periods: [150000]
+    restart_weights: [1]
+    eta_min: !!float 1e-7
+
+  total_iter: 150000
+  warmup_iter: -1
+  ema_decay: 0.999
+
+  # losses
+  pixel_opt:
+    type: L1Loss
+    loss_weight: 1.0
+    reduction: mean
+  perceptual_opt:
+    type: LPIPSLoss
+    loss_weight: 1.0
+    use_input_norm: true
+    range_norm: true
+  gan_opt:
+    type: GANLoss
+    gan_type: hinge
+    loss_weight: 1.0
+  identity_opt:
+    type: IdentityLoss
+    loss_weight: 10.0  # You can tune this weight
+
+  net_d_iters: 1
+  net_d_start_iter: 5001
+
+# validation settings
+val:
+  val_freq: 5000
+  save_img: true
+  metrics:
+    psnr:
+      type: calculate_psnr
+      crop_border: 0
+      test_y_channel: false
+    ssim:
+      type: calculate_ssim
+      crop_border: 0
+      test_y_channel: false
+
+# logging settings
+logger:
+  print_freq: 100
+  save_checkpoint_freq: 5000
+  use_tb_logger: true
