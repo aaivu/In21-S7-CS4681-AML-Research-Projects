@@ -1,0 +1,89 @@
+{
+    "name": "MultiScale_EgoClip_4_8_16f",
+    "n_gpu": 8,
+    "arch": {
+        "type": "MultiScaleFrozenInTime",
+        "args": {
+            "video_params": {
+                "model": "SpaceTimeTransformer",
+                "arch_config": "base_patch16_224",
+                "num_frames": 16,
+                "pretrained": true,
+                "time_init": "zeros"
+            },
+            "text_params": {
+                "model": "distilbert-base-uncased",
+                "pretrained": true,
+                "input": "text"
+            },
+            "projection": "minimal",
+            "load_checkpoint": "",
+            "multi_scale_frames": [4, 8, 16],
+            "fusion_type": "learned_weighted"
+        }
+    },
+    "data_loader": [
+        {
+            "type": "MultiDistTextVideoDataLoader",
+            "args": {
+                "dataset_name": "MultiScaleEgoClip",
+                "data_dir": "dataset/ego4d_256/data_chunked/",
+                "meta_dir": "dataset/ego4d_toolbox/0_metadata/egovlp",
+                "reader": "cv2_egoclip",
+                "shuffle": true,
+                "num_workers": 16,
+                "batch_size": 12,
+                "split": "train",
+                "subsample": "mcq",
+                "text_params": {
+                    "input": "text"
+                },
+                "video_params": {
+                    "input_res": 224,
+                    "num_frames": 16,
+                    "loading": "lax"
+                },
+                "multi_scale_frames": [4, 8, 16],
+                "neg_param": false
+            }
+        }
+    ],
+    "optimizer": {
+        "type": "AdamW",
+        "args": {
+            "lr": 2e-5,
+            "weight_decay": 0.01
+        }
+    },
+    "loss": {
+        "type": "MultiScaleEgoNCE",
+        "args": {
+            "temperature": 0.05,
+            "noun": true,
+            "verb": true,
+            "consistency_weight": 0.1
+        }
+    },
+    "metrics": [
+        "egomcq_accuracy_metrics"
+    ],
+    "trainer": {
+        "epochs": 10,
+        "max_samples_per_epoch": 500000,
+        "save_dir": "results/MultiScale_EgoClip_4_8_16f",
+        "save_period": 1,
+        "verbosity": 2,
+        "monitor": "min val_loss_0",
+        "early_stop": 10,
+        "init_val": false,
+        "neptune": false,
+        "temperature_scheduler": {
+            "initial_temp": 0.1,
+            "final_temp": 0.01,
+            "total_steps": 50000
+        }
+    },
+    "visualizer": {
+        "type": ""
+    }
+}
