@@ -1,0 +1,5 @@
+Error Category,Percentage,Example,Description
+Rare Entity Mentions,42%,"Which genus of plants has more species, Graptopetalum or Dudleya?","Uncommon botanical terms where exact matching is critical"
+Temporal Expressions,23%,"What year did the author of 'The Curious Incident of the Dog in the Night-Time' publish their first novel?","Questions requiring specific years/dates"
+Acronyms and Abbreviations,18%,"Which NASA mission launched in 1997 studied Saturn?","Technical acronyms needing exact matching"
+Multi-word Expressions,17%,"What is the birth name of the actor who played in 'The Shawshank Redemption'?","Fixed phrases and proper nouns"
