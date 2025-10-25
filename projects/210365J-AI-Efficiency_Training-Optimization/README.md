@@ -10,17 +10,17 @@
 ## Project Structure
 ```
 210365J-AI-Efficiency:Training-Optimization/
-├── README.md                    # This file
+├── README.md                    
 ├── docs/
-│   ├── research_proposal.md     # Your research proposal (Required)
-│   ├── literature_review.md     # Literature review and references
-│   ├── methodology.md           # Detailed methodology
-│   └── progress_reports/        # Weekly progress reports
-├── src/                         # Your source code
-├── data/                        # Datasets and data files
-├── experiments/                 # Experiment scripts and configs
-├── results/                     # Experimental results
-└── requirements.txt             # Project dependencies
+│   ├── research_proposal.md     
+│   ├── literature_review.md     
+│   ├── methodology.md           
+│   └── progress_reports/        
+├── src/                         
+├── data/                        
+├── experiments/                 
+├── results/                     
+└── requirements.txt             
 ```
 
 ## Getting Started
