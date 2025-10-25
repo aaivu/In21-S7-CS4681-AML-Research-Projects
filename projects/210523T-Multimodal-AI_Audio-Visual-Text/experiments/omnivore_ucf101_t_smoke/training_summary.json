@@ -1,0 +1,38 @@
+{
+  "config": {
+    "model": "swin_tiny_2d_temporalavg",
+    "num_classes": 101,
+    "frames": 32,
+    "stride": 2,
+    "size": 224,
+    "data": {
+      "root": "data/UCF101",
+      "split": 1,
+      "trainlist": "data/UCF101/splits/trainlist01.txt",
+      "testlist": "data/UCF101/splits/testlist01.txt",
+      "classind": "data/UCF101/splits/classInd.txt"
+    },
+    "optim": {
+      "name": "adamw",
+      "lr_backbone": 0.0001,
+      "lr_head": 0.0002,
+      "weight_decay": 0.05
+    },
+    "train": {
+      "batch_size": 2,
+      "accum_steps": 1,
+      "epochs": 1,
+      "num_workers": 0,
+      "amp": true,
+      "save_dir": "runs/omnivore_ucf101_t_smoke/"
+    }
+  },
+  "best_top1_accuracy": 65.47713454929949,
+  "total_epochs": 1,
+  "total_training_time": 13245.776448965073,
+  "final_metrics": {
+    "train_loss": 1.0997939545744795,
+    "val_top1": 65.47713454929949,
+    "val_top5": 90.95955590800952
+  }
+}

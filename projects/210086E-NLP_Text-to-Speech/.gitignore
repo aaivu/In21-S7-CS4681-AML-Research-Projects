@@ -1,0 +1,4 @@
+data/
+checkpoints/istft_vocoder*/epoch_*.pt
+checkpoints/istft_vocoder*/checkpoint_*.pt
+logs/

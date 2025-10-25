@@ -11,3 +11,5 @@ en-tr
 en-sv 
 en-nl 
 en-uk
+en-hi 
+en-ta

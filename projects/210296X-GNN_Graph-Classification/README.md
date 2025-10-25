@@ -1,4 +1,44 @@
+
 # GNN:Graph Classification - 210296X
+
+# Enhancing-GraphMAE
+Enhancing Graph Masked Autoencoders (GraphMAE) with Few-Shot Graph Learning
+
+## 🚀 Run on Google Colab
+
+You can run this notebook directly on **Google Colab**.
+
+> 💡 Recommended Runtime: **T4 GPU**  
+> (Go to: *Runtime → Change runtime type → Hardware accelerator → GPU → T4*)
+
+All required dependencies are automatically installed when running the notebook.  
+
+## ⚠️ Note on Datasets and Experiments
+
+- The **datasets are automatically downloaded** when you run the notebook — no manual download is needed.  
+- All **experimental results** are **printed directly in the notebook cells**.  
+
+## ⚠️ Note on Opening the Notebook
+
+Even you encounter a message saying **"Invalid Notebook"** when trying to preview this notebook directly on GitHub,  — this happens because of missing widget metadata in the notebook file (`metadata.widgets`).
+
+> 💡 **Workaround:**  
+> You can still run the notebook perfectly fine in **Google Colab** by following these steps:
+>
+> 1. Click the **“Download raw file”** option (top right of the notebook preview on GitHub).  
+> 2. Go to [Google Colab](https://colab.research.google.com/).  
+> 3. Upload the downloaded `.ipynb` file to Colab.  
+> 4. Set **Runtime → Change runtime type → GPU → T4 (Preferred)**.  
+> 5. Run all cells — the notebook will execute normally.  
+
+## ⚠️ Note on Dependencies
+
+If any dependency fails while running the notebook, simply run the below on the first cell :  
+ 
+```bash
+!pip install -r requirements.txt
+ ```
+> This will install the original versions of all packages from the `requirements.txt` file.
 
 ## Student Information
 
@@ -22,42 +62,3 @@
 ├── results/                     # Experimental results
 └── requirements.txt             # Project dependencies
 ```
-
-## Getting Started
-
-1. **Complete Research Proposal:** Fill out `docs/research_proposal.md`
-2. **Literature Review:** Document your literature review in `docs/literature_review.md`
-3. **Set Up Environment:** Add your dependencies to `requirements.txt`
-4. **Start Coding:** Begin implementation in the `src/` folder
-5. **Track Progress:** Use GitHub Issues to report weekly progress
-
-## Milestones
-
-- [ ] **Week 4:** Research Proposal Submission
-- [ ] **Week 5:** Literature Review Completion  
-- [ ] **Week 8:** Methodology Implementation
-- [ ] **Week 12:** Final Evaluation
-
-## Progress Tracking
-
-Create GitHub Issues with the following labels for tracking:
-- `student-210296X` (automatically added)
-- `literature-review`, `implementation`, `evaluation`, etc.
-- Tag supervisors (@supervisor) for feedback
-
-## Resources
-
-- Check the main repository `docs/` folder for guidelines
-- Use the `templates/` folder for document templates
-- Refer to `docs/project_guidelines.md` for detailed instructions
-
-## Academic Integrity
-
-- All work must be original
-- Properly cite all references
-- Acknowledge any collaboration
-- Follow university academic integrity policies
-
----
-
-**Remember:** Regular commits and clear documentation are essential for project success!

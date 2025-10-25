@@ -1,0 +1,10 @@
+huggingface-hub
+matplotlib
+Pillow
+pydicom
+scikit-image
+SimpleITK
+timm
+torch
+torchvision
+transformers

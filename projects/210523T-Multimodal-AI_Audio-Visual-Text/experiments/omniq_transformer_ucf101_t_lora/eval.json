@@ -1,0 +1,19 @@
+{
+  "model": "omniq_transformer",
+  "vision_backbone": "swin_tiny_patch4_window7_224",
+  "fusion_depth": 2,
+  "lora_enabled": true,
+  "dataset": "UCF101",
+  "split": 1,
+  "frames": 32,
+  "stride": 2,
+  "size": 224,
+  "batch_eval": 8,
+  "top1": 10.2,
+  "top5": 27.02,
+  "params_M": 41.8,
+  "trainable_params_M": 41.8,
+  "peak_vram_GB": 3.57,
+  "avg_latency_ms": 139.14,
+  "ckpt": "runs\\omniq_transformer_ucf101_t_lora\\best.pt"
+}

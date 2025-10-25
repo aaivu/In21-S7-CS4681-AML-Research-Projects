@@ -94,7 +94,10 @@ You are free to:
 - Share : copy and redistribute the material in any medium or format
 - Adapt : remix, transform, and build upon the material for any purpose, even commercially
 
-**Attribution required:** Please cite the original work: `[My Paper/Project DOI or URL]`.
+**Attribution required:** Please cite the original work:
+
+*I. Perera and U. Thayasivam, “A Novel Multi-branch ConvNeXt Architecture for Identifying Subtle Pathological Features in CT Scans,” Oct. 10, 2025, arXiv: arXiv:2510.09107. doi: 10.48550/arXiv.2510.09107.*
+
 
 ### 2. Source Code
 

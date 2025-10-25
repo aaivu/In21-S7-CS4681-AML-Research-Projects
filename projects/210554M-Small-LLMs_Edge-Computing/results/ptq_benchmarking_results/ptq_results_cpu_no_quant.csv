@@ -1,0 +1,2 @@
+Model,Size (GB),Latency (ms/token),Perplexity (WikiText-2),BoolQ Acc (%),SQuAD EM (%),SQuAD F1 (%)
+Qwen/Qwen2.5-0.5B (8bit-bnb),1.84,45.38,22.9,39.0,25.5,29.61

@@ -33,10 +33,15 @@
 
 ## Milestones
 
-- [ ] **Week 4:** Research Proposal Submission
-- [ ] **Week 5:** Literature Review Completion  
-- [ ] **Week 8:** Methodology Implementation
-- [ ] **Week 12:** Final Evaluation
+- [ ] **Week 5-6:** Finalize the literature review and complete the initial design of the Agentic LightRAG
+ architecture. Begin setting up the development environment and data preprocessing pipelines.
+- [ ] **Week 7-8:**  Implement the core components of the multi-agent system, including the Query De
+composition Agent and the specialized Retrieval Agents (Low-Level and High-Level).
+- [ ] **Week 9-10:** Integrate the agentic system with the graph-based knowledge index. Develop and
+ refine the communication protocols between the agents.
+- [ ] **Week 11-12:** Implement the Answer Synthesis Agent. Conduct initial experiments on benchmark
+ datasets and begin iterative debugging and performance tuning.
+- [ ] **Week 13-14:**  Complete the final evaluation, analyze the results, and write the final project report.
 
 ## Progress Tracking
 
@@ -49,7 +54,7 @@ Create GitHub Issues with the following labels for tracking:
 
 - Check the main repository `docs/` folder for guidelines
 - Use the `templates/` folder for document templates
-- Refer to `docs/project_guidelines.md` for detailed instructions
+- Refer to `docs/usage_instructions.md` for detailed instructions
 
 ## Academic Integrity
 

@@ -1,0 +1,7 @@
+dataset,EM_base,F1_base,Fuzzy_matches,EM_final,F1_final
+data_boolq_test,72.8,72.8,72.8,72.8,72.8
+data_arc_easy_test,40.2,51.70802204,47,47,53.72555587
+data_arc_hard_test,33.9,50.04144417,44.1,44.1,52.59259772
+data_commonsenseqa_test,32.6,33.77666667,33.5,33.5,34.20333333
+data_squad2_test,30.6,38.57796732,35.2,35.2,39.55782822
+hotpot_test,31.9,43.56233045,40.9,40.9,46.29780664

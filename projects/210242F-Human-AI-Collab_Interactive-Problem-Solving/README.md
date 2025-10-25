@@ -5,7 +5,7 @@
 - **Index Number:** 210242F
 - **Research Area:** Human-AI Collab:Interactive Problem Solving
 - **GitHub Username:** @HashithaJayarathna
-- **Email:** subavarshanaa.21@cse.mrt.ac.lk
+- **Email:** hashitha.21@cse.mrt.ac.lk
 
 ## Project Structure
 ```

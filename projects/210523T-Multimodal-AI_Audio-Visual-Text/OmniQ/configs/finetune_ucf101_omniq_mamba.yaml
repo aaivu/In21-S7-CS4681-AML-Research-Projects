@@ -1,0 +1,35 @@
+model: omniq_mamba
+num_classes: 101
+
+# visual clip spec must match the dataloader
+frames: 32
+stride: 2
+size: 224
+vision_backbone: swin_tiny_patch4_window7_224
+
+data:
+  root: data/UCF101
+  split: 1
+  trainlist: data/UCF101/splits/trainlist01.txt
+  testlist:  data/UCF101/splits/testlist01.txt
+  classind:  data/UCF101/splits/classInd.txt
+
+optim:
+  name: adamw
+  lr_backbone: 1.0e-4
+  lr_head: 2.0e-4
+  weight_decay: 0.05
+
+train:
+  batch_size: 2
+  accum_steps: 4
+  epochs: 10
+  num_workers: 4
+  amp: true
+  save_dir: runs/omniq_mamba_ucf101_t/
+
+fusion:
+  depth: 2
+  d_state: 128
+  expand: 2
+  dropout: 0.1

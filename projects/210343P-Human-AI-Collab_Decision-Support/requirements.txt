@@ -6,8 +6,8 @@ matplotlib>=3.5.0
 seaborn>=0.11.0
 
 # Deep Learning (uncomment as needed)
-# torch>=1.10.0
-# torchvision>=0.11.0
+torch>=1.10.0
+torchvision>=0.11.0
 # tensorflow>=2.8.0
 # keras>=2.8.0
 
@@ -26,3 +26,8 @@ tqdm>=4.62.0
 python-dotenv>=0.19.0
 
 # Add your specific requirements below
+argparse
+joblib
+optuna>=3.0.0
+interpret>=0.3.0
+

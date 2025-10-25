@@ -1,0 +1,34 @@
+
+  0%|                                                                                                                                          | 0/13140 [00:00<?, ?it/s]Traceback (most recent call last):
+  File "C:\Users\ASUS TUF\miniconda3\envs\diff-lm\lib\site-packages\pandas\core\indexes\base.py", line 3812, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7096, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'ref'
+The above exception was the direct cause of the following exception:
+Traceback (most recent call last):
+  File "C:\Users\ASUS TUF\Downloads\Diffusion-LM\train_gpt2_e2e.py", line 98, in <module>
+    main()
+  File "C:\Users\ASUS TUF\Downloads\Diffusion-LM\train_gpt2_e2e.py", line 90, in main
+    trainer.train()
+  File "C:\Users\ASUS TUF\miniconda3\envs\diff-lm\lib\site-packages\transformers\trainer.py", line 1246, in train
+    for step, inputs in enumerate(epoch_iterator):
+  File "C:\Users\ASUS TUF\miniconda3\envs\diff-lm\lib\site-packages\torch\utils\data\dataloader.py", line 701, in __next__
+    data = self._next_data()
+  File "C:\Users\ASUS TUF\miniconda3\envs\diff-lm\lib\site-packages\torch\utils\data\dataloader.py", line 757, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "C:\Users\ASUS TUF\miniconda3\envs\diff-lm\lib\site-packages\torch\utils\data\_utils\fetch.py", line 52, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "C:\Users\ASUS TUF\miniconda3\envs\diff-lm\lib\site-packages\torch\utils\data\_utils\fetch.py", line 52, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "C:\Users\ASUS TUF\Downloads\Diffusion-LM\train_gpt2_e2e.py", line 25, in __getitem__
+    text = self.data.iloc[idx]['ref']
+  File "C:\Users\ASUS TUF\miniconda3\envs\diff-lm\lib\site-packages\pandas\core\series.py", line 1130, in __getitem__
+    return self._get_value(key)
+  File "C:\Users\ASUS TUF\miniconda3\envs\diff-lm\lib\site-packages\pandas\core\series.py", line 1246, in _get_value
+    loc = self.index.get_loc(label)
+  File "C:\Users\ASUS TUF\miniconda3\envs\diff-lm\lib\site-packages\pandas\core\indexes\base.py", line 3819, in get_loc
+    raise KeyError(key) from err
+KeyError: 'ref'

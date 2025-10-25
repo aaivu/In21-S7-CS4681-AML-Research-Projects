@@ -1,0 +1,31 @@
+======================================================================
+ROBUSTNESS EVALUATION REPORT - CSRT_TeamAware_Tracker
+======================================================================
+Generated: 2025-10-14T21:38:03.111160
+
+SUMMARY:
+  Robustness Score: 49.20/100
+  Recovery Rate: 0.00%
+  Identity Switches: 0
+
+DETAILED METRICS:
+
+1. Occlusion Handling
+   - Total occlusion events: 1
+   - Successful recoveries: 0
+   - Average occlusion duration: 0.00 frames
+   - Average recovery time: 0.00 frames
+
+2. Overlap Detection
+   - Frames with player overlaps: 0
+   - Percentage of frames: 0.00%
+
+3. Identity Consistency
+   - Potential identity switches: 0
+   - Switch rate: 0.00 per 1000 frames
+
+4. Track Persistence
+   - Average track duration: 64.00 frames
+
+OVERALL RATING: Fair
+======================================================================

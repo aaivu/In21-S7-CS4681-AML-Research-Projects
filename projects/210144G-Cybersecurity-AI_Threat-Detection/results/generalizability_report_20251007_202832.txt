@@ -1,0 +1,65 @@
+================================================================================
+ENSEMBLE-BASED NETWORK INTRUSION DETECTION SYSTEM
+GENERALIZABILITY EVALUATION REPORT
+================================================================================
+
+Generated: 2025-10-07 20:28:32
+Student ID: 210144G
+Research Area: Cybersecurity AI - Threat Detection
+
+Datasets Evaluated: KDDTest+, KDDTest-21
+
+DATASET INFORMATION
+--------------------------------------------------
+
+KDDTest+:
+  Total samples: 22544
+  Features: 123
+  Attack distribution:
+    Normal: 9711 (43.1%)
+    DoS: 7460 (33.1%)
+    R2L: 2885 (12.8%)
+    Probe: 2421 (10.7%)
+    U2R: 67 (0.3%)
+
+KDDTest-21:
+  Total samples: 11850
+  Features: 123
+  Attack distribution:
+    DoS: 4344 (36.7%)
+    R2L: 2885 (24.3%)
+    Probe: 2402 (20.3%)
+    Normal: 2152 (18.2%)
+    U2R: 67 (0.6%)
+
+STACKING ENSEMBLE PERFORMANCE
+--------------------------------------------------
+Dataset         Accuracy   Precision  Recall     F1-Score   ROC-AUC   
+---------------------------------------------------------------------------
+KDDTest+        0.9952     0.9933     0.9982     0.9958     0.9995    
+KDDTest-21      0.9910     0.9914     0.9976     0.9945     0.9974    
+
+DETAILED CLASSIFICATION REPORTS
+--------------------------------------------------
+
+KDDTest+ Classification Report:
+              precision    recall  f1-score   support
+
+      Normal       1.00      0.99      0.99      9711
+      Attack       0.99      1.00      1.00     12833
+
+    accuracy                           1.00     22544
+   macro avg       1.00      0.99      1.00     22544
+weighted avg       1.00      1.00      1.00     22544
+
+
+KDDTest-21 Classification Report:
+              precision    recall  f1-score   support
+
+      Normal       0.99      0.96      0.97      2152
+      Attack       0.99      1.00      0.99      9698
+
+    accuracy                           0.99     11850
+   macro avg       0.99      0.98      0.98     11850
+weighted avg       0.99      0.99      0.99     11850
+

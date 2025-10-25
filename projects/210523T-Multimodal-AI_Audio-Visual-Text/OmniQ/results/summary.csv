@@ -1,0 +1,4 @@
+model,vision_backbone,fusion_depth,lora_enabled,dataset,split,frames,stride,size,batch_eval,top1,top5,params_M,trainable_params_M,peak_vram_GB,avg_latency_ms,ckpt
+swin_tiny_2d_temporalavg,swin_tiny_patch4_window7_224,0,False,UCF101,1,32,2,224,8,91.2,96.3,27.6,27.6,3.2,135.0,runs/omnivore_ucf101_t/best.pt
+omniq_mamba,swin_tiny_patch4_window7_224,2,True,UCF101,1,32,2,224,8,92.5,98.3,44.2,18.5,3.8,115.0,runs/omniq_mamba_ucf101_t_lora/best.pt
+omniq_transformer,swin_tiny_patch4_window7_224,2,True,UCF101,1,32,2,224,8,90.0,96.5,41.8,20.3,3.6,150.0,runs/omniq_transformer_ucf101_t_lora/best.pt

@@ -66,13 +66,14 @@ The study follows a hybrid research design:
 ## 5. Experimental Setup
 
 ### 5.1 Evaluation Metrics
-[List evaluation metrics you'll use]
+Reconstruction Accuracy: Over 90% for masked patches/tokens.
+Top-1/Top-5 Accuracy: Over 80% Top-1 on UCF101 [1].
 
 ### 5.2 Baseline Models
-[Describe baseline comparisons]
+Omnivore , OmniMAE
 
 ### 5.3 Hardware/Software Requirements
-[List computational requirements]
+RTX 3050 GPU
 
 ## 6. Implementation Plan
 

@@ -1,0 +1,25 @@
+# Core Dependencies for PatchTST Production Code
+# ==============================================
+
+# Deep Learning
+torch>=1.12.0
+torchvision>=0.13.0
+
+# Data Processing
+numpy>=1.21.0
+pandas>=1.3.0
+scikit-learn>=1.0.0
+
+# ONNX & Optimization
+onnx>=1.14.0
+onnxruntime>=1.14.0          # CPU version
+# onnxruntime-gpu>=1.14.0    # Uncomment for GPU support
+
+# Utilities
+tqdm>=4.62.0
+matplotlib>=3.5.0
+seaborn>=0.11.0
+
+# Optional: For Jupyter notebooks
+# jupyter>=1.0.0
+# ipykernel>=6.0.0

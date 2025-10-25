@@ -1,0 +1,4 @@
+Mode: no_moe
+Use MoE: False
+Parameters: 20.67M
+Final Test Perplexity: 551.82
