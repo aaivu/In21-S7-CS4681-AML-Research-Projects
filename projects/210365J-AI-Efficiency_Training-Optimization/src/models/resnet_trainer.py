@@ -6,7 +6,7 @@ from torch.utils.data import DataLoader
 import time
 import json
 from pathlib import Path
-from .enhancements import TrainingEnhancements
+from ..training.enhancements import TrainingEnhancements
 
 class ResNetTrainer:
     def __init__(self, config):

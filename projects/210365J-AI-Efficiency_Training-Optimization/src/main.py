@@ -4,8 +4,15 @@ Main execution script for Compute Scaling Research
 """
 
 import argparse
-from run_experiments import run_resnet_experiments, run_gpt2_experiments
-from analyze_results import analyze_resnet_results, analyze_gpt2_results
+import sys
+import os
+
+# Add the project root to the Python path
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, project_root)
+
+from experiments.experiments import run_resnet_experiments, run_gpt2_experiments
+from results.results import analyze_resnet_results, analyze_gpt2_results
 
 def main():
     parser = argparse.ArgumentParser(description='Run compute scaling experiments')

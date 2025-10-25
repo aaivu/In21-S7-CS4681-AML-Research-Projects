@@ -4,7 +4,7 @@ from transformers import GPT2LMHeadModel, GPT2Config
 from torch.utils.data import DataLoader
 from datasets import load_dataset
 import time
-from .enhancements import TrainingEnhancements
+from ..training.enhancements import TrainingEnhancements
 
 class GPT2Trainer:
     def __init__(self, config):
