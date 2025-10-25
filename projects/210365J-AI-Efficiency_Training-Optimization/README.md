@@ -54,8 +54,8 @@ This research project focuses on developing a systematic methodology for optimiz
 ### 1. Environment Setup
 ```bash
 # Clone repository
-git clone https://github.com/MamtaNallaretnam/210365J-AI-Efficiency-Training-Optimization.git
-cd 210365J-AI-Efficiency-Training-Optimization
+git clone https://github.com/aaivu/In21-S7-CS4681-AML-Research-Projects.git
+cd projects/210365J-AI-Efficiency-Training-Optimization
 
 # Install dependencies
 pip install -r requirements.txt
