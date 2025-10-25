@@ -61,6 +61,32 @@ cd 210365J-AI-Efficiency-Training-Optimization
 pip install -r requirements.txt
 ```
 
+### 2. Quick Start
+
+The easiest way to run the experiments is using the provided `run.sh` script:
+
+```bash
+# Make the script executable (only needed once)
+chmod +x run.sh
+
+# Run experiments and analysis
+./run.sh --all
+
+# Or run specific components:
+./run.sh --run-experiments    # Run training experiments only
+./run.sh --analyze           # Analyze results only
+./run.sh --help              # Show all available options
+```
+
+**Alternative manual execution:**
+```bash
+# Navigate to src directory
+cd src
+
+# Run with virtual environment Python
+../.venv/bin/python main.py --all
+```
+
 ## Hardware & Software Requirements
 
 ### Hardware
