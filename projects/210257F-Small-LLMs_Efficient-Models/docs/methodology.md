@@ -142,6 +142,4 @@ The **EdgeMIN pipeline** is based on a **teacher–student framework** where a l
 - **Deployment Readiness:** Final model (~65MB, 11.9M parameters) suitable for real-time edge inference on devices with <2GB RAM.
 - **Reproducibility:** Fully reproducible pipeline implemented using PyTorch and Hugging Face libraries.
 
----
 
-**In summary**, EdgeMIN demonstrates that a carefully orchestrated combination of relational knowledge distillation, structured pruning, and aggressive quantization can create highly efficient transformer models ready for practical on-device deployment — bridging the gap between state-of-the-art NLP and real-world edge computing constraints.
