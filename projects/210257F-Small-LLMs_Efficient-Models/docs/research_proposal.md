@@ -4,7 +4,7 @@
 **Index Number:** 210257F  
 **Research Area:** Small LLMs: Efficient Models  
 **Primary Supervisor:** Dr. Uthayasanker Thayasivam  
-**Date:** 2025-01-24
+**Date:** 2025-08-25
 
 ---
 
@@ -263,3 +263,4 @@ MiniLM compresses large Transformers through three key mechanisms:
 [9] H. Bai et al., "Towards efficient post-training quantization of pre-trained language models," *Advances in Neural Information Processing Systems*, vol. 35, pp. 1405–1418, 2022.
 
 [10] Z. Sun et al., "MobileBERT: Task-agnostic compression of BERT by progressive knowledge transfer," 2019.
+
