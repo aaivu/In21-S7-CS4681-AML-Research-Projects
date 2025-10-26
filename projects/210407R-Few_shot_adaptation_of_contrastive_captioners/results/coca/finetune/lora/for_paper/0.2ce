@@ -1,0 +1,24 @@
+r = 8/16 @ 5
+
+Config                                                       Epochs   Best Val Acc Test Acc   Time (s)  
+----------------------------------------------------------------------------------------------------
+exp_000_5shot_contrastive_augFalse_default                   19       100.00       90.05      396.7     
+exp_001_5shot_contrastive_augFalse_high_lr                   28       100.00       85.80      714.5     
+exp_002_5shot_contrastive_augFalse_low_lr                    18       100.00       89.85      388.0     
+exp_003_5shot_prototypical_augFalse_default                  11       0.40         0.30       251.6     
+exp_004_5shot_prototypical_augFalse_high_lr                  28       0.60         0.60       717.7     
+exp_005_5shot_prototypical_augFalse_low_lr                   12       2.00         1.90       271.6   
+
+
+
+
+r = 4/16 @ 5
+====================================================================================================
+EXPERIMENT SUMMARY
+====================================================================================================
+Config                                                       Epochs   Best Val Acc Test Acc   Time (s)  
+----------------------------------------------------------------------------------------------------
+exp_000_5shot_contrastive_augFalse_default                   27       100.00       89.70      515.6     
+exp_001_5shot_contrastive_augFalse_high_lr                   28       100.00       86.90      658.1     
+exp_002_5shot_contrastive_augFalse_low_lr                    30       100.00       89.80      587.0     
+====================================================================================================

@@ -168,8 +168,8 @@ class RegHead(nn.Module):
         return out_offsets
 
 
-@register_meta_arch("TriDet")
-class TriDet(nn.Module):
+@register_meta_arch("TBT_Former")
+class TBT_Former(nn.Module):
     """
         Transformer based model for single stage action localization
     """

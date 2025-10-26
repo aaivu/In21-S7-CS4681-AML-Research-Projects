@@ -1,0 +1,17 @@
+# This environment definition contains all packages to run hi-ml and hi-ml-azure development work, building and
+# testing
+name: himl
+channels:
+  - pytorch
+  - conda-forge
+  - defaults
+dependencies:
+  - cudatoolkit=11.3.1
+  - pip=23.3
+  - python=3.9.18
+  - pytorch=1.10.0
+  - pip:
+      - -r ../hi-ml-azure/run_requirements.txt
+      - -r run_requirements.txt
+      - -r ../build_requirements.txt
+      - -r ../test_requirements.txt

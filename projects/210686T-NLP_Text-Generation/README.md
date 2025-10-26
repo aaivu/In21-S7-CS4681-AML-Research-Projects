@@ -5,7 +5,7 @@
 - **Index Number:** 210686T
 - **Research Area:** NLP:Text Generation
 - **GitHub Username:** @Thula-W
-- **Email:** subavarshanaa.21@cse.mrt.ac.lk
+- **Email:** imakula.21@cse.mrt.ac.lk
 
 ## Project Structure
 ```

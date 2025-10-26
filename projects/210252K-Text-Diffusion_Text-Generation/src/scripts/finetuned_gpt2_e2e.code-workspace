@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "finetuned_gpt2_e2e",
+			"path": "../../../finetuned_gpt2_e2e/finetuned_gpt2_e2e"
+		},
+		{
+			"name": "Diffusion-LM",
+			"path": "../.."
+		}
+	],
+	"settings": {}
+}

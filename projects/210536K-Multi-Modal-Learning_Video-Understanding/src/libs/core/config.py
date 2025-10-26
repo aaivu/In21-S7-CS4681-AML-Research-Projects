@@ -8,7 +8,7 @@ DEFAULTS = {
     "devices": ['cuda:0'],  # default: single gpu
     "train_split": ('training',),
     "val_split": ('validation',),
-    "model_name": "TriDet",
+    "model_name": "TBT_Former",
     "dataset": {
         # temporal stride of the feats
         "feat_stride": 16,
@@ -39,8 +39,8 @@ DEFAULTS = {
     },
     # network architecture
     "model": {
-        # type of backbone (SGP | conv | convTransformer)
-        "backbone_type": 'SGP',
+        # type of backbone (conv | convTransformer)
+        "backbone_type": 'convTransformer',
         # type of FPN (fpn | identity)
         "fpn_type": "identity",
         "backbone_arch": (2, 2, 5),

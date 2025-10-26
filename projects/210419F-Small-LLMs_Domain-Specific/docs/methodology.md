@@ -6,7 +6,7 @@
 
 ## 1. Overview
 
-This methodology outlines a comprehensive approach to developing an efficient clinical natural language processing model through the integration of adaptive tokenization and knowledge distillation. The research addresses the performance gap between general-purpose lightweight models (DistilBERT) and domain-specific models (BioClinicalBERT) by creating a unified framework that combines vocabulary enhancement with task-specific knowledge transfer. The approach aims to achieve ClinicalBERT-level accuracy in Medical Entity Recognition while maintaining DistilBERT's computational efficiency, representing a novel contribution to the field of domain-specific small language models.
+This methodology outlines a comprehensive approach to developing an efficient clinical natural language processing model through the integration of adaptive tokenization and knowledge distillation. The research addresses the performance gap between general-purpose lightweight models (DistilBERT) and domain-specific models (BioClinicalBERT) by creating a unified framework that combines vocabulary enhancement with task-specific knowledge transfer. The approach aims to achieve BioClinicalBERT-level accuracy in Medical Entity Recognition while maintaining DistilBERT's computational efficiency, representing a novel contribution to the field of domain-specific small language models.
 
 ## 2. Research Design
 
@@ -74,7 +74,7 @@ The research is grounded in three theoretical foundations:
 - **Vocabulary size**: 30,522 → **32,000-32,500** (enhanced)
 
 ### 4.2 Teacher Model Configuration
-**ClinicalBERT Teacher**:
+**BioClinicalBERT Teacher**:
 - **Base model**: BERT-base-uncased fine-tuned on clinical data
 - **Training data**: MIMIC-III clinical notes (2GB+ text)
 - **Fine-tuning task**: Medical Entity Recognition on i2b2 dataset
@@ -96,23 +96,6 @@ The research is grounded in three theoretical foundations:
 - **Precision**: True Positives / (True Positives + False Positives)
 - **Recall**: True Positives / (True Positives + False Negatives)
 
-**Secondary Metrics**:
-- **Entity-level accuracy**: Exact match accuracy for complete entities
-- **Token-level accuracy**: Per-token classification accuracy
-- **Boundary detection accuracy**: Precision in entity boundary identification
-
-**Efficiency Metrics**:
-- **Inference time**: Average prediction time per sample (milliseconds)
-- **Memory usage**: Peak GPU memory during inference (MB)
-- **Model size**: Total parameter count and storage requirements (MB)
-- **Throughput**: Samples processed per second
-
-**Tokenization Quality Metrics**:
-- **Fragment Score**: Measures tokenization quality for medical terms
-- **Out-of-Vocabulary (OOV) Rate**: Percentage of unknown tokens
-- **Average tokens per medical term**: Efficiency of medical term representation
-- **Semantic preservation score**: Embedding similarity before/after tokenization
-
 ### 5.2 Baseline Models
 **Performance Baselines**:
 1. **DistilBERT-base-uncased**
@@ -128,20 +111,18 @@ The research is grounded in three theoretical foundations:
 
 ## 6. Implementation Plan
 
-| Phase | Tasks | Duration | Deliverables | Success Criteria |
-|-------|-------|----------|--------------|------------------|
-| **Phase 1: Foundation Setup** | • i2b2 dataset acquisition and exploration<br>• Development environment setup<br>• Baseline DistilBERT implementation<br>• Evaluation pipeline development | 2 weeks | • Baseline model performance report<br>• Data preprocessing pipeline<br>• Evaluation framework | • Baseline F1 ≥ 0.85<br>• All evaluation metrics implemented<br>• Reproducible setup |
-| **Phase 2: Adaptive Tokenization** | • Clinical vocabulary extraction<br>• KL divergence analysis<br>• Vocabulary extension implementation<br>• Tokenization quality evaluation | 2 weeks | • Enhanced tokenizer<br>• Vocabulary analysis report<br>• Tokenization benchmarks | • 15-20% reduction in medical term fragmentation<br>• Improved semantic coherence<br>• Maintained inference speed |
-| **Phase 3: Knowledge Distillation** | • ClinicalBERT teacher model setup<br>• Distillation framework implementation<br>• Temperature optimization<br>• Combined training pipeline | 2 weeks | • Distillation training code<br>• Teacher model benchmarks<br>• Integrated training pipeline | • Teacher model F1 ≥ 0.92<br>• Stable distillation convergence<br>• Effective knowledge transfer |
-| **Phase 4: Integration & Optimization** | • Unified training pipeline<br>• Hyperparameter optimization<br>• Ablation studies<br>• Performance analysis | 1.5 weeks | • Optimized model<br>• Ablation study results<br>• Performance comparison | • Target F1 ≥ 0.90<br>• Computational efficiency maintained<br>• Comprehensive ablation analysis |
-| **Phase 5: Evaluation & Documentation** | • Comprehensive model evaluation<br>• Statistical significance testing<br>• Documentation and code cleanup<br>• Final report preparation | 1.5 weeks | • Final model evaluation<br>• Complete documentation<br>• Research paper draft | • Statistical significance confirmed<br>• Reproducible results<br>• Complete documentation |
+| Phase | Tasks  | Deliverables | Success Criteria |
+|-------|--------|--------------|------------------|
+| **Phase 1: Foundation Setup** |• Development environment setup<br>• Baseline DistilBERT implementation<br>• Evaluation pipeline development | • Baseline model performance report<br>• Data preprocessing pipeline<br>• Evaluation framework | • Baseline F1 ≥ 0.85<br>• All evaluation metrics implemented<br>• Reproducible setup |
+| **Phase 2: Adaptive Tokenization** | • Clinical vocabulary extraction<br>• KL divergence analysis<br>• Vocabulary extension implementation<br>• Tokenization quality evaluation | • Enhanced tokenizer<br>• Vocabulary analysis report<br>• Tokenization benchmarks | • Reduction in medical term fragmentation<br>• Improved semantic coherence<br> |
+| **Phase 3: Knowledge Distillation** | • BioClinicalBERT teacher model setup<br>• Distillation framework implementation<br>• Temperature optimization<br>• Combined training pipeline | • Distillation training code<br>• Teacher model benchmarks<br>• Integrated training pipeline | • Teacher model F1 ≥ 0.90<br>• Stable distillation convergence<br>• Effective knowledge transfer |
+| **Phase 4: Integration & Optimization** | • Unified training pipeline<br>• Hyperparameter optimization<br>• Ablation studies<br>• Performance analysis | • Optimized model<br>• Ablation study results<br>• Performance comparison | • Target F1 ≥ 0.90<br>• Computational efficiency maintained<br>• Comprehensive ablation analysis |
+| **Phase 5: Evaluation & Documentation** | • Comprehensive model evaluation<br>• Statistical significance testing<br>• Documentation and code cleanup<br>• Final report preparation | • Final model evaluation<br>• Complete documentation<br>• Research paper draft | • Statistical significance confirmed<br>• Reproducible results<br>• Complete documentation |
 
 **Dependencies and Milestones**:
 - Phase 2 depends on successful Phase 1 baseline establishment
 - Phase 3 can partially overlap with Phase 2 (teacher model preparation)
 - Phase 4 requires successful completion of both Phases 2 and 3
-- Weekly progress reviews with stakeholders
-- Bi-weekly technical reviews with advisors
 
 ## 7. Risk Analysis
 
@@ -155,14 +136,6 @@ The research is grounded in three theoretical foundations:
 | **Vocabulary integration instability** | Medium | Medium | • Gradual vocabulary integration<br>• Embedding initialization strategies<br>• Validation on multiple datasets<br>• Fallback to incremental addition |
 | **Insufficient computational resources** | Low | High | • Cloud computing backup plan<br>• Model parallelization<br>• Batch size optimization<br>• Efficient memory management |
 
-**Medium Priority Risks**:
-
-| Risk | Probability | Impact | Mitigation Strategy |
-|------|-------------|--------|-------------------|
-| **Dataset access delays** | Low | Medium | • Early DUA application<br>• Alternative dataset preparation<br>• Synthetic data generation<br>• Collaboration with medical partners |
-| **Hyperparameter sensitivity** | Medium | Medium | • Systematic grid search<br>• Bayesian optimization<br>• Multiple random seeds<br>• Cross-validation robustness |
-| **Evaluation metric inconsistencies** | Low | Low | • Multiple evaluation frameworks<br>• External validation datasets<br>• Statistical significance testing<br>• Expert clinical review |
-
 ### 7.2 Research Risks
 
 **Methodological Risks**:
@@ -175,10 +148,9 @@ The research is grounded in three theoretical foundations:
 ### 8.1 Primary Contributions
 
 **Technical Achievements**:
-1. **Novel Integrated Framework**: First unified approach combining adaptive tokenization with knowledge distillation for medical NER
-2. **Performance Target**: F1 score ≥ 0.90 on  dataset (within 2-3% of ClinicalBERT)
-3. **Efficiency Gains**: Maintain DistilBERT's computational advantages (≤60ms inference time)
-4. **Generalization**: Robust performance across different clinical text types
+1. **Novel Integrated Framework**: Unified approach combining adaptive tokenization with knowledge distillation for medical NER
+2. **Performance Target**: F1 score ≥ 0.90 on  dataset (within 2-3% of BioClinicalBERT)
+3. **Generalization**: Robust performance across different clinical text types
 
 **Methodological Contributions**:
 1. **Systematic Vocabulary Enhancement**: Data-driven approach for medical vocabulary selection
@@ -190,8 +162,6 @@ The research is grounded in three theoretical foundations:
 **Quantitative Targets**:
 - **F1 Score**: 0.90-0.92 (target: within 3% of ClinicalBERT)
 - **Inference Speed**: ≤60ms per sample (≤20% increase from baseline DistilBERT)
-- **Model Size**: ≤75M parameters (≤15% increase from DistilBERT)
-- **Memory Usage**: ≤2GB GPU memory during inference
 
 **Qualitative Improvements**:
 - Enhanced handling of complex medical terminology

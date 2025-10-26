@@ -1,0 +1,4 @@
+Mode: hybrid
+Use MoE: True
+Parameters: 178.23M
+Final Test Perplexity: 554.19

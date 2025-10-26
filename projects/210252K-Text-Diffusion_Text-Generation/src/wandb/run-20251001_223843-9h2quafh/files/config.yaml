@@ -1,0 +1,468 @@
+wandb_version: 1
+
+_wandb:
+  desc: null
+  value:
+    python_version: 3.9.23
+    cli_version: 0.15.1
+    framework: huggingface
+    huggingface_version: 4.6.1
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    start_time: 1759338526.796386
+    t:
+      1:
+      - 1
+      - 11
+      - 49
+      - 51
+      - 55
+      2:
+      - 1
+      - 11
+      - 49
+      - 51
+      - 55
+      3:
+      - 1
+      - 7
+      - 13
+      - 23
+      4: 3.9.23
+      5: 0.15.1
+      6: 4.6.1
+      8:
+      - 3
+      - 5
+    m:
+    - 1: train/global_step
+      6:
+      - 3
+return_dict:
+  desc: null
+  value: true
+output_hidden_states:
+  desc: null
+  value: false
+output_attentions:
+  desc: null
+  value: false
+torchscript:
+  desc: null
+  value: false
+use_bfloat16:
+  desc: null
+  value: false
+pruned_heads:
+  desc: null
+  value: {}
+tie_word_embeddings:
+  desc: null
+  value: true
+is_encoder_decoder:
+  desc: null
+  value: false
+is_decoder:
+  desc: null
+  value: false
+add_cross_attention:
+  desc: null
+  value: false
+tie_encoder_decoder:
+  desc: null
+  value: false
+max_length:
+  desc: null
+  value: 20
+min_length:
+  desc: null
+  value: 0
+do_sample:
+  desc: null
+  value: false
+early_stopping:
+  desc: null
+  value: false
+num_beams:
+  desc: null
+  value: 1
+num_beam_groups:
+  desc: null
+  value: 1
+diversity_penalty:
+  desc: null
+  value: 0.0
+temperature:
+  desc: null
+  value: 1.0
+top_k:
+  desc: null
+  value: 50
+top_p:
+  desc: null
+  value: 1.0
+repetition_penalty:
+  desc: null
+  value: 1.0
+length_penalty:
+  desc: null
+  value: 1.0
+no_repeat_ngram_size:
+  desc: null
+  value: 0
+encoder_no_repeat_ngram_size:
+  desc: null
+  value: 0
+bad_words_ids:
+  desc: null
+  value: null
+num_return_sequences:
+  desc: null
+  value: 1
+chunk_size_feed_forward:
+  desc: null
+  value: 0
+output_scores:
+  desc: null
+  value: false
+return_dict_in_generate:
+  desc: null
+  value: false
+forced_bos_token_id:
+  desc: null
+  value: null
+forced_eos_token_id:
+  desc: null
+  value: null
+remove_invalid_values:
+  desc: null
+  value: false
+architectures:
+  desc: null
+  value:
+  - GPT2LMHeadModel
+finetuning_task:
+  desc: null
+  value: null
+id2label:
+  desc: null
+  value:
+    '0': LABEL_0
+    '1': LABEL_1
+label2id:
+  desc: null
+  value:
+    LABEL_0: 0
+    LABEL_1: 1
+tokenizer_class:
+  desc: null
+  value: null
+prefix:
+  desc: null
+  value: null
+bos_token_id:
+  desc: null
+  value: 50256
+pad_token_id:
+  desc: null
+  value: null
+eos_token_id:
+  desc: null
+  value: 50256
+sep_token_id:
+  desc: null
+  value: null
+decoder_start_token_id:
+  desc: null
+  value: null
+task_specific_params:
+  desc: null
+  value:
+    text-generation:
+      do_sample: true
+      max_length: 50
+problem_type:
+  desc: null
+  value: null
+_name_or_path:
+  desc: null
+  value: gpt2
+transformers_version:
+  desc: null
+  value: 4.6.1
+model_type:
+  desc: null
+  value: gpt2
+vocab_size:
+  desc: null
+  value: 50257
+n_ctx:
+  desc: null
+  value: 1024
+n_positions:
+  desc: null
+  value: 1024
+n_embd:
+  desc: null
+  value: 768
+n_layer:
+  desc: null
+  value: 12
+n_head:
+  desc: null
+  value: 12
+n_inner:
+  desc: null
+  value: null
+activation_function:
+  desc: null
+  value: gelu_new
+resid_pdrop:
+  desc: null
+  value: 0.1
+embd_pdrop:
+  desc: null
+  value: 0.1
+attn_pdrop:
+  desc: null
+  value: 0.1
+layer_norm_epsilon:
+  desc: null
+  value: 1.0e-05
+initializer_range:
+  desc: null
+  value: 0.02
+summary_type:
+  desc: null
+  value: cls_index
+summary_use_proj:
+  desc: null
+  value: true
+summary_activation:
+  desc: null
+  value: null
+summary_first_dropout:
+  desc: null
+  value: 0.1
+summary_proj_to_labels:
+  desc: null
+  value: true
+gradient_checkpointing:
+  desc: null
+  value: false
+scale_attn_weights:
+  desc: null
+  value: true
+use_cache:
+  desc: null
+  value: true
+output_dir:
+  desc: null
+  value: ./gpt2-e2e-finetuned
+overwrite_output_dir:
+  desc: null
+  value: false
+do_train:
+  desc: null
+  value: false
+do_eval:
+  desc: null
+  value: true
+do_predict:
+  desc: null
+  value: false
+evaluation_strategy:
+  desc: null
+  value: steps
+prediction_loss_only:
+  desc: null
+  value: false
+per_device_train_batch_size:
+  desc: null
+  value: 8
+per_device_eval_batch_size:
+  desc: null
+  value: 8
+per_gpu_train_batch_size:
+  desc: null
+  value: None
+per_gpu_eval_batch_size:
+  desc: null
+  value: None
+gradient_accumulation_steps:
+  desc: null
+  value: 1
+eval_accumulation_steps:
+  desc: null
+  value: None
+learning_rate:
+  desc: null
+  value: 0.0001
+weight_decay:
+  desc: null
+  value: 0.01
+adam_beta1:
+  desc: null
+  value: 0.9
+adam_beta2:
+  desc: null
+  value: 0.999
+adam_epsilon:
+  desc: null
+  value: 1.0e-08
+max_grad_norm:
+  desc: null
+  value: 1.0
+num_train_epochs:
+  desc: null
+  value: 20
+max_steps:
+  desc: null
+  value: -1
+lr_scheduler_type:
+  desc: null
+  value: linear
+warmup_ratio:
+  desc: null
+  value: 0.0
+warmup_steps:
+  desc: null
+  value: 500
+logging_dir:
+  desc: null
+  value: ./logs
+logging_strategy:
+  desc: null
+  value: steps
+logging_first_step:
+  desc: null
+  value: false
+logging_steps:
+  desc: null
+  value: 100
+save_strategy:
+  desc: null
+  value: steps
+save_steps:
+  desc: null
+  value: 5000
+save_total_limit:
+  desc: null
+  value: None
+no_cuda:
+  desc: null
+  value: false
+seed:
+  desc: null
+  value: 42
+fp16:
+  desc: null
+  value: false
+fp16_opt_level:
+  desc: null
+  value: O1
+fp16_backend:
+  desc: null
+  value: auto
+fp16_full_eval:
+  desc: null
+  value: false
+local_rank:
+  desc: null
+  value: -1
+tpu_num_cores:
+  desc: null
+  value: None
+tpu_metrics_debug:
+  desc: null
+  value: false
+debug:
+  desc: null
+  value: '[]'
+dataloader_drop_last:
+  desc: null
+  value: false
+eval_steps:
+  desc: null
+  value: 5000
+dataloader_num_workers:
+  desc: null
+  value: 0
+past_index:
+  desc: null
+  value: -1
+run_name:
+  desc: null
+  value: ./gpt2-e2e-finetuned
+disable_tqdm:
+  desc: null
+  value: false
+remove_unused_columns:
+  desc: null
+  value: true
+label_names:
+  desc: null
+  value: None
+load_best_model_at_end:
+  desc: null
+  value: false
+metric_for_best_model:
+  desc: null
+  value: None
+greater_is_better:
+  desc: null
+  value: None
+ignore_data_skip:
+  desc: null
+  value: false
+sharded_ddp:
+  desc: null
+  value: '[]'
+deepspeed:
+  desc: null
+  value: None
+label_smoothing_factor:
+  desc: null
+  value: 0.0
+adafactor:
+  desc: null
+  value: false
+group_by_length:
+  desc: null
+  value: false
+length_column_name:
+  desc: null
+  value: length
+report_to:
+  desc: null
+  value: '[''wandb'']'
+ddp_find_unused_parameters:
+  desc: null
+  value: None
+dataloader_pin_memory:
+  desc: null
+  value: true
+skip_memory_metrics:
+  desc: null
+  value: false
+use_legacy_prediction_loop:
+  desc: null
+  value: false
+push_to_hub:
+  desc: null
+  value: false
+resume_from_checkpoint:
+  desc: null
+  value: None
+_n_gpu:
+  desc: null
+  value: 1
+mp_parameters:
+  desc: null
+  value: ''
+train_batch_size:
+  desc: null
+  value: 8
+eval_batch_size:
+  desc: null
+  value: 8

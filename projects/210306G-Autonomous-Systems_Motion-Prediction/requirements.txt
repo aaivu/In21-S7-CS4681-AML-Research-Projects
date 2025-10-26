@@ -26,3 +26,21 @@ tqdm>=4.62.0
 python-dotenv>=0.19.0
 
 # Add your specific requirements below
+
+# Python environment
+python==3.7
+
+# Core PyTorch (CUDA 11.0 build)
+torch==1.7.1+cu110
+torchvision==0.8.2+cu110
+torch-geometric==1.6.3
+torch-sparse==0.6.9
+torch-scatter==2.0.6
+
+# Chemistry and utilities
+rdkit==2020.09.1.0
+PyYAML
+tensorboard
+
+# Optional (for mixed-precision training)
+nvidia-apex

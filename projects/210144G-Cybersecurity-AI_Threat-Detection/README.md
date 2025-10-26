@@ -27,8 +27,8 @@ This project implements a novel ensemble-based network intrusion detection syste
 
 ```
 210144G-Cybersecurity-AI_Threat-Detection/
-├── README.md                           # This documentation
-├── requirements.txt                    # Project dependencies
+├── README.md                          # This documentation
+├── requirements.txt                   # Project dependencies
 ├── data/                              # NSL-KDD dataset files
 │   ├── KDDTrain+.txt                  # Training dataset
 │   ├── KDDTest+.txt                   # Primary test dataset
@@ -43,19 +43,39 @@ This project implements a novel ensemble-based network intrusion detection syste
 │   ├── train_meta_classifier.py       # Meta-classifier training
 │   ├── load_models.py                 # Model loading utilities
 │   ├── config.py                      # Configuration settings
-│   └── utils.py                       # Utility functions
-├── base_models/                       # Pre-trained individual models
+│   ├── utils.py                       # Utility functions
+│   ├── __init__.py                    # Package initialization
+│   └── notebooks/                     # Training notebooks
+│       ├── ndd_DoS_.ipynb             # Finalized DoS model training
+│       ├── ndd_Probe_.ipynb           # Finalized Probe model training
+│       ├── ndd_R2L_.ipynb             # Finalized R2L model training
+│       └── ndd_U2R_.ipynb             # Finalized U2R model training
+├── attack_specific_models/            # Pre-trained attack-specific models
 │   ├── DoS.h5, Probe.h5, R2L.h5, U2R.h5    # Deep learning models
-│   └── *_probe_model.pkl              # Traditional ML models
+│   ├── rf_probe_model.pkl             # Random Forest Probe model
+│   ├── gb_probe_model.pkl             # Gradient Boosting Probe model
+│   └── lr_probe_model.pkl             # Logistic Regression Probe model
 ├── meta_models/                       # Ensemble meta-classifiers
-│   ├── anomaly_meta_*.pkl             # Trained meta-classifiers
-│   └── best_meta_classifier_info.pkl  # Best model metadata
+│   ├── anomaly_meta_logistic_regression.pkl  # Logistic Regression meta-model
+│   ├── anomaly_meta_random_forest.pkl        # Random Forest meta-model
+│   ├── anomaly_meta_svm.pkl                  # SVM meta-model
+│   └── best_meta_classifier_info.pkl         # Best model metadata
+├── experiments/                       # Experimental notebooks
+│   ├── CNN-LSTM Baseline/             # Baseline model experiments
+│   │   ├── ndd-1.0-baseline.ipynb     # Initial baseline
+│   │   ├── ndd-2.0-baseline+focal_loss.ipynb  # Focal loss experiments
+│   │   └── ndd-3.0-baseline+SMOTE.ipynb       # SMOTE experiments
+│   └── CFLVAE/                        # Variational autoencoder experiments
+│       ├── ndd-1.0-just_training_cflvae.ipynb
+│       └── ndd-2.0-generate_minority.ipynb
 ├── docs/                              # Documentation
 │   ├── research_proposal.md           # Research proposal
 │   ├── literature_review.md           # Literature review
-│   └── methodology.md                 # Detailed methodology
-│            
-└── results/                           # Experimental results
+│   ├── methodology.md                 # Detailed methodology
+│   ├── usage_instructions.md          # Usage guide
+│   └── progress_reports/              # Progress documentation
+├── logs/                              # Training and execution logs
+└── results/                           # Evaluation results and plots
 ```
 
 ## Prerequisites

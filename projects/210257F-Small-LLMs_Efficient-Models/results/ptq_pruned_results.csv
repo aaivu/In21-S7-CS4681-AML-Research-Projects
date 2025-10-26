@@ -1,0 +1,2 @@
+Model,Method,Sparsity,Non_Zero_Params,Pruned_Size_MB,Quantized_Size_MB,Compression_Ratio,Pruned_Accuracy,Quantized_Accuracy,Accuracy_Drop
+Pruned Fine-tuned,Pruned + Dynamic PTQ (INT8),0.00%,"32,178,815",122.77,65.1,1.89x,90.71%,90.48%,0.23%

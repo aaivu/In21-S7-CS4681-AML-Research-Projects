@@ -7,8 +7,7 @@ import gymnasium as gym
 
 import utils
 import TD3
-import OurDDPG
-import DDPG
+
 
 def eval_policy(policy, env_name, seed, eval_episodes=10):
     eval_env = gym.make(env_name)

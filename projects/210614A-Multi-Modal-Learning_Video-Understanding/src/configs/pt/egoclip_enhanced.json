@@ -1,0 +1,148 @@
+{
+    "_comment": "Enhanced EgoClip training configuration with multi-scale processing",
+    
+    "name": "EgoClip_Enhanced_MultiScale",
+    "n_gpu": 1,
+    
+    "use_enhancements": true,
+    "multiscale_scales": [4, 8, 16],
+    "temporal_lambda": 0.1,
+    
+    "arch": {
+        "type": "FrozenInTime",
+        "args": {
+            "video_params": {
+                "model": "SpaceTimeTransformer",
+                "arch_config": "base_patch16_224",
+                "num_frames": 16,
+                "pretrained": true,
+                "time_init": "zeros"
+            },
+            "text_params": {
+                "model": "distilbert-base-uncased",
+                "pretrained": true,
+                "input": "text"
+            },
+            "projection_dim": 256,
+            "load_checkpoint": "",
+            "projection": "minimal",
+            "load_temporal_fix": "zeros"
+        }
+    },
+    
+    "data_loader": {
+        "type": "EgoClip_EgoMCQ",
+        "args": {
+            "csv_path": "data/EgoClip/train.csv",
+            "features_path": "",
+            "features_path_audio": "",
+            "caption_root": "",
+            "video_root": "data/EgoClip/video_5fps_224",
+            "min_time": 4.0,
+            "fps": 5,
+            "num_frames": 16,
+            "size": 224,
+            "crop_only": false,
+            "center_crop": true,
+            "benchmark": false,
+            "return_video": true,
+            "max_video_len": 16,
+            "split": "train",
+            "sliding_window_stride": -1,
+            "batch_size": 32,
+            "num_workers": 8,
+            "shuffle": true,
+            "multiscale_frames": true,
+            "scales": [4, 8, 16]
+        }
+    },
+    
+    "loss": {
+        "type": "EgoNCE",
+        "args": {},
+        "tau_max": 0.07,
+        "tau_min": 0.03,
+        "temperature_scheduling": true
+    },
+    
+    "metrics": [
+        "t2v_metrics", "v2t_metrics"
+    ],
+    
+    "optimizer": {
+        "type": "AdamW",
+        "args": {
+            "lr": 1e-4,
+            "betas": [0.9, 0.98],
+            "eps": 1e-6,
+            "weight_decay": 1e-6,
+            "amsgrad": false
+        }
+    },
+    
+    "lr_scheduler": {
+        "type": "get_cosine_schedule_with_warmup",
+        "args": {
+            "num_warmup_steps": 1000,
+            "num_training_steps": 20000
+        }
+    },
+    
+    "trainer": {
+        "epochs": 20,
+        "save_dir": "saved/",
+        "save_period": 1,
+        "verbosity": 2,
+        "monitor": "min val_loss_0",
+        "early_stop": 10,
+        "neptune": false,
+        "max_samples_per_epoch": 50000,
+        "gradient_accumulation_steps": 1,
+        "max_grad_norm": 1.0
+    },
+    
+    "visualizer": {
+        "type": "",
+        "args": {}
+    },
+    
+    "enhanced_config": {
+        "_comment": "Enhanced training specific configurations",
+        
+        "multiscale_video_encoder": {
+            "scales": [4, 8, 16],
+            "fusion_type": "weighted",
+            "sequential_processing": true,
+            "mixed_precision": true
+        },
+        
+        "temporal_consistency": {
+            "lambda_temp": 0.1,
+            "max_temporal_gap": 2.0,
+            "cosine_similarity_loss": true,
+            "schedule_lambda": false
+        },
+        
+        "temperature_scheduling": {
+            "tau_max": 0.07,
+            "tau_min": 0.03,
+            "schedule_type": "cosine",
+            "total_epochs": 20
+        },
+        
+        "temporal_batch_sampler": {
+            "use_temporal_sampler": true,
+            "temporal_pair_ratio": 0.3,
+            "max_temporal_gap": 2.0,
+            "min_clips_per_video": 2
+        },
+        
+        "logging": {
+            "log_fusion_weights": true,
+            "log_temperature": true,
+            "log_temporal_loss": true,
+            "tensorboard_detailed": true,
+            "save_enhanced_checkpoints": true
+        }
+    }
+}
