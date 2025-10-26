@@ -1,5 +1,13 @@
 # Results
 
+## Final Results Description
+
+The final results from this study evaluate four activation functions on the PEGASUS-X model's abstractive summarization performance across six benchmark datasets. Summarization quality was measured using ROUGE-1, ROUGE-2, and ROUGE-Lsum metrics.
+
+Overall, GELU consistently achieved the highest ROUGE scores across most datasets, particularly excelling on longer, complex texts like GovReport and SummScreen. Its smooth probabilistic gating enhances gradient flow and semantic representation, leading to more effective modeling of non-linear relationships in abstractive summarization tasks. GELU New showed marginal improvements over GELU on shorter-text datasets (CNN/DailyMail and XSum), suggesting better sensitivity to local linguistic variations in concise summarization tasks. ReLU performed stably but lower than GELU, offering computational efficiency while suffering from limitations like inactive neurons in negative input regions. SiLU yielded the lowest scores overall, with reduced gradient responsiveness potentially hindering contextual signal propagation in deep transformer layers.
+
+These results highlight that activation function choice significantly influences model performance, with GELU variants providing the best balance of stability and expressiveness for abstractive summarization, especially in handling diverse text lengths and complexities.
+
 ## ROUGE-1 Scores Across Different Activation Functions
 
 | **Dataset**      | **ReLU** | **GELU** | **GELU New** | **SiLU** |
