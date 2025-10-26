@@ -25,7 +25,7 @@ EdgeMIN_Project/
 ├── evaluation_summary.txt          # Summary of compression performance and key observations
 ├── quantized_model.pth             # Final quantized and pruned EdgeMIN model (INT8 weights)
 └── throughput_results.csv          # CPU throughput and latency measurements (samples/sec)
-
+```
 
 ## 🔗 Access Trained Models
 
