@@ -8,22 +8,24 @@ EdgeMIN is a three-stage systematic compression framework combining **relational
 
 ## 📁 Directory Overview
 
+```bash
 EdgeMIN_Project/
 │
-├── distilled_student/ # Stage 1 output: Distilled MiniLMv2 student model
-├── figures/ # Visual results and plots (e.g., size vs. accuracy, latency comparisons)
-├── models/ # Final trained and compressed model weights
-├── results/ # (You are here) — all evaluation metrics and outputs
-├── tmp_pruning_finetune/ # Intermediate checkpoints during pruning fine-tuning
-├── tmp_qat_training/ # Temporary artifacts from quantization-aware training
+├── distilled_student/              # Stage 1 output: Distilled MiniLMv2 student model
+├── figures/                        # Visual results and plots (e.g., size vs. accuracy, latency comparisons)
+├── models/                         # Final trained and compressed model weights
+├── results/                        # (You are here) — all evaluation metrics and outputs
+├── tmp_pruning_finetune/           # Intermediate checkpoints during pruning fine-tuning
+├── tmp_qat_training/               # Temporary artifacts from quantization-aware training
 │
-├── accuracy_results.csv # Accuracy metrics for all models across compression stages
-├── baseline_results.csv # Baseline (teacher model) evaluation before compression
-├── evaluation_results.csv # Combined accuracy, latency, FLOPs, and model size results
-├── evaluation_results.xlsx # Excel version of full evaluation metrics for easy analysis
-├── evaluation_summary.txt # Summary of compression performance and key observations
-├── quantized_model.pth # Final quantized and pruned EdgeMIN model (INT8 weights)
-└── throughput_results.csv # CPU throughput and latency measurements (samples/sec)
+├── accuracy_results.csv            # Accuracy metrics for all models across compression stages
+├── baseline_results.csv            # Baseline (teacher model) evaluation before compression
+├── evaluation_results.csv          # Combined accuracy, latency, FLOPs, and model size results
+├── evaluation_results.xlsx          # Excel version of full evaluation metrics for easy analysis
+├── evaluation_summary.txt          # Summary of compression performance and key observations
+├── quantized_model.pth             # Final quantized and pruned EdgeMIN model (INT8 weights)
+└── throughput_results.csv          # CPU throughput and latency measurements (samples/sec)
+
 
 ## 🔗 Access Trained Models
 
