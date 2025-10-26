@@ -1,3 +1,3 @@
 # Student Usage Instructions
 
-[Instructions will be loaded from template]
+Install the required dependencies and libraries. You can run the provided jupyter notebook and get the results
