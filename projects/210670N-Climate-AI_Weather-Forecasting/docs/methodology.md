@@ -43,9 +43,11 @@ Our work does **not modify** this architecture; instead, it inserts a preprocess
 
 **Perturbation Design (Enhancement Layer):**
 Mathematically, the perturbed dataset \( X' \) is defined as:
+```math
 \[
 X' = X + \eta_v \cdot \sigma_v \cdot f(\phi)
 \]
+```
 where:
 - \( X \): original input field,  
 - \( \eta_v \sim \mathcal{N}(0,1) \): Gaussian noise,  
