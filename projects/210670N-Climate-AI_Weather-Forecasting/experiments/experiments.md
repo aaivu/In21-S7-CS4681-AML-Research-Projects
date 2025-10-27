@@ -47,11 +47,11 @@ The first experiment introduced independent Gaussian noise to all input variable
 
 Mathematically, the perturbation is expressed as:  
 ```math
-\[
+
 X' = X + \sigma_v \cdot \eta, \quad \eta \sim \mathcal{N}(0, 1)
-\]  
-```
-where \( \sigma_v \) is the standard deviation for each variable.  
+```  
+
+where $\sigma_v$ is the standard deviation for each variable.  
 
 **Rationale:**  
 This served as a baseline to observe the model’s tolerance to unstructured random noise.  
@@ -70,11 +70,12 @@ This approach revealed that while the model remained computationally stable, the
 
 To reduce small-scale irregularities introduced in v1, the second experiment added a horizontal Gaussian filter to smooth noise along the latitude and longitude dimensions.  
 ```math
-\[
+
 X' = X + \sigma_v \cdot (G_\sigma * \eta)
-\]
+
 ```
-where \( G_\sigma \) is a Gaussian kernel with standard deviation \( \sigma = 1 \).  
+where $G_\sigma$  is a Gaussian kernel with standard deviation $\sigma = 1$ .
+
 
 **Rationale:**  
 Atmospheric variables exhibit spatial coherence, and uncorrelated noise violates physical smoothness. This step ensured spatially correlated perturbations mimicking mesoscale patterns.  
@@ -93,10 +94,10 @@ The fields became smoother and visually realistic, but large-scale imbalances st
 
 The third experiment introduced **physics-aware relationships** between variables, capturing approximate dynamical coupling. Specifically, wind perturbations were used to derive changes in geopotential and temperature through simplified balance equations:
 ```math
-\[
+
 \delta \Phi = \alpha \left(\frac{\partial u}{\partial x} + \frac{\partial v}{\partial y}\right), \quad
 \delta T = \beta \frac{\partial \Phi}{\partial p}
-\]
+
 ```
 
 **Rationale:**  
@@ -106,7 +107,7 @@ To maintain geophysical consistency, perturbations in one variable should propag
 - Computed approximate divergence fields from noisy winds using finite differences.  
 - Added geopotential perturbations proportional to divergence.  
 - Coupled vertical temperature adjustments based on geopotential gradients.  
-- Controlled strength using parameters \( \alpha = 200 \) and \( \beta = 10^{-4} \).  
+- Controlled strength using parameters $\alpha = 200$  and $\beta = 10^{-4}$.  
 
 **Observation:**  
 This approach produced the most physically interpretable perturbations with smoother structures, though still prone to amplification in sensitive variables during inference.
@@ -117,13 +118,13 @@ This approach produced the most physically interpretable perturbations with smoo
 
 The fourth experiment addressed scale heterogeneity by using **additive noise for small-scale variables** and **multiplicative noise for large-scale variables** (temperature, sea-surface temperature, etc.):
 ```math
-\[
+
 X' =
 \begin{cases}
 X + \sigma_v \eta, & \text{(for winds, humidity, vertical velocity)} \\
 X(1 + \lambda \eta), & \text{(for temperature-like variables)}
 \end{cases}
-\]
+
 ```
 
 **Rationale:**  
