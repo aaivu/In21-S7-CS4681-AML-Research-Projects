@@ -29,12 +29,10 @@ class Task2Env(gym.Env):
         scale_range: Tuple[int, int],
         max_steps=1,  # arbitrary implementation. Feel free to change this.
         threshold=3,
-        lookahead=3,  # we set a lookahead of 3 days. This means that the timeframe is long enough for sentiment to effect the market, whilst being short enough that no new sentiment may necessarily overshadow the current trends
+        lookahead=3,  # set a lookahead of 3 days. This means that the timeframe is long enough for sentiment to effect the market, whilst being short enough that no new sentiment may necessarily overshadow the current trends
     ):
 
-        # self.tokenizer = tokenizer
-        # self.tokenizer.pad_token = self.tokenizer.eos_token
-        # self.model = model
+        #
 
         """observation space defined by natural language input and market data"""
         """observation space = [
@@ -95,20 +93,7 @@ class Task2Env(gym.Env):
         # eval
         self.eval_amt = 1e6
 
-    """State: 
-        - List of daily sorted news headlines about stocks
-        - Market state"""
 
-    """LLM: 
-        - Load model - Llama3 8.1b instruct
-        - Use prompting to generate a signal vector using the model
-        - """
-
-    """Step: 
-        - Parse daily NL headlines -> each day is one string of n headlines
-        - pass to AgentLLM to generate signal
-        - calculate allocation based off of sentiment vectors
-        - calculate reward from prices at set future point"""
 
     def reset(self):
         """reset env"""
@@ -245,3 +230,4 @@ class Task2Env(gym.Env):
         self.eval_amt = self.eval_amt * (1 + avg_return)
         return self.eval_amt
         # if abs signal is greater than the threshold, then we take up a position and compare the absolute percentage change to future price which is the reward
+
