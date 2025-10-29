@@ -1,6 +1,4 @@
-"""
-Do not change this. We will be using this setup for testing your submissions.
-"""
+
 
 import pandas as pd
 
@@ -14,7 +12,7 @@ def _get_news(ticker: str, start_date: str, end_date: str, dset: str):
 
     df = df[
         (df["Date"] >= start_date) & (df["Date"] <= end_date)
-    ]  # in default imp this is a five day range
+    ]  
 
     news_content = ""
     for _, row in df.iterrows():
@@ -29,3 +27,4 @@ def _get_news(ticker: str, start_date: str, end_date: str, dset: str):
 
 def get_news(ticker: str, start_date: str, end_date: str, dset="task2_news.csv"):
     return _get_news(ticker, start_date, end_date, dset)
+
