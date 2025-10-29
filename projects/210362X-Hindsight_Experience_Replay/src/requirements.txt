@@ -1,0 +1,6 @@
+gymnasium==0.28.1      # or gym if you use gym <0.26; adjust as needed
+numpy
+matplotlib
+torch>=1.12
+tqdm
+box2d-py==2.3.8        # LunarLander dependencies; if you're using gym[box2d] install that
