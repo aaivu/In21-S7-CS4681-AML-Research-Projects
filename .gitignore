@@ -200,3 +200,5 @@ logs/
 
 # Large model checkpoint files
 projects/210049U-NLP_ionSpeech-Enhancement/src/pretrained_models/sepformer-wsj02mix/*.ckpt
+# API credentials: keep in ~/.kaggle/, never in the repo
+kaggle.json
